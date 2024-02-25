@@ -15,3 +15,5 @@
 ---
 
 Методы работы приложения описаны в папке [ApplicationFunctions](ApplicationFunctions)
+
+![telegram-cloud-photo-size-2-5393145139318347530-y](https://github.com/t0nso1eil/ICT-OOP-2024/assets/112972915/7dc1882c-023b-4dbb-ab9f-f79f537a3358)
