@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "Njy6FrnXsuLMrWuYYC+QxcF7r8ng45/nDGygGMg68J7gije7rn4tH7HnviW8Fqigc6BmvA7ZcBYFt9NLEUlo+w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Ekaterina\\Documents\\GitHub\\ICT-OOP-2024\\MentallHealthSupport\\src\\Application\\MentallHealthSupport.Application.Abstractions\\MentallHealthSupport.Application.Abstractions.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\itmo.dev.editorconfig\\1.0.2\\itmo.dev.editorconfig.1.0.2.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\sourcekit\\1.1.24\\sourcekit.1.1.24.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\sourcekit.analyzers.mustbepartial\\1.1.24\\sourcekit.analyzers.mustbepartial.1.1.24.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\sourcekit.analyzers.mustbepartial.annotations\\1.1.24\\sourcekit.analyzers.mustbepartial.annotations.1.1.24.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\sourcekit.generators.builder\\1.1.24\\sourcekit.generators.builder.1.1.24.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\sourcekit.generators.builder.annotations\\1.1.24\\sourcekit.generators.builder.annotations.1.1.24.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\stylecop.analyzers\\1.2.0-beta.435\\stylecop.analyzers.1.2.0-beta.435.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\stylecop.analyzers.unstable\\1.2.0.435\\stylecop.analyzers.unstable.1.2.0.435.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\system.linq.async\\6.0.1\\system.linq.async.6.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

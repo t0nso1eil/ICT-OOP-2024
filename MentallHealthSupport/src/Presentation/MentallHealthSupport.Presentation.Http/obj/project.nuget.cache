@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "G/havi/O1eeolpLUZsoXYmCXlS4JvPvoNv1eWpQ2HC2JhhilkJ2QvxtFHI7fGgQFMkz2vn2MZW9Itw7An7yAwQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Ekaterina\\Documents\\GitHub\\ICT-OOP-2024\\MentallHealthSupport\\src\\Presentation\\MentallHealthSupport.Presentation.Http\\MentallHealthSupport.Presentation.Http.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\itmo.dev.editorconfig\\1.0.2\\itmo.dev.editorconfig.1.0.2.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\stylecop.analyzers\\1.2.0-beta.435\\stylecop.analyzers.1.2.0-beta.435.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\stylecop.analyzers.unstable\\1.2.0.435\\stylecop.analyzers.unstable.1.2.0.435.nupkg.sha512",
+    "C:\\Users\\Ekaterina\\.nuget\\packages\\system.linq.async\\6.0.1\\system.linq.async.6.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
