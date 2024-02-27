@@ -2,21 +2,26 @@
 
 ### Создание сессии (заявки на сессию):
 
-POST api/v1/sessions/add
+POST api/v1/sessions
 
-**request** - { }
+**request** - {
+"client_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p",
+"spot_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+}
 
-**response** - { }
+**response** - {201 - OK}
 
 ---
 
 ### Обновление статуса сессии:
 
-POST api/v1/sessions/
+POST api/v1/sessions/{session_id}
 
-**request** - { }
+**request** - { 
+"status": "проведена"
+}
 
-**response** - { }
+**response** - {200 - OK}
 
 _
 
