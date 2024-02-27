@@ -2,12 +2,12 @@
 
 ### Изменить статус оплаты:
 
-PATCH api/v1/sessions/{session_id}/payment/update_status
+PATCH api/v1/sessions/{session_id}/payment
 
-**request** - { }
+**request** - {
+"status": "оплачено"
+}
 
-**response** - { }
+**response** - {200 - OK}
 
 ---
-
-

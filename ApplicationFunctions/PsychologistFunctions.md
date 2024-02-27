@@ -2,7 +2,7 @@
 
 ### Регистрация нового психолога:
 
-POST api/v1/psychologists/add
+POST api/v1/psychologists
 
 **request** - { 
 "first_name": "имя",
@@ -22,7 +22,7 @@ POST api/v1/psychologists/add
 
 ### Получение профиля психолога:
 
-GET api/v1/psychologists
+GET api/v1/psychologists/{psychologist_id}
 
 **request** - { "psychologist_id" : "7febf16f-651b-43b0-a5e3-0da8da49e90d" }
 
@@ -35,16 +35,19 @@ GET api/v1/psychologists
 "experience_years" : 9,
 "working_hours_start" : "9:00:00",
 "working_hours_end" : "21:00:00",
-"price_per_hour" : 4000
+"price_per_hour" : 4000.0
 }
 
 ---
 
 ### Обновление профиля психолога (общий вид):
 
-PATCH 
+PATCH api/v1/psychologists/{psychologist_id}
 
-**request** - { }
+**request** - {
+"first_name" : "теперь-меня-зовут-олег",
+"additional_info" : "я люблю людей"
+}
 
 **response** - { 200 - OK }
 
@@ -52,7 +55,7 @@ PATCH
 
 ### Обновление имени и фамилии:
 
-PATCH api/v1/
+PATCH api/v1/psychologists/{psychologist_id}/full_name
 
 **requests** - {
 "first_name": "null",
@@ -65,7 +68,7 @@ PATCH api/v1/
 
 ### Обновление пароля:
 
-PATCH api/v1/
+PATCH api/v1/psychologists/{psychologist_id}/password
 
 **requests** - {
 "password" : "паучикапау"
@@ -79,9 +82,10 @@ _добавить метод на проверку пароля (совпаде�
 
 ### Обновление цены за сессию:
 
-PATCH api/v1/
+PATCH api/v1/psychologists/{psychologist_id}/price
 
 **requests** - {
+"price_per_hour": 10000.0
 }
 
 **response** - { 200 - OK }
@@ -90,9 +94,10 @@ PATCH api/v1/
 
 ### Обновление специализации:
 
-PATCH api/v1/
+PATCH api/v1/psychologists/{psychologist_id}/specialization
 
 **requests** - {
+"specialization": "кпт"
 }
 
 **response** - { 200 - OK }
@@ -101,23 +106,59 @@ PATCH api/v1/
 
 ### Обновление дополнительной информации:
 
-PATCH api/v1/
+PATCH api/v1/psychologists/{psychologist_id}/additional_info
 
 **requests** - {
-"additional_info" : "я больше не люблю собак"
+"additional_info" : "я крутой психолог честно"
 }
 
 **response** - { 200 - OK }
 
 ---
 
-### Получение психологов по фильтру цена +/ оценка:
+### Получение психологов по фильтру цена:
 
-GET api/v1/psychologists
+GET api/v1/psychologists?price_min={price_min}&price_max={price_max}
 
-**request** - { }
+**request** - {
+"price_min": 1500.0,
+"price_max": 2000.0
+}
 
-**response** - { }
+**response** - {
+"first_name": "имя",
+"last_name" : "фамилия",
+"email": "pochta@mail.ru",
+"registration_date" : "2024-02-25 03:14:07",
+"specialization" : "основные направления",
+"experience_years" : 9,
+"working_hours_start" : "9:00:00",
+"working_hours_end" : "21:00:00",
+"price_per_hour" : 1800.0
+}
+
+---
+
+### Получение психологов по фильтру оценка:
+
+GET api/v1/psychologists?rate_min={rate_min}&rate_max={rate_max}
+
+**request** - {
+"rate_min": 4.2,
+"rate_max": 5.0
+}
+
+**response** - {
+"first_name": "имя",
+"last_name" : "фамилия",
+"email": "pochta@mail.ru",
+"registration_date" : "2024-02-25 03:14:07",
+"specialization" : "основные направления",
+"experience_years" : 9,
+"working_hours_start" : "9:00:00",
+"working_hours_end" : "21:00:00",
+"price_per_hour" : 1800.0
+}
 
 ---
 
@@ -125,29 +166,134 @@ GET api/v1/psychologists
 
 GET api/v1/psychologists/{psychologist_id}/reviews
 
-**request** - { }
+**request** - {}
 
-**response** - { }
+**response** - {
+{
+"review_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p",
+
+"client_id": "9i8h7g-6f5e-d4c3-b2a1-0p9o8i7u6y5t",
+
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+
+"rate": 5,
+
+"description": "Отличный психотерапевт, очень внимательный и понимающий",
+
+"post_time": "2024-02-26 08:30:45"
+},
+
+{
+"review_id": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q",
+
+"client_id": "8h7g6f-5e4d-c3b2-a1p0-o9i8u7y6t5r",
+
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+
+"rate": 4,
+
+"description": "Хороший специалист, помог мне справиться с проблемами",
+
+"post_time": "2024-02-25 10:15:30"
+},
+
+{
+"review_id": "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r",
+
+"client_id": "7h6g5f-4e3d-c2b1-a0p9-o8i7u6y5t4r",
+
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+
+"rate": 3,
+
+"description": "Предлагал печеньки и называл пупсиком, НО не смеялся над моими шутками про отца, а печенье было с изюмом",
+
+"post_time": "2024-02-24 14:20:10"
+}}
 
 ---
 
 ### Получение доступных для записи окон психолога:
 
-GET api/v1/psychologists
+GET api/v1/psychologists/{psychologist_id}/spots
 
-**request** - { }
+**request** - {}
 
-**response** - { }
+**response** - {{
+"spot_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p",
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+"date": "2024-03-01",
+"hour_start": "09:00:00",
+"hour_end": "10:00:00",
+"status": "доступно"
+},
+
+{
+"spot_id": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q",
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+"date": "2024-03-01",
+"hour_start": "10:00:00",
+"hour_end": "11:00:00",
+"status": "доступно"
+},
+
+{
+"spot_id": "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r",
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+"date": "2024-03-02",
+"hour_start": "14:00:00",
+"hour_end": "15:00:00",
+"status": "доступно"
+}}
+
+---
+
+### Добавление нового окна для записи:
+
+POST api/v1/psychologists/{psychologist_id}/spots
+
+**request** - {
+"date": "2024-02-27",
+"hour_start": "04:00:00",
+"hour_end": "07:00:00"
+}
+
+**response** - { 201 - OK}
 
 ---
 
 ### Получение расписания психолога:
 
-GET api/v1/psychologists
+GET api/v1/psychologists/{psychologist_id}/schedule
 
-**request** - { }
+**request** - {}
 
-**response** - { }
+**response** - {{
+"spot_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p",
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+"date": "2024-03-01",
+"hour_start": "09:00:00",
+"hour_end": "10:00:00",
+"status": "доступно"
+},
+
+{
+"spot_id": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q",
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+"date": "2024-03-01",
+"hour_start": "10:00:00",
+"hour_end": "11:00:00",
+"status": "занято"
+},
+
+{
+"spot_id": "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r",
+"psychologist_id": "1a3b4c5d-6e7f-8g9h-0i1j-2k3l4m5n6o7",
+"date": "2024-03-02",
+"hour_start": "14:00:00",
+"hour_end": "15:00:00",
+"status": "доступно"
+}}
 
 ---
 
