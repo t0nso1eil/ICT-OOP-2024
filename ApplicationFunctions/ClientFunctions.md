@@ -8,11 +8,11 @@ POST api/v1/clients
 "first_name": "имя", 
 "last_name" : "фамилия", 
 "email": "pochta@mail.ru",
+"phone_number" : "+79092479999",
 "password": "парольчикб",
-"phone" : "+79092479999"",
-"additional_info" : "я люблю собак",
 "birthday": "2004-10-08",
-"sex" : "женщина"
+"sex" : "женщина",
+"additional_info" : "я люблю собак"
 }
 
 **response** - { "client_id":"7febf16f-651b-43b0-a5e3-0da8da49e90d" } или { 201 - OK }
@@ -23,17 +23,18 @@ POST api/v1/clients
 
 GET api/v1/clients
 
-**request** - { "client_id" : "7febf16f-651b-43b0-a5e3-0da8da49e90d"}
+**request** - { "client_id" : "7febf16f-651b-43b0-a5e3-0da8da49e90d" }
 
-**response** - { 
+**response** - {
 "first_name": "имя",
 "last_name" : "фамилия",
 "email": "pochta@mail.ru",
-"registration_date" : "2024-02-25 03:14:07"
-"phone" : "+79092479999"",
-"additional_info" : "я люблю собак",
+"phone_number" : "+79092479999",
 "birthday": "2004-10-08",
-"sex" : "женщина"
+"age" : 19,
+"sex" : "женщина",
+"additional_info" : "я люблю собак",
+"registration_date" : "2024-02-27"
 }
 
 ---

@@ -5,7 +5,7 @@
 PATCH api/v1/sessions/{session_id}/payment
 
 **request** - {
-"status": "оплачено"
+"status" : "оплачено"
 }
 
 **response** - {200 - OK}
