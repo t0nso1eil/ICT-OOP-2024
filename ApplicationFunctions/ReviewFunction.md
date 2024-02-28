@@ -7,8 +7,7 @@ POST api/v1/psychologists/{psychologist_id}/reviews
 **request** - {
 "client_id" : "",
 "rate" : 4,
-"description" : "он 10/10, но его зовут Никита",
-"post_time" : "2024-02-27 12:52:52"
+"description" : "он 10/10, но его зовут Никита"
 }
 
 _на подумать: нужен ли идентификатор в теле запроса, если мы и так будем в лк клиента определенного_
