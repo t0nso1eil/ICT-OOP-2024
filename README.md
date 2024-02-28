@@ -18,7 +18,8 @@
 
 ## ERD-диаграмма
 
-![erd-diagram.jpg](..%2F..%2F..%2FDownloads%2Ferd-diagram.jpg)
+![erd-diagram](https://github.com/t0nso1eil/ICT-OOP-2024/assets/73792532/cec53f73-e1af-4f2e-9cb5-c465fa1de556)
+
 
 ## Комментарии
 
