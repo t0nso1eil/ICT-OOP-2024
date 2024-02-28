@@ -45,6 +45,63 @@ GET api/v1/psychologists
 
 ---
 
+### Получение всех психологов:
+
+GET api/v1/psychologists
+
+**request** - { }
+
+**response** - {
+{
+"first_name" : "Анна",
+"last_name" : "Иванова",
+"email" : "anna.ivanova@example.com",
+"birthday" : "1985-05-15",
+"age" : 39,
+"sex" : "женский",
+"specialization" : "клиническая психология, семейная терапия",
+"experience_start_date" : "2010-09-20",
+"experience_years" : 11,
+"additional_info" : "Имею опыт работы с детьми и взрослыми, провожу индивидуальные и групповые сеансы",
+"price_per_hour" : 5000.0,
+"rate" : 4.7,
+"registration_date" : "2023-08-12"
+},
+
+{
+"first_name" : "Михаил",
+"last_name" : "Петров",
+"email" : "mikhail.petrov@example.com",
+"birthday" : "1978-12-10",
+"age" : 46,
+"sex" : "мужской",
+"specialization" : "когнитивно-поведенческая терапия, работа с зависимостями",
+"experience_start_date" : "2005-03-25",
+"experience_years" : 19,
+"additional_info" : "Специализируюсь на проблемах ангста и депрессии",
+"price_per_hour" : 5500.0,
+"rate" : 4.9,
+"registration_date" : "2022-11-30"
+},
+
+{
+"first_name": "Елена",
+"last_name": "Смирнова",
+"email": "elena.smirnova@example.com",
+"birthday": "1992-07-20",
+"age": 30,
+"sex": "женский",
+"specialization": "психотерапия личности, работа с травмами",
+"experience_start_date": "2017-04-15",
+"experience_years": 7,
+"additional_info": "Имею опыт работы с жертвами домашнего насилия и людьми с психическими расстройствами",
+"price_per_hour": 4500.0,
+"rate": 4.5,
+"registration_date": "2023-05-18"
+}  }
+
+---
+
 ### Обновление профиля психолога (общий вид):
 
 PATCH api/v1/psychologists/{psychologist_id}
