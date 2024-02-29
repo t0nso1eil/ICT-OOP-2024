@@ -18,7 +18,7 @@
 
 ### ERD-диаграмма
 
-![erd-diagram](https://github.com/t0nso1eil/ICT-OOP-2024/assets/73792532/cec53f73-e1af-4f2e-9cb5-c465fa1de556)
+![telegram-cloud-photo-size-2-5406631894973536285-y](https://github.com/t0nso1eil/ICT-OOP-2024/assets/112972915/38c5ea60-7cae-40a6-b946-95ecd51e47d9)
 
 
 ### Описание сущностей
