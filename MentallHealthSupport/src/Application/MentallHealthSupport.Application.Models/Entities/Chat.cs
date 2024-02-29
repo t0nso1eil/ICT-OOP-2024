@@ -4,11 +4,9 @@ public class Chat
 {
     public Guid Id { get; }
 
-    public Guid ClientId { get; set; }
-
-    public Client? Client { get; set; }
-
-    public Guid PsychologistId { get; set; }
+    public Guid ClientId { get; }
+    
+    public Guid PsychologistId { get; }
 
     public IEnumerable<Message>? Messages { get; set; }
 }

@@ -4,11 +4,11 @@ public class Message
 {
     public Guid Id { get; }
 
-    public Guid ChatId { get; set; }
+    public Guid ChatId { get; }
 
-    public Guid PsychologistId { get; set; }
+    public Guid PsychologistId { get; }
 
     public string? MessageText { get; set; }
 
-    public DateTime SentTime { get; private set; }
+    public DateTime SentTime { get; }
 }
