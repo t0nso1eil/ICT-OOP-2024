@@ -4,9 +4,9 @@ public class Session
 {
     public Guid Id { get; }
 
-    public Guid ClientId { get; set; }
+    public Guid ClientId { get; }
 
-    public Guid SpotId { get; set; }
+    public Guid SpotId { get; }
 
     public string? Status { get; set; }
 

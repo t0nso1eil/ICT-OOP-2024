@@ -4,7 +4,7 @@ public class Spot
 {
     public Guid Id { get; }
 
-    public Guid PsychologistId { get; set; }
+    public Guid PsychologistId { get; }
 
     public DateOnly Date { get; set; }
 

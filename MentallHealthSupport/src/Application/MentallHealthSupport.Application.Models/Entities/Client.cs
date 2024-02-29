@@ -16,11 +16,21 @@ public class Client
 
     public DateOnly Birthday { get; set; }
 
-    public uint Age { get; private set; }
+    public uint Age => (uint)((DateTime.Now - Birthday.ToDateTime()).TotalDays / 365);
 
     public string? Sex { get; set; }
 
     public string? AdditionalInfo { get; set; }
 
-    public DateTime RegistrationDate { get; private set; }
+    public DateTime RegistrationDate { get; }
+    
+    public IEnumerable<Chat>? Chats { get; set; }
+    
+    public IEnumerable<Session>? Sessions { get; set; }
+    
+    public IEnumerable<Payment>? Payments { get; set; }
+    
+    public IEnumerable<Message>? Messages { get; set; }
+    
+    public IEnumerable<Chat>? Chats { get; set; }
 }

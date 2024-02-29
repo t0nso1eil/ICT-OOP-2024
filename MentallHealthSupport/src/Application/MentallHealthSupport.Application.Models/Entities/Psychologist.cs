@@ -14,7 +14,7 @@ public class Psychologist
 
     public DateOnly Birthday { get; set; }
 
-    public uint Age { get; private set; }
+    public uint Age => (uint)((DateTime.Now - Birthday.ToDateTime()).TotalDays / 365);
 
     public string? Sex { get; set; }
 
@@ -22,7 +22,7 @@ public class Psychologist
 
     public DateOnly ExperienceStartDate { get; set; }
 
-    public uint ExperienceYears { get; private set; }
+    public uint ExperienceYears => (unit)((DateTime.Now - ExperienceStartDate.ToDateTime()).TotalDays/365)
 
     public string? AdditionalInfo { get; set; }
 
@@ -33,4 +33,10 @@ public class Psychologist
     public DateTime RegistrationDate { get; private set; }
 
     public IEnumerable<Review>? Reviews { get; set; }
+    
+    public IEnumerable<Chat>? Chats { get; set; }
+    
+    public IEnumerable<Message>? Messages { get; set; }
+    
+    public IEnumerable<Spot>? Spots { get; set; }
 }
