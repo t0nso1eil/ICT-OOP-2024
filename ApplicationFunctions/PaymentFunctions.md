@@ -4,10 +4,10 @@
 
 PATCH api/v1/sessions/{session_id}/payment
 
-**request** - {
+**request**: {
 "status" : "оплачено"
 }
 
-**response** - {200 - OK}
+**response**: {200 - OK}
 
 ---
