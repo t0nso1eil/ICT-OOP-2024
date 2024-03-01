@@ -4,11 +4,16 @@ public class Session
 {
     public Guid Id { get; }
 
-    public Guid ClientId { get; }
+    public Guid ClientId { get; set; }
+    
+    public Client? Client { get; set; }
 
-    public Guid SpotId { get; }
+    public Guid SpotId { get; set; }
+    
+    public Spot? Spot { get; set; }
 
     public string? Status { get; set; }
 
     public decimal Price { get; set; }
+    
 }

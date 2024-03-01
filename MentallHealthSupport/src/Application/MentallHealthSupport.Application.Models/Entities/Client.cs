@@ -22,9 +22,7 @@ public class Client
 
     public string? AdditionalInfo { get; set; }
 
-    public DateTime RegistrationDate { get; }
-    
-    public IEnumerable<Chat>? Chats { get; set; }
+    public DateTime RegistrationDate { get; private set; }
     
     public IEnumerable<Session>? Sessions { get; set; }
     
