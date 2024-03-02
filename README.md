@@ -30,6 +30,7 @@ psychologist 1:M  message
 
 psychologist 1:M  spot
 
+
 client 1:M chat
 
 client 1:M  review 
@@ -39,6 +40,7 @@ client 1:M  message
 client 1:M  session
 
 client 1:M  payment
+
 
 session 1:1 spot
 
