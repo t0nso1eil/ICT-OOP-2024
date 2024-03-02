@@ -9,4 +9,7 @@ public interface IMessageService
     public void UpdateMessage(Guid messageId, string messageText);
 
     public void DeleteMessage(Guid messageId);
+    
+    public IEnumerable<Message> GetChatMessages(Guid chatId);
+    
 }

@@ -2,9 +2,9 @@
 
 public class Spot
 {
-    public Guid Id { get; }
+    public Guid Id { get; set; }
 
-    public Guid PsychologistId { get; set;  }
+    public Guid PsychologistId { get; set; }
     
     public Psychologist? Psychologist { get; set; }
 

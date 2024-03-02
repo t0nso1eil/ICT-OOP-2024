@@ -8,8 +8,6 @@ public interface IPsychologistService
 
     public Psychologist GetPsychologist(Guid psychologistId);
 
-    public IEnumerable<Psychologist> GetAllPsychologists();
-
     public void UpdatePsychologist(Guid psychologistId, string firstName, string lastName, string password, string additionalInfo, decimal pricePerHour);
 
     public void UpdatePsychologistFullName(Guid psychologistId, string firstName, string lastName);
@@ -21,18 +19,11 @@ public interface IPsychologistService
     public void UpdatePsychologistSpecialization(Guid psychologistId, string specialization);
 
     public void UpdatePsychologistAdditionalInfo(Guid psychologistId, string additionalInfo);
+    
+    public IEnumerable<Psychologist> GetAllPsychologists();
 
     public IEnumerable<Psychologist> GetPsychologistsByPrice(decimal priceMin, decimal priceMax);
 
     public IEnumerable<Psychologist> GetPsychologistsByRate(decimal rateMin, decimal rateMax);
-
-    public void CreateNewSpot(Guid psychologistId, DateOnly date, DateTime start, DateTime end);
-
-    public void UpdateSpotStatus(Guid spotId, string status);
-
-    public IEnumerable<Spot> GetPsychologistFreeSpots(Guid psychologistId);
-
-    public IEnumerable<Spot> GetPsychologistSchedule(Guid psychologistId);
-
-    public IEnumerable<Review> GetPsychologistReviews(Guid psychologistId);
+    
 }

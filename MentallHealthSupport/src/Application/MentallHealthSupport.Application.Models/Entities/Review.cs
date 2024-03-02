@@ -2,7 +2,7 @@
 
 public class Review
 {
-    public Guid Id { get; }
+    public Guid Id { get; set; }
 
     public Guid ClientId { get; set; }
     
@@ -16,6 +16,6 @@ public class Review
 
     public string? Description { get; set; }
 
-    public DateTime PostTime { get; private set; }
+    public DateTime PostTime { get; set; }
     
 }

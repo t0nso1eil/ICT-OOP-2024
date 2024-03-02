@@ -9,4 +9,6 @@ public interface IReviewService
     public void UpdateReview(Guid reviewId, uint rate, string description);
 
     public void DeleteReview(Guid reviewId);
+    
+    public IEnumerable<Review> GetPsychologistReviews(Guid psychologistId);
 }

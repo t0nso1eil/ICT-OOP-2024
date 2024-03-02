@@ -7,6 +7,5 @@ public interface IChatService
     public void CreateChat(Guid clientId, Guid psychologistId);
 
     public void DeleteChat(Guid chatId);
-
-    public IEnumerable<Message> GetMessages(Guid chatId);
+    
 }

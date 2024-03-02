@@ -17,6 +17,5 @@ public interface IClientService
     public void UpdateClientPhoneNumber(Guid clientId, string phoneNumber);
 
     public void UpdateClientAdditionalInfo(Guid clientId, string additionalInfo);
-
-    public IEnumerable<Session> GetClientSessions(Guid clientId);
+    
 }

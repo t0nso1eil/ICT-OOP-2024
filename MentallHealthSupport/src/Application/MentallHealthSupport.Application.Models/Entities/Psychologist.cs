@@ -2,7 +2,7 @@
 
 public class Psychologist
 {
-    public Guid Id { get; }
+    public Guid Id { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -14,23 +14,23 @@ public class Psychologist
 
     public DateOnly Birthday { get; set; }
 
-    public uint Age => (uint)((DateTime.Now - Birthday.ToDateTime()).TotalDays / 365);
+    public uint Age { get; set; }
 
     public string? Sex { get; set; }
 
     public string? Specialization { get; set; }
 
-    public DateOnly ExperienceStartDate { get; private set; }
+    public DateOnly ExperienceStartDate { get; set; }
 
-    public uint ExperienceYears => (unit)((DateTime.Now - ExperienceStartDate.ToDateTime()).TotalDays/365)
+    public uint ExperienceYears { get; set; }
 
     public string? AdditionalInfo { get; set; }
 
     public decimal PricePerHour { get; set; }
 
-    public float Rate { get; private set; }
+    public float Rate { get; set; }
 
-    public DateTime RegistrationDate { get; private set; }
+    public DateTime RegistrationDate { get; set; }
 
     public IEnumerable<Review>? Reviews { get; set; }
     

@@ -2,7 +2,7 @@
 
 public class Message
 {
-    public Guid Id { get; }
+    public Guid Id { get; set; }
 
     public Guid ChatId { get; set; }
 
@@ -18,5 +18,5 @@ public class Message
 
     public string? MessageText { get; set; }
 
-    public DateTime SentTime { get; private set; }
+    public DateTime SentTime { get; set; }
     
