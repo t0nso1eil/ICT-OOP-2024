@@ -16,6 +16,6 @@ public class Review
 
     public string? Description { get; set; }
 
-    public DateTime PostTime { get; set; }
+    public DateTime PostTime { get; private set; }
     
 }

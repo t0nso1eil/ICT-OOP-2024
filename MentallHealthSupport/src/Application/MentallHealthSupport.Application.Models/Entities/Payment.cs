@@ -12,9 +12,9 @@ public class Payment
     
     public Client? Client { get; set; }
 
-    public decimal Amount { get; private set; }
+    public decimal Amount { get; set; }
     
     public DateTime PaymentDate { get; private set; }
     
-    public string Status { get; private set; }
+    public string Status { get; set; }
 }

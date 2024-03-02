@@ -11,6 +11,10 @@ public class Message
     public Guid PsychologistId { get; set; }
 
     public Psychologist? Psychologist { get; set; }
+    
+    public Guid ClientId { get; set; }
+    
+    public Client? Client { get; set; }
 
     public string? MessageText { get; set; }
 

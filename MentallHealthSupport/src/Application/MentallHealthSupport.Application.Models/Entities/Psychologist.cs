@@ -20,7 +20,7 @@ public class Psychologist
 
     public string? Specialization { get; set; }
 
-    public DateOnly ExperienceStartDate { get; set; }
+    public DateOnly ExperienceStartDate { get; private set; }
 
     public uint ExperienceYears => (unit)((DateTime.Now - ExperienceStartDate.ToDateTime()).TotalDays/365)
 
