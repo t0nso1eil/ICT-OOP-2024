@@ -18,7 +18,8 @@
 
 ### ERD-диаграмма
 
-![telegram-cloud-photo-size-2-5406631894973536285-y](https://github.com/t0nso1eil/ICT-OOP-2024/assets/112972915/38c5ea60-7cae-40a6-b946-95ecd51e47d9)
+![final](https://github.com/t0nso1eil/ICT-OOP-2024/assets/112972915/415412c8-e46e-4b80-9cb4-0eff0f6635c2)
+
 
 ### Связи:
 
