@@ -23,36 +23,34 @@
 
 ### Связи:
 
-`psychologist` 1:M  `chat` 
-
 `psychologist` 1:M  `review` 
-
-`psychologist` 1:M  `message` 
 
 `psychologist` 1:M  `spot`
 
+`psychologist` 1:1  `user`
 
-`client` 1:M `chat`
 
-`client` 1:M  `review`
 
-`client` 1:M  `message` 
+`user` 1:M  `review`
 
-`client` 1:M  `session`
+`user` 1:M  `message` 
+
+`user` 1:M  `session`
 
 
 
 `session` 1:1 `spot`
 
-`payment` 1:1 `session`
 
 `message` M:1 `chat`
+
+
 
 ### Описание сущностей
 
 #### Клиент
 Поля:
-1) `client_id` - идентификатор (Guid/varchar) | генерируется, уникальный
+1) `user_id` - идентификатор пользователя (Guid/varchar) | генерируется, уникальный
 2) `first_name` - имя (string/varchar)
 3) `last_name` - фамилия (string/varchar)
 4) `email` - электронная почта (string/varchar) | уникальна
@@ -63,10 +61,10 @@
 9) `sex` - пол (string/varchar) | значение выбирается из {"женщина", "мужчина"}
 10) `additional_info` - дополнительная информация (string/text)
 11) `registration_date` - дата и время регистрации (DateTime/timestamp) | создается автоматически при регистрации
-
+    
 #### Психолог:
 Поля:
-1) `psychologist_id` - идентификатор (Guid/varchar) | генерируется, уникальный
+1) `psychologist_id` - идентификатор психолога (Guid/varchar) | генерируется, уникальный
 2) `specialization` - основные подходы в психотерапии, которыми пользуется специалист (string/varchar) | пример: КПТ, гештальт-терапия, психоанализ и тд
 3) `price_per_hour` - стоимость одной сессии (decimal/numeric)
 4) `experience_start_date` - дата начала практики (DateOnly/date)
@@ -85,7 +83,7 @@
 
 #### Сессия:
 Поля: 
-1) `session_id` - идентификатор отзыва (Guid/varchar) | генерируется, уникальный
+1) `session_id` - идентификатор сессии (Guid/varchar) | генерируется, уникальный
 2) `status` - статус (string/varchar) | значение выбирается из {"на согласовании", "ожидает оплаты", "назначена", "отменена", "проведена"}
 3) `cost` - стоимость сессии (decimal/numeric) | берется из стоимости, прописанной у психолога
 4) `user_id` - идентификатор пользователя, который записался на сессию (Guid/varchar)
