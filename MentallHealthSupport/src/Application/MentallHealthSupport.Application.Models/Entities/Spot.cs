@@ -2,10 +2,6 @@
 
 public class Spot
 {
-    public Guid Id { get; set; }
-
-    public Guid PsychologistId { get; set; }
-    
     public Psychologist? Psychologist { get; set; }
 
     public DateOnly Date { get; set; }
@@ -15,7 +11,6 @@ public class Spot
     public DateTime HourEnd { get; set; }
 
     public string? Status { get; set; }
-    
+
     public Session? Session { get; set; }
-    
- }
+}

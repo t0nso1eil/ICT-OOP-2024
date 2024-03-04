@@ -1,9 +1,7 @@
 ﻿namespace MentallHealthSupport.Application.Models.Entities;
 
-public class Client
+public class User
 {
-    public Guid Id { get; set; }
-
     public string? FirstName { get; set; }
 
     public string? LastName { get; set; }
@@ -23,12 +21,10 @@ public class Client
     public string? AdditionalInfo { get; set; }
 
     public DateTime RegistrationDate { get; set; }
-    
+
     public IEnumerable<Session>? Sessions { get; set; }
-    
-    public IEnumerable<Payment>? Payments { get; set; }
-    
+
     public IEnumerable<Message>? Messages { get; set; }
-    
+
     public IEnumerable<Chat>? Chats { get; set; }
 }
