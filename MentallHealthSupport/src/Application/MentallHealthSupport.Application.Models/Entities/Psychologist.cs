@@ -2,9 +2,11 @@
 
 public class Psychologist
 {
-    public User? User { get; set; }
+    public Guid Id { get; set; }
 
-    public string? Specialization { get; set; }
+    public User User { get; set; } = null!;
+
+    public string Specialization { get; set; } = null!;
 
     public DateOnly ExperienceStartDate { get; set; }
 
@@ -14,7 +16,7 @@ public class Psychologist
 
     public float Rate { get; set; }
 
-    public IEnumerable<Review>? Reviews { get; set; }
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
-    public IEnumerable<Spot>? Spots { get; set; }
+    public ICollection<Spot> Spots { get; set; } = new List<Spot>();
 }

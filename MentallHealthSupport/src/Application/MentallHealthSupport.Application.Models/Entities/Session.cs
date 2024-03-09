@@ -2,11 +2,13 @@
 
 public class Session
 {
-    public User? Client { get; set; }
+    public Guid Id { get; set; }
 
-    public Spot? Spot { get; set; }
+    public User Client { get; set; } = null!;
 
-    public string? Status { get; set; }
+    public Spot Spot { get; set; } = null!;
+
+    public string Status { get; set; } = null!;
 
     public decimal Price { get; set; }
 }

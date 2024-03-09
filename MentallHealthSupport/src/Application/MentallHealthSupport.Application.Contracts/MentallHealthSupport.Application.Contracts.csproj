@@ -4,7 +4,4 @@
         <ProjectReference Include="..\MentallHealthSupport.Application.Models\MentallHealthSupport.Application.Models.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-    </ItemGroup>
-
 </Project>

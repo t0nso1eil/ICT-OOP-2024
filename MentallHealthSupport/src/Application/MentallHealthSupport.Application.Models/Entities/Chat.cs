@@ -2,9 +2,9 @@
 
 public class Chat
 {
-    public User? User1 { get; set; }
+    public Guid Id { get; set; }
 
-    public User? User2 { get; set; }
+    public List<User> Users { get; set; } = new List<User>();
 
-    public IEnumerable<Message>? Messages { get; set; }
+    public ICollection<Message> Messages { get; set; } = new List<Message>();
 }

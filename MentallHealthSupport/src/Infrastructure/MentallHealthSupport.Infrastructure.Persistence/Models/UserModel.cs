@@ -1,8 +1,6 @@
-﻿#pragma warning disable CA1724
+﻿namespace MentallHealthSupport.Infrastructure.Persistence.Models;
 
-namespace MentallHealthSupport.Application.Models.Entities;
-
-public class User
+public class UserModel
 {
     public Guid Id { get; set; }
 
@@ -26,9 +24,9 @@ public class User
 
     public DateTime RegistrationDate { get; set; }
 
-    public ICollection<Session> Sessions { get; set; } = new List<Session>();
+    public ICollection<SessionModel>? Sessions { get; set; } = new List<SessionModel>();
 
-    public ICollection<Message> Messages { get; set; } = new List<Message>();
+    public ICollection<MessageModel>? Messages { get; set; } = new List<MessageModel>();
 
-    public ICollection<Chat> Chats { get; set; } = new List<Chat>();
+    public ICollection<ChatModel> Chats { get; set; } = new List<ChatModel>();
 }

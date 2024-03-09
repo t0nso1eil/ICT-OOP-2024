@@ -1,4 +1,4 @@
-﻿namespace MentallHealthSupport.Application.Contracts;
+﻿namespace MentallHealthSupport.Application.Contracts.Services;
 
 using MentallHealthSupport.Application.Models.Entities;
 
