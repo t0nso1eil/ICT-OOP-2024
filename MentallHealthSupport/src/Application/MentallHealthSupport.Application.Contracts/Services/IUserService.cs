@@ -9,5 +9,5 @@ public interface IUserService
 
     public Task<UserPublicInfo> GetUser(Guid userId, CancellationToken cancellationToken);
 
-    public void UpdateUser(Guid id, UpdateUserDto updateUserDto, CancellationToken cancellationToken);
+    public Task UpdateUser(Guid id, UpdateUserDto updateUserDto, CancellationToken cancellationToken);
 }

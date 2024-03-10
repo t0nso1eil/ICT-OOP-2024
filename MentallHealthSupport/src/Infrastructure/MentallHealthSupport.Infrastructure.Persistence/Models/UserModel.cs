@@ -12,7 +12,7 @@ public class UserModel
 
     public string PhoneNumber { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+    public string PasswordHash { get; set; } = null!;
 
     public DateOnly Birthday { get; set; }
 
@@ -24,9 +24,11 @@ public class UserModel
 
     public DateTime RegistrationDate { get; set; }
 
-    public ICollection<SessionModel>? Sessions { get; set; } = new List<SessionModel>();
+    public PsychologistModel? Psychologist { get; set; }
 
-    public ICollection<MessageModel>? Messages { get; set; } = new List<MessageModel>();
+    public ICollection<SessionModel> Sessions { get; set; } = new List<SessionModel>();
+
+    public ICollection<MessageModel> Messages { get; set; } = new List<MessageModel>();
 
     public ICollection<ChatModel> Chats { get; set; } = new List<ChatModel>();
 }

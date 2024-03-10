@@ -14,7 +14,7 @@ public class User
 
     public string PhoneNumber { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+    public string PasswordHash { get; set; } = null!;
 
     public DateOnly Birthday { get; set; }
 
@@ -25,6 +25,8 @@ public class User
     public string AdditionalInfo { get; set; } = null!;
 
     public DateTime RegistrationDate { get; set; }
+
+    public Psychologist? Psychologist { get; set; }
 
     public ICollection<Session> Sessions { get; set; } = new List<Session>();
 

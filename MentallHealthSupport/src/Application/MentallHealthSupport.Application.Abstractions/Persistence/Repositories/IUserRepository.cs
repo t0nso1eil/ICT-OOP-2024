@@ -8,7 +8,7 @@ public interface IUserRepository
 
     Task<User> GetUserById(Guid id, CancellationToken cancellationToken);
 
-    Task UpdateUser(User newUser);
+    Task UpdateUser(User newUser, CancellationToken cancellationToken);
 
     Task<User?> GetUserByEmail(string email, CancellationToken cancellationToken);
 }

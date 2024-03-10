@@ -27,29 +27,20 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
         return MapToEntity(userModel);
     }
 
-    public async Task UpdateUser(User newUser)
+    public async Task UpdateUser(User newUser, CancellationToken cancellationToken)
     {
         var newUserModel = MapToModel(newUser);
         var currUser = await dbContext.Users.FindAsync(newUserModel.Id);
         dbContext.Entry(currUser!).CurrentValues.SetValues(newUserModel);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<User?> GetUserByEmail(string email, CancellationToken cancellationToken)
     {
         var userModel = await dbContext.Users.FirstOrDefaultAsync(user => user.Email == email, cancellationToken: cancellationToken);
-        if (userModel == null)
-        {
-            return null;
-        }
-
-        return MapToEntity(userModel);
+        return userModel == null ? null : MapToEntity(userModel);
     }
 
-    // public async Task<List<User>> GetAllUsers(CancellationToken cancellationToken)
-    // {
-    //     return await dbContext.Users.Select(user => MapToEntity(user)).ToListAsync(cancellationToken);
-    // }
     private User MapToEntity(UserModel model)
     {
         return UserMapper.ToEntity(model);

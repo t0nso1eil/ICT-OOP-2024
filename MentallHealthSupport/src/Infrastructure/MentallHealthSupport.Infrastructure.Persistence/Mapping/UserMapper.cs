@@ -7,39 +7,97 @@ public class UserMapper
 {
     public static User ToEntity(UserModel userModel)
     {
-        // дописать мэппинг связей
-        return new User
+        var user = new User
         {
             Id = userModel.Id,
             FirstName = userModel.FirstName,
             LastName = userModel.LastName,
             Email = userModel.Email,
             PhoneNumber = userModel.PhoneNumber,
-            Password = userModel.Password,
+            PasswordHash = userModel.PasswordHash,
             Birthday = userModel.Birthday,
             Age = userModel.Age,
             Sex = userModel.Sex,
             AdditionalInfo = userModel.AdditionalInfo,
             RegistrationDate = userModel.RegistrationDate,
         };
+
+        if (userModel.Psychologist is not null)
+        {
+            var psychologist = PsychologistMapper.ToEntity(userModel.Psychologist);
+            user.Psychologist = psychologist;
+        }
+        else
+        {
+            user.Psychologist = null;
+        }
+
+        ICollection<Session> sessions = userModel.Sessions.Select(SessionMapper.ToEntity).ToList();
+        foreach (var session in sessions)
+        {
+            user.Sessions.Add(session);
+        }
+
+        ICollection<Message> messages = userModel.Messages.Select(MessageMapper.ToEntity).ToList();
+        foreach (var message in messages)
+        {
+            user.Messages.Add(message);
+        }
+
+        ICollection<Chat> chats = userModel.Chats.Select(ChatMapper.ToEntity).ToList();
+        foreach (var chat in chats)
+        {
+            user.Chats.Add(chat);
+        }
+
+        return user;
     }
 
     public static UserModel ToModel(User user)
     {
-        // дописать мэппинг связей
-        return new UserModel
+        var userModel = new UserModel
         {
             Id = user.Id,
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
-            Password = user.Password,
+            PasswordHash = user.PasswordHash,
             Birthday = user.Birthday,
             Age = user.Age,
             Sex = user.Sex,
             AdditionalInfo = user.AdditionalInfo,
             RegistrationDate = user.RegistrationDate,
         };
+
+        if (user.Psychologist is not null)
+        {
+            var psychologist = PsychologistMapper.ToModel(user.Psychologist);
+            userModel.Psychologist = psychologist;
+        }
+        else
+        {
+            userModel.Psychologist = null;
+        }
+
+        ICollection<SessionModel> sessions = user.Sessions.Select(SessionMapper.ToModel).ToList();
+        foreach (var session in sessions)
+        {
+            userModel.Sessions.Add(session);
+        }
+
+        ICollection<MessageModel> messages = user.Messages.Select(MessageMapper.ToModel).ToList();
+        foreach (var message in messages)
+        {
+            userModel.Messages.Add(message);
+        }
+
+        ICollection<ChatModel> chats = user.Chats.Select(ChatMapper.ToModel).ToList();
+        foreach (var chat in chats)
+        {
+            userModel.Chats.Add(chat);
+        }
+
+        return userModel;
     }
 }
