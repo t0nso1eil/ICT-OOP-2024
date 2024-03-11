@@ -2,8 +2,10 @@
 
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize("IsAuthenticated")]
 [Route("[controller]/{user_id}")]
 public class UserController : ControllerBase
 {
@@ -17,17 +19,12 @@ public class UserController : ControllerBase
     [HttpGet]
     public Task GetUser(Guid id)
     {
-        return _userService.GetUser(id, new CancellationToken(false));
+        return _userService.GetUser(id);
     }
 
-    // [HttpPost]
-    // public Task CreateUser([FromBody] RegistrateUserDto registrateUserDto)
-    // {
-    //     return _userService.CreateUser(registrateUserDto, new CancellationToken(false));
-    // }
     [HttpPatch]
-    public Task UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
+    public Task UpdateUser(Guid id, [FromBody] UpdateUserRequest updateUserRequest)
     {
-        return _userService.UpdateUser(id, updateUserDto, new CancellationToken(false));
+        return _userService.UpdateUser(id, updateUserRequest);
     }
 }

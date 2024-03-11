@@ -1,27 +1,61 @@
 namespace MentallHealthSupport.Infrastructure.Persistence.Extensions;
 
-using Itmo.Dev.Platform.Postgres.Extensions;
-using Itmo.Dev.Platform.Postgres.Plugins;
+using System.Text;
 using MentallHealthSupport.Application.Abstractions.Persistence;
-using MentallHealthSupport.Infrastructure.Persistence.Migrations;
-using MentallHealthSupport.Infrastructure.Persistence.Plugins;
+using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+using MentallHealthSupport.Application.Models.Entities;
+using MentallHealthSupport.Infrastructure.Persistence.Contexts;
+using MentallHealthSupport.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfrastructurePersistence(this IServiceCollection collection)
+    public static IServiceCollection AddInfrastructurePersistence(this IServiceCollection collection, IConfiguration configuration)
     {
-        collection.AddPlatformPostgres(builder => builder.BindConfiguration("Infrastructure:Persistence:Postgres"));
-        collection.AddSingleton<IDataSourcePlugin, MappingPlugin>();
+        collection.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(configuration.GetSection("Infrastructure:Persistence:Postgres:ConnectionString").Value));
 
-        collection.AddPlatformMigrations(typeof(IAssemblyMarker).Assembly);
-        collection.AddHostedService<MigrationRunnerService>();
-
-        // TODO: add repositories
+        collection.AddScoped<IUserRepository, UserRepository>();
         collection.AddScoped<IPersistenceContext, PersistenceContext>();
 
+        AddAuthentication(collection, configuration);
         return collection;
+    }
+
+    private static void AddAuthentication(this IServiceCollection collection, IConfiguration configuration)
+    {
+        var jwtOptions = configuration.GetSection(nameof(JwtOption)).Get<JwtOption>();
+        collection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+            JwtBearerDefaults.AuthenticationScheme,
+            options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions!.SecretKey)),
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["coo-coo"];
+                        return Task.CompletedTask;
+                    },
+                };
+            });
+        collection.AddAuthorization(options =>
+        {
+            options.AddPolicy("PsychologistPolicy", policy =>
+            {
+                policy.RequireClaim("Psychologist", "true");
+            });
+        });
     }
 }

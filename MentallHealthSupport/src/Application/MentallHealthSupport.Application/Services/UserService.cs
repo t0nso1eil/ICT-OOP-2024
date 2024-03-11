@@ -4,15 +4,26 @@ using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto;
 using MentallHealthSupport.Application.Models.Entities;
+using MentallHealthSupport.Application.Services.Auth;
+using Microsoft.Extensions.Options;
 using static System.DateTime;
 
-public class UserService(IUserRepository userRepository) : IUserService
+public class UserService : IUserService
 {
-    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly PasswordHasher _passwordHasher;
+    private readonly JwtProvider _jwtProvider;
 
-    public async Task CreateUser(RegistrateUserDto registrateUserDto, CancellationToken cancellationToken)
+    public UserService(IUserRepository userRepository, IOptions<JwtOption> options)
     {
-        var existingUser = await _userRepository.GetUserByEmail(registrateUserDto.Email, cancellationToken);
+        _userRepository = userRepository;
+        _passwordHasher = new PasswordHasher();
+        _jwtProvider = new JwtProvider(options);
+    }
+
+    public async Task CreateUser(RegistrateUserRequest registrateUserRequest)
+    {
+        var existingUser = await _userRepository.GetUserByEmail(registrateUserRequest.Email, new CancellationToken(false));
         if (existingUser != null)
         {
             throw new Exception("такой уже есть");
@@ -20,50 +31,65 @@ public class UserService(IUserRepository userRepository) : IUserService
 
         var user = new User
         {
-            Id = registrateUserDto.Id,
-            FirstName = registrateUserDto.FirstName,
-            LastName = registrateUserDto.LastName,
-            Email = registrateUserDto.Email,
-            PhoneNumber = registrateUserDto.PhoneNumber,
-            PasswordHash = registrateUserDto.PasswordHash,
-            Birthday = registrateUserDto.Birthday,
-            Age = CalculateAge(registrateUserDto.Birthday),
-            Sex = registrateUserDto.Sex,
-            AdditionalInfo = registrateUserDto.AdditionalInfo,
+            Id = Guid.NewGuid(),
+            FirstName = registrateUserRequest.FirstName,
+            LastName = registrateUserRequest.LastName,
+            Email = registrateUserRequest.Email,
+            PhoneNumber = registrateUserRequest.PhoneNumber,
+            PasswordHash = _passwordHasher.GenerateHash(registrateUserRequest.Password),
+            Birthday = registrateUserRequest.Birthday,
+            Age = (uint)(Today.Year - registrateUserRequest.Birthday.Year),
+            Sex = registrateUserRequest.Sex,
+            AdditionalInfo = registrateUserRequest.AdditionalInfo,
             RegistrationDate = Now,
         };
-        await _userRepository.CreateUser(user, cancellationToken);
+        await _userRepository.CreateUser(user, new CancellationToken(false));
     }
 
-    public async Task<UserPublicInfo> GetUser(Guid userId, CancellationToken cancellationToken)
+    public async Task<PublicUserInfoResponse> GetUser(Guid userId)
     {
-        var user = await _userRepository.GetUserById(userId, cancellationToken);
-        return new UserPublicInfo(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.Birthday, user.Age, user.AdditionalInfo, user.RegistrationDate);
+        var user = await _userRepository.GetUserById(userId, new CancellationToken(false));
+        return new PublicUserInfoResponse(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.Birthday, user.Age, user.AdditionalInfo, user.RegistrationDate);
     }
 
-    public async Task UpdateUser(Guid id, UpdateUserDto updateUserDto, CancellationToken cancellationToken)
+    public async Task UpdateUser(Guid id, UpdateUserRequest updateUserRequest)
     {
-        var user = await _userRepository.GetUserById(id, cancellationToken);
-        user.FirstName = updateUserDto.FirstName ?? user.FirstName;
-        user.LastName = updateUserDto.LastName ?? user.LastName;
-        user.PhoneNumber = updateUserDto.PhoneNumber ?? user.PhoneNumber;
-        user.PasswordHash = updateUserDto.Password ?? user.PasswordHash;
-        user.AdditionalInfo = updateUserDto.AdditionalInfo ?? user.AdditionalInfo;
-        await _userRepository.UpdateUser(user, cancellationToken);
+        var user = await _userRepository.GetUserById(id, new CancellationToken(false));
+        user.FirstName = updateUserRequest.FirstName ?? user.FirstName;
+        user.LastName = updateUserRequest.LastName ?? user.LastName;
+        user.PhoneNumber = updateUserRequest.PhoneNumber ?? user.PhoneNumber;
+        user.PasswordHash = updateUserRequest.Password ?? user.PasswordHash;
+        user.AdditionalInfo = updateUserRequest.AdditionalInfo ?? user.AdditionalInfo;
+        await _userRepository.UpdateUser(user, new CancellationToken(false));
     }
 
-    public Task Login(LoginDto loginDto)
+    public async Task<string> Login(LoginRequest loginRequest)
     {
-        throw new NotImplementedException();
+        var user = await _userRepository.GetUserByEmail(loginRequest.Email, new CancellationToken(false));
+        if (user is null)
+        {
+            throw new Exception("такого нет");
+        }
+
+        var result = _passwordHasher.Verify(loginRequest.Password, user.PasswordHash);
+        if (result == false)
+        {
+            throw new Exception("неправильный пароль");
+        }
+
+        return _jwtProvider.GenerateToken(user.Id);
     }
 
-    private static uint CalculateAge(DateOnly birthday)
+    private void CheckCorrectRegistrationInfo(RegistrateUserRequest request)
     {
-        var today = Today;
+        if (!request.FirstName.All(char.IsLetter) || !request.LastName.All(char.IsLetter))
+        {
+            throw new Exception("фио");
+        }
 
-        // переписать
-        var age = (uint)(today.Year - birthday.Year);
-
-        return age;
+        if (request.Sex != "male" || request.Sex != "female")
+        {
+            throw new Exception("пол");
+        }
     }
 }

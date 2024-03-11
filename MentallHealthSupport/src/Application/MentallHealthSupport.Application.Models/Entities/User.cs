@@ -26,6 +26,8 @@ public class User
 
     public DateTime RegistrationDate { get; set; }
 
+    public bool IsPsychologist { get; set; }
+
     public Psychologist? Psychologist { get; set; }
 
     public ICollection<Session> Sessions { get; set; } = new List<Session>();

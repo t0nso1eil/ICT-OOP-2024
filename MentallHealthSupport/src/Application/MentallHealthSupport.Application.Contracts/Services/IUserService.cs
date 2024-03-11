@@ -1,13 +1,14 @@
 ﻿namespace MentallHealthSupport.Application.Contracts.Services;
 
 using MentallHealthSupport.Application.Models.Dto;
-using MentallHealthSupport.Application.Models.Entities;
 
 public interface IUserService
 {
-    public Task CreateUser(RegistrateUserDto registrateUserDto, CancellationToken cancellationToken);
+    public Task CreateUser(RegistrateUserRequest registrateUserRequest);
 
-    public Task<UserPublicInfo> GetUser(Guid userId, CancellationToken cancellationToken);
+    public Task<PublicUserInfoResponse> GetUser(Guid userId);
 
-    public Task UpdateUser(Guid id, UpdateUserDto updateUserDto, CancellationToken cancellationToken);
+    public Task UpdateUser(Guid id, UpdateUserRequest updateUserRequest);
+
+    public Task<string> Login(LoginRequest loginRequest);
 }

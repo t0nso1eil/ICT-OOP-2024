@@ -1,20 +1,27 @@
 ﻿namespace MentallHealthSupport.Presentation.Http.Controllers;
 
+using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]
-public class AuthController(IAuthenticationService authenticationService) : ControllerBase
+public class AuthController(IUserService userService) : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService = authenticationService;
+    private readonly IUserService _userService = userService;
 
-    public Task Login([FromBody] LoginDto loginDto)
+    public async Task Login([FromBody] LoginRequest loginRequest)
+    {
+        var token = await _userService.Login(loginRequest);
+        HttpContext.Response.Cookies.Append("coo-coo", token);
+    }
+
+    public Task RegistrateAsUser([FromBody] RegistrateUserRequest registrateUserRequest)
     {
         throw new NotImplementedException();
     }
 
-    public Task Registrate([FromBody] RegistrateUserDto registrateUserDto)
+    public Task RegistrateAsPsycho()
     {
         throw new NotImplementedException();
     }
