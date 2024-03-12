@@ -9,6 +9,13 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="Itmo.Dev.Platform.Postgres"/>
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
+    <ItemGroup>
+      <Folder Include="Contexts\Configurations\" />
     </ItemGroup>
+
+    </ItemGroup>
+
+
+
 
 </Project>

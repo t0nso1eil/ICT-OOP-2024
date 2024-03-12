@@ -1,10 +1,10 @@
-﻿namespace MentallHealthSupport.Application.Models.Entities;
+namespace MentallHealthSupport.Infrastructure.Persistence.Models;
 
-public class Spot
+public class SpotModel
 {
     public Guid Id { get; set; }
     
-    public Psychologist Psychologist { get; set; } = null!;
+    public PsychologistModel Psychologist { get; set; } = null!;
     
     public DateOnly Date { get; set; }
 
@@ -14,5 +14,5 @@ public class Spot
     
     public string Status { get; set; } = null!;
     
-    public Session Session { get; set; } = null!;
+    public SessionModel Session { get; set; } = null!;
 }
