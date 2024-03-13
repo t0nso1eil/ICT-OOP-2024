@@ -1,7 +1,6 @@
-﻿namespace MentallHealthSupport.Application.Contracts.Services;
+﻿using MentallHealthSupport.Application.Models.Entities;
 
-using MentallHealthSupport.Application.Models.Entities;
-
+namespace MentallHealthSupport.Application.Contracts.Services;
 public interface IPsychologistService
 {
     public void CreatePsychologist(string firstName, string lastName, string email, string password, DateOnly birthday, string sex, string specialization, DateOnly experienceStartDate, string additionalInfo, decimal pricePerHour);

@@ -24,11 +24,13 @@ public class UserModel
 
     public DateTime RegistrationDate { get; set; }
 
+    public bool IsPsychologist { get; set; }
+
     public PsychologistModel? Psychologist { get; set; }
 
-    public ICollection<SessionModel> Sessions { get; set; } = new List<SessionModel>();
+    public ICollection<SessionModel> Sessions { get; } = new List<SessionModel>();
 
-    public ICollection<MessageModel> Messages { get; set; } = new List<MessageModel>();
+    public ICollection<MessageModel> Messages { get; } = new List<MessageModel>();
 
-    public ICollection<ChatModel> Chats { get; set; } = new List<ChatModel>();
+    public ICollection<ChatModel> Chats { get; } = new List<ChatModel>();
 }

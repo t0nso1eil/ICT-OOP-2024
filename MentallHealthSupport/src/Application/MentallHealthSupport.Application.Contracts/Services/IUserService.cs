@@ -1,7 +1,6 @@
-﻿namespace MentallHealthSupport.Application.Contracts.Services;
+﻿using MentallHealthSupport.Application.Models.Dto;
 
-using MentallHealthSupport.Application.Models.Dto;
-
+namespace MentallHealthSupport.Application.Contracts.Services;
 public interface IUserService
 {
     public Task CreateUser(RegistrateUserRequest registrateUserRequest);

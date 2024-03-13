@@ -1,7 +1,6 @@
-﻿namespace MentallHealthSupport.Application.Contracts.Services;
+﻿using MentallHealthSupport.Application.Models.Entities;
 
-using MentallHealthSupport.Application.Models.Entities;
-
+namespace MentallHealthSupport.Application.Contracts.Services;
 public interface IMessageService
 {
     public void SendMessage(Guid chatId, Guid senderId, string messageText);

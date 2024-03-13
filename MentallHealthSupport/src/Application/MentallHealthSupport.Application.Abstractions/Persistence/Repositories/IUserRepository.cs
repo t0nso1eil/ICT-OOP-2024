@@ -1,14 +1,13 @@
-﻿namespace MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+﻿using MentallHealthSupport.Application.Models.Entities;
 
-using MentallHealthSupport.Application.Models.Entities;
-
+namespace MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 public interface IUserRepository
 {
-    Task CreateUser(User user, CancellationToken cancellationToken);
+    Task CreateUser(User user);
 
-    Task<User> GetUserById(Guid id, CancellationToken cancellationToken);
+    Task<User> GetUserById(Guid id);
 
-    Task UpdateUser(User newUser, CancellationToken cancellationToken);
+    Task UpdateUser(User newUser);
 
-    Task<User?> GetUserByEmail(string email, CancellationToken cancellationToken);
+    Task<User?> GetUserByEmail(string email);
 }

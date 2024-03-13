@@ -1,8 +1,7 @@
-﻿namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
-
-using MentallHealthSupport.Application.Models.Entities;
+﻿using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
+namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
 public class PsychologistMapper
 {
     public static Psychologist ToEntity(PsychologistModel psychologistModel)

@@ -1,6 +1,3 @@
-namespace MentallHealthSupport.Infrastructure.Persistence.Extensions;
-
-using System.Text;
 using MentallHealthSupport.Application.Abstractions.Persistence;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Models.Entities;
@@ -11,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
+namespace MentallHealthSupport.Infrastructure.Persistence.Extensions;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructurePersistence(this IServiceCollection collection, IConfiguration configuration)
@@ -50,12 +49,6 @@ public static class ServiceCollectionExtensions
                     },
                 };
             });
-        collection.AddAuthorization(options =>
-        {
-            options.AddPolicy("PsychologistPolicy", policy =>
-            {
-                policy.RequireClaim("Psychologist", "true");
-            });
-        });
+        collection.AddAuthorization();
     }
 }

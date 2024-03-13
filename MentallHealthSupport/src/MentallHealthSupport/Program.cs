@@ -1,5 +1,3 @@
-#pragma warning disable CA1506
-
 using Itmo.Dev.Platform.Common.Extensions;
 using Itmo.Dev.Platform.Logging.Extensions;
 using MentallHealthSupport.Application.Extensions;
@@ -26,6 +24,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRouting();
 app.MapControllers();
+app.UseAuthentication();
 app.UseAuthorization();
 
 await app.RunAsync();

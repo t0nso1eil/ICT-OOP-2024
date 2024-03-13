@@ -2,5 +2,7 @@
 
 public class PsychologistModel
 {
+    public Guid Id { get; set; }
+
     public UserModel User { get; set; } = null!;
 }

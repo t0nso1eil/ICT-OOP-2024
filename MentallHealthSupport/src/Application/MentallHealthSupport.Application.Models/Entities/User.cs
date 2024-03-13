@@ -30,9 +30,9 @@ public class User
 
     public Psychologist? Psychologist { get; set; }
 
-    public ICollection<Session> Sessions { get; set; } = new List<Session>();
+    public ICollection<Session> Sessions { get; } = new List<Session>();
 
-    public ICollection<Message> Messages { get; set; } = new List<Message>();
+    public ICollection<Message> Messages { get; } = new List<Message>();
 
-    public ICollection<Chat> Chats { get; set; } = new List<Chat>();
+    public ICollection<Chat> Chats { get; } = new List<Chat>();
 }

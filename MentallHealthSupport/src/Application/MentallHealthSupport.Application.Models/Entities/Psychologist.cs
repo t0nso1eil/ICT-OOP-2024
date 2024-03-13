@@ -1,4 +1,6 @@
-﻿namespace MentallHealthSupport.Application.Models.Entities;
+﻿#pragma warning disable CA2227
+
+namespace MentallHealthSupport.Application.Models.Entities;
 
 public class Psychologist
 {

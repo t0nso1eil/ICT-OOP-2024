@@ -1,4 +1,4 @@
-﻿namespace MentallHealthSupport.Application.Services;
+﻿#pragma warning disable IDE0051
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
@@ -8,6 +8,7 @@ using MentallHealthSupport.Application.Services.Auth;
 using Microsoft.Extensions.Options;
 using static System.DateTime;
 
+namespace MentallHealthSupport.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
@@ -23,7 +24,7 @@ public class UserService : IUserService
 
     public async Task CreateUser(RegistrateUserRequest registrateUserRequest)
     {
-        var existingUser = await _userRepository.GetUserByEmail(registrateUserRequest.Email, new CancellationToken(false));
+        var existingUser = await _userRepository.GetUserByEmail(registrateUserRequest.Email);
         if (existingUser != null)
         {
             throw new Exception("такой уже есть");
@@ -43,29 +44,29 @@ public class UserService : IUserService
             AdditionalInfo = registrateUserRequest.AdditionalInfo,
             RegistrationDate = Now,
         };
-        await _userRepository.CreateUser(user, new CancellationToken(false));
+        await _userRepository.CreateUser(user);
     }
 
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)
     {
-        var user = await _userRepository.GetUserById(userId, new CancellationToken(false));
+        var user = await _userRepository.GetUserById(userId);
         return new PublicUserInfoResponse(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.Birthday, user.Age, user.AdditionalInfo, user.RegistrationDate);
     }
 
     public async Task UpdateUser(Guid id, UpdateUserRequest updateUserRequest)
     {
-        var user = await _userRepository.GetUserById(id, new CancellationToken(false));
+        var user = await _userRepository.GetUserById(id);
         user.FirstName = updateUserRequest.FirstName ?? user.FirstName;
         user.LastName = updateUserRequest.LastName ?? user.LastName;
         user.PhoneNumber = updateUserRequest.PhoneNumber ?? user.PhoneNumber;
         user.PasswordHash = updateUserRequest.Password ?? user.PasswordHash;
         user.AdditionalInfo = updateUserRequest.AdditionalInfo ?? user.AdditionalInfo;
-        await _userRepository.UpdateUser(user, new CancellationToken(false));
+        await _userRepository.UpdateUser(user);
     }
 
     public async Task<string> Login(LoginRequest loginRequest)
     {
-        var user = await _userRepository.GetUserByEmail(loginRequest.Email, new CancellationToken(false));
+        var user = await _userRepository.GetUserByEmail(loginRequest.Email);
         if (user is null)
         {
             throw new Exception("такого нет");
@@ -87,9 +88,9 @@ public class UserService : IUserService
             throw new Exception("фио");
         }
 
-        if (request.Sex != "male" || request.Sex != "female")
-        {
-            throw new Exception("пол");
-        }
+        // if (request.Sex != null && (request.Sex != "male" || request.Sex != "female"))
+        // {
+        //     throw new Exception("пол");
+        // }
     }
 }

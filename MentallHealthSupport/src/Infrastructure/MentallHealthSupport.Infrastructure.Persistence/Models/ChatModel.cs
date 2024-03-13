@@ -4,7 +4,7 @@ public class ChatModel
 {
     public Guid Id { get; set; }
 
-    public List<UserModel> Users { get; set; } = new List<UserModel>();
+    public ICollection<UserModel> Users { get; } = new List<UserModel>();
 
-    public ICollection<MessageModel> Messages { get; set; } = new List<MessageModel>();
+    public ICollection<MessageModel> Messages { get; } = new List<MessageModel>();
 }

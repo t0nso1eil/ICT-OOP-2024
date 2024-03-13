@@ -1,10 +1,9 @@
-﻿namespace MentallHealthSupport.Presentation.Http.Controllers;
-
-using MentallHealthSupport.Application.Contracts.Services;
+﻿using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+namespace MentallHealthSupport.Presentation.Http.Controllers;
 [Authorize("IsAuthenticated")]
 [Route("[controller]/{user_id}")]
 public class UserController : ControllerBase
@@ -16,12 +15,11 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet]
-    public Task GetUser(Guid id)
-    {
-        return _userService.GetUser(id);
-    }
-
+    // [HttpGet]
+    // public Task GetUser(Guid id)
+    // {
+    //     return _userService.GetUser(id);
+    // }
     [HttpPatch]
     public Task UpdateUser(Guid id, [FromBody] UpdateUserRequest updateUserRequest)
     {

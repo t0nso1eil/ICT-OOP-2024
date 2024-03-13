@@ -1,12 +1,11 @@
-﻿namespace MentallHealthSupport.Application.Services.Auth;
-
+﻿using MentallHealthSupport.Application.Models.Entities;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MentallHealthSupport.Application.Models.Entities;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
+namespace MentallHealthSupport.Application.Services.Auth;
 public class JwtProvider(IOptions<JwtOption> options)
 {
     private readonly JwtOption _options = options.Value;

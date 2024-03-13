@@ -1,9 +1,8 @@
-﻿namespace MentallHealthSupport.Infrastructure.Persistence.Contexts.Configurations;
-
-using MentallHealthSupport.Infrastructure.Persistence.Models;
+﻿using MentallHealthSupport.Infrastructure.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace MentallHealthSupport.Infrastructure.Persistence.Contexts.Configurations;
 public class UserConfiguration : IEntityTypeConfiguration<UserModel>
 {
     public void Configure(EntityTypeBuilder<UserModel> builder)

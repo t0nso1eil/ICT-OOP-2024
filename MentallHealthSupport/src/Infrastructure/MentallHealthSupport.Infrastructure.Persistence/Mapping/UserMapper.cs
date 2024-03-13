@@ -1,8 +1,7 @@
-﻿namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
-
-using MentallHealthSupport.Application.Models.Entities;
+﻿using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
+namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
 public class UserMapper
 {
     public static User ToEntity(UserModel userModel)
@@ -20,6 +19,7 @@ public class UserMapper
             Sex = userModel.Sex,
             AdditionalInfo = userModel.AdditionalInfo,
             RegistrationDate = userModel.RegistrationDate,
+            IsPsychologist = userModel.IsPsychologist,
         };
 
         if (userModel.Psychologist is not null)
@@ -68,6 +68,7 @@ public class UserMapper
             Sex = user.Sex,
             AdditionalInfo = user.AdditionalInfo,
             RegistrationDate = user.RegistrationDate,
+            IsPsychologist = user.IsPsychologist,
         };
 
         if (user.Psychologist is not null)
