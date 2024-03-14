@@ -12,11 +12,12 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
     public required DbSet<UserModel> Users { get; set; }
-
+    public required DbSet<PsychologistModel> Psychologists { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new PsychologistConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }

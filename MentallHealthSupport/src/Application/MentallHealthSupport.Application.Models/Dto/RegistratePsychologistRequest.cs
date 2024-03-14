@@ -8,4 +8,7 @@ public record RegistratePsychologistRequest(
     string Password,
     DateOnly Birthday,
     string Sex,
-    string AdditionalInfo);
+    string AdditionalInfo,
+    string Specialization,
+    DateOnly ExperienceStartDate,
+    decimal PricePerHour);

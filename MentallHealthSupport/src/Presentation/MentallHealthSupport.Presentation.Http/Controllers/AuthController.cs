@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 [Route("[controller]/users")]
-public class AuthController(IUserService userService) : ControllerBase
+public class AuthController(IUserService userService, IPsychologistService psychologistService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
+    private readonly IPsychologistService _psychologistService = psychologistService;
 
     public async Task Login([FromBody] LoginRequest loginRequest)
     {
@@ -19,8 +20,8 @@ public class AuthController(IUserService userService) : ControllerBase
         await _userService.CreateUser(request);
     }
 
-    public Task RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
+    public async Task RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
     {
-        throw new NotImplementedException();
+        await _psychologistService.CreatePsychologist(request);
     }
 }
