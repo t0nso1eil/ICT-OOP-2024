@@ -7,29 +7,45 @@ public class SpotMapper
 {
     public static Spot ToEntity(SpotModel spotModel)
     {
-        return new Spot
+        var spot = new Spot
         {
             Id = spotModel.Id,
-            //Psychologist = spotModel.PsychologistModel,
             Date = spotModel.Date,
             HourStart = spotModel.HourStart,
             HourEnd = spotModel.HourEnd,
             Status = spotModel.Status,
-            //Session = spotModel.SessionModel
         };
+        
+        
+        var psychologist = PsychologistMapper.ToEntity(spotModel.Psychologist);
+        spot.Psychologist = psychologist;
+        
+        var session = SessionMapper.ToEntity(spotModel.Session);
+        spot.Session = session;
+        
+        return spot;
+
     }
+    
 
     public static SpotModel ToModel(Spot spot)
     {
-        return new SpotModel
+        var spotModel = new SpotModel
         {
             Id = spot.Id,
-            //Psychologist = spot.PsychologistModel,
             Date = spot.Date,
             HourStart = spot.HourStart,
             HourEnd = spot.HourEnd,
             Status = spot.Status,
-            //Session = spot.SessionModel
         };
+        
+        var psychologist = PsychologistMapper.ToModel(spot.Psychologist);
+        spotModel.Psychologist = psychologist;
+        
+        var session = SessionMapper.ToModel(spot.Session);
+        spotModel.Session = session;
+        
+        return spotModel;
     }
+    
 }

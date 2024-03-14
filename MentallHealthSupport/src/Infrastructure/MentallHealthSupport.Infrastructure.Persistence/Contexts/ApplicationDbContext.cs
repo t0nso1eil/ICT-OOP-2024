@@ -1,3 +1,4 @@
+using MentallHealthSupport.Infrastructure.Persistence.Contexts.Configurations.Configurations;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,9 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
-        //modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new SessionConfiguration());
+        
+        modelBuilder.ApplyConfiguration(new SpotConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }

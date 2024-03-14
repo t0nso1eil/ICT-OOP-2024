@@ -7,25 +7,36 @@ public class SessionMapper
 {
     public static Session ToEntity(SessionModel sessionModel)
     {
-        return new Session
+        var session = new Session
         {
             Id = sessionModel.Id,
-            User = sessionModel.User,
-            Spot = sessionModel.Spot,
             Status = sessionModel.Status,
-            Price = sessionModel.Price
+            Price = sessionModel.Price,
         };
+
+        var user = UserMapper.ToEntity(sessionModel.User);
+        session.User = user;
+
+        var spot = SpotMapper.ToEntity(sessionModel.Spot);
+        session.Spot = spot;
+
+        return session;
     }
 
     public static SessionModel ToModel(Session session)
     {
-        return new SessionModel
+        var sessionModel = new SessionModel
         {
             Id = session.Id,
-            User = session.User,
-            Spot = session.Spot,
             Status = session.Status,
             Price = session.Price
         };
+        var user = UserMapper.ToModel(session.User);
+        sessionModel.User = user;
+
+        var spot = SpotMapper.ToModel(session.Spot);
+        sessionModel.Spot = spot;
+
+        return sessionModel;
     }
 }

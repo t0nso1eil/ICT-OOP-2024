@@ -8,7 +8,7 @@ public class SessionModel
     
     public UserModel User { get; set; } = null!;
     
-    public Spot Spot { get; set; } = null!;
+    public SpotModel Spot { get; set; } = null!;
     
     public string Status { get; set; } = null!;
     

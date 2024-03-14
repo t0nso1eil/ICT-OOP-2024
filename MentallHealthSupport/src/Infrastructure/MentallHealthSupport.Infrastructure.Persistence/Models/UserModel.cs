@@ -2,7 +2,9 @@ namespace MentallHealthSupport.Infrastructure.Persistence.Models;
 
 public class UserModel
 {
-    public Guid Id; 
-    public ICollection<SessionModel> Sessions { get; set; } = new List<SessionModel>();
-
+    public Guid Id { get; set; }
+    
+    public ICollection<SessionModel> Sessions { get; } = new List<SessionModel>();
+    
+    
 }

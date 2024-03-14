@@ -30,7 +30,7 @@ public class SessionRepository(ApplicationDbContext dbContext) : ISessionReposit
         }
     }
     
-    public async Task<List<Session>> GetUserSessions(Guid userId, CancellationToken cancellationToken)
+    public async Task<ICollection<Session>> GetUserSessions(Guid userId, CancellationToken cancellationToken)
     {
         var userSessions = await dbContext.Sessions
             .Where(session => session.User.Id == userId)

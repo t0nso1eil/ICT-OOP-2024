@@ -1,3 +1,5 @@
+using MentallHealthSupport.Application.Models.Entities;
+
 namespace MentallHealthSupport.Infrastructure.Persistence.Models;
 
 public class SpotModel
