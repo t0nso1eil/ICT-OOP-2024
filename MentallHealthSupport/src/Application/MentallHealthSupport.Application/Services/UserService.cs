@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0051
+#pragma warning disable CA1307
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
@@ -30,6 +31,8 @@ public class UserService : IUserService
             throw new Exception("такой уже есть");
         }
 
+        CheckCorrectRegistrationInfo(registrateUserRequest);
+
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -43,6 +46,7 @@ public class UserService : IUserService
             Sex = registrateUserRequest.Sex,
             AdditionalInfo = registrateUserRequest.AdditionalInfo,
             RegistrationDate = Now,
+            IsPsychologist = false,
         };
         await _userRepository.CreateUser(user);
     }
@@ -88,9 +92,14 @@ public class UserService : IUserService
             throw new Exception("фио");
         }
 
-        // if (request.Sex != null && (request.Sex != "male" || request.Sex != "female"))
-        // {
-        //     throw new Exception("пол");
-        // }
+        if (request.Sex is not ("male" or "female"))
+        {
+            throw new Exception("пол");
+        }
+
+        if (!request.Email.Contains("@mail.ru") || !request.Email.Contains("@gmail.com") || !request.Email.Contains("@yandex.com"))
+        {
+            throw new Exception("почта");
+        }
     }
 }

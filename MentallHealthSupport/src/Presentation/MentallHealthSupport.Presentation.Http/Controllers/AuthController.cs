@@ -3,7 +3,7 @@ using MentallHealthSupport.Application.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
-[Route("[controller]/users")]
+[Route("[controller]")]
 public class AuthController(IUserService userService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
