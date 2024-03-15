@@ -16,7 +16,7 @@ public class Psychologist
 
     public decimal PricePerHour { get; set; }
 
-    public float? Rate{ get; set; }
+    public float? Rate { get; set; }
 
     public ICollection<Review> Reviews { get; set; } = new List<Review>();
 

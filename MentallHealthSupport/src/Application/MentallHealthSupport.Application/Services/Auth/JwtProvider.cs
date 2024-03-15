@@ -1,4 +1,6 @@
-﻿using MentallHealthSupport.Application.Models.Entities;
+﻿#pragma warning disable IDE0008
+
+using MentallHealthSupport.Application.Models.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

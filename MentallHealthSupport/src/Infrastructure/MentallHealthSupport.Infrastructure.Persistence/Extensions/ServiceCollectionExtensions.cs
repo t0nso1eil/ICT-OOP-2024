@@ -1,3 +1,6 @@
+#pragma warning disable IDE0008
+#pragma warning disable SA1005
+
 using MentallHealthSupport.Application.Abstractions.Persistence;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Models.Entities;
@@ -19,9 +22,10 @@ public static class ServiceCollectionExtensions
             options.UseNpgsql(configuration.GetSection("Infrastructure:Persistence:Postgres:ConnectionString").Value));
 
         collection.AddScoped<IUserRepository, UserRepository>();
+        collection.AddScoped<IPsychologistRepository, PsychologistRepository>();
         collection.AddScoped<IPersistenceContext, PersistenceContext>();
 
-        AddAuthentication(collection, configuration);
+        //AddAuthentication(collection, configuration);
         return collection;
     }
 

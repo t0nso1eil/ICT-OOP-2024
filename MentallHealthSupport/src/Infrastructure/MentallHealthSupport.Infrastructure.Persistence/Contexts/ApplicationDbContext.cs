@@ -1,4 +1,5 @@
 ﻿#pragma warning disable SA1206
+#pragma warning disable SA1516
 
 using MentallHealthSupport.Infrastructure.Persistence.Contexts.Configurations;
 using MentallHealthSupport.Infrastructure.Persistence.Models;

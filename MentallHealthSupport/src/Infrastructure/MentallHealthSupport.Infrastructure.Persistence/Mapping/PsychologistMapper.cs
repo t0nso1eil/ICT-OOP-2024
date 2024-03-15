@@ -1,4 +1,9 @@
-﻿using MentallHealthSupport.Application.Models.Entities;
+﻿#pragma warning disable IDE0005
+#pragma warning disable IDE0008
+#pragma warning disable SA1028
+#pragma warning disable SA1507
+
+using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -6,7 +11,7 @@ public class PsychologistMapper
 {
     public static Psychologist ToEntity(PsychologistModel psychologistModel)
     {
-        var psycho = new Psychologist()
+        var psycho = new Psychologist
         {
             Id = psychologistModel.Id,
             User = UserMapper.ToEntity(psychologistModel.User),

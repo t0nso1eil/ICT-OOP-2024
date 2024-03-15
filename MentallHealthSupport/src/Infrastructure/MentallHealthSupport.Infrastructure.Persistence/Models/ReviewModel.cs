@@ -1,11 +1,14 @@
 namespace MentallHealthSupport.Infrastructure.Persistence.Models;
 
 public class ReviewModel
-
 {
     public Guid Id { get; set; }
 
-    public UserModel Client { get; set; } = null!;
+    public Guid UserId { get; set; }
+
+    public UserModel User { get; set; } = null!;
+
+    public Guid PsychologistId { get; set; }
 
     public PsychologistModel Psychologist { get; set; } = null!;
 

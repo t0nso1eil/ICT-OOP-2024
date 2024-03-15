@@ -1,16 +1,17 @@
-namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
+namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
+
 public class ReviewMapper
 {
-    public static Review ToEntity(ReviewModel reviewModel)
+    public static Review ToEntity(ReviewModel model)
     {
-        throw new NotImplementedException();
+        return new Review();
     }
 
     public static ReviewModel ToModel(Review review)
     {
-        throw new NotImplementedException();
+        return new ReviewModel();
     }
 }

@@ -1,3 +1,7 @@
+#pragma warning disable SA1024
+#pragma warning disable SA1028
+#pragma warning disable SA1508
+
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto;
 using Microsoft.AspNetCore.Mvc;

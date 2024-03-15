@@ -4,7 +4,7 @@ public class Session
 {
     public Guid Id { get; set; }
 
-    public User Client { get; set; } = null!;
+    public User User { get; set; } = null!;
 
     public Spot Spot { get; set; } = null!;
 

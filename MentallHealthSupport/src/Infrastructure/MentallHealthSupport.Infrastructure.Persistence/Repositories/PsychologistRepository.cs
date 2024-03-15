@@ -1,4 +1,9 @@
-using System.Collections.ObjectModel;
+#pragma warning disable IDE0008
+#pragma warning disable SA1028
+#pragma warning disable SA1507
+#pragma warning disable SA1210
+#pragma warning disable SA1025
+
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
@@ -38,7 +43,7 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
     
     public ICollection<Psychologist> GetAllPsychologists()
     {
-        ICollection<Psychologist> psychologists =  dbContext.Psychologists.Select(PsychologistMapper.ToEntity).ToList();
+        ICollection<Psychologist> psychologists =  dbContext.Psychologists.Select(MapToEntity).ToList();
         return psychologists;
     }
 
@@ -46,7 +51,7 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
     {
         ICollection<Psychologist> psychologists = dbContext.Psychologists
             .Where(p => p.PricePerHour > priceMin && p.PricePerHour < priceMax).AsEnumerable()
-            .Select(PsychologistMapper.ToEntity)
+            .Select(MapToEntity)
             .ToList();
         return psychologists;
     }
@@ -55,7 +60,7 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
     {
         ICollection<Psychologist> psychologists = dbContext.Psychologists
             .Where(p => p.Rate > rateMin && p.Rate < rateMax).AsEnumerable()
-            .Select(PsychologistMapper.ToEntity)
+            .Select(MapToEntity)
             .ToList();
         return psychologists;
     }

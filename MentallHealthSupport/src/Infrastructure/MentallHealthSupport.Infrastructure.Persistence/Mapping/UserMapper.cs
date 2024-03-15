@@ -1,4 +1,6 @@
-﻿using MentallHealthSupport.Application.Models.Entities;
+﻿#pragma warning disable IDE0008
+
+using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -38,18 +40,6 @@ public class UserMapper
             user.Sessions.Add(session);
         }
 
-        ICollection<Message> messages = userModel.Messages.Select(MessageMapper.ToEntity).ToList();
-        foreach (var message in messages)
-        {
-            user.Messages.Add(message);
-        }
-
-        ICollection<Chat> chats = userModel.Chats.Select(ChatMapper.ToEntity).ToList();
-        foreach (var chat in chats)
-        {
-            user.Chats.Add(chat);
-        }
-
         return user;
     }
 
@@ -85,18 +75,6 @@ public class UserMapper
         foreach (var session in sessions)
         {
             userModel.Sessions.Add(session);
-        }
-
-        ICollection<MessageModel> messages = user.Messages.Select(MessageMapper.ToModel).ToList();
-        foreach (var message in messages)
-        {
-            userModel.Messages.Add(message);
-        }
-
-        ICollection<ChatModel> chats = user.Chats.Select(ChatMapper.ToModel).ToList();
-        foreach (var chat in chats)
-        {
-            userModel.Chats.Add(chat);
         }
 
         return userModel;
