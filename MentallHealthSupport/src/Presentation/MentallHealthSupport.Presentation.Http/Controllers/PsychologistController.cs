@@ -15,13 +15,13 @@ public class PsychologistController: ControllerBase
         _psychologistService = psychologistService;
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("/{id}")]
     public Task<PublicPsychologistInfoResponse> GetPsychologist(Guid id)
     {
         return _psychologistService.GetPsychologist(id);
     }
 
-    [HttpPatch("{id}")]
+    [HttpPatch("/{id}")]
     public Task UpdatePsychologist(Guid id, [FromBody] UpdatePsychologistRequest updatePsychologistRequest)
     {
         return _psychologistService.UpdatePsychologist(id, updatePsychologistRequest);
@@ -33,13 +33,13 @@ public class PsychologistController: ControllerBase
         return _psychologistService.GetAllPsychologists();
     }
     
-    [HttpGet("byPrice")]
+    [HttpGet("/byPrice")]
     public ICollection<PublicPsychologistInfoResponse> GetPsychologistsByPrice([FromQuery] decimal priceMin, [FromQuery] decimal priceMax)
     {
         return _psychologistService.GetPsychologistsByPrice(priceMin, priceMax);
     }
     
-    [HttpGet("byRate")]
+    [HttpGet("/byRate")]
     public ICollection<PublicPsychologistInfoResponse> GetPsychologistByRate([FromQuery] float rateMin, [FromQuery] float rateMax)
     {
         return _psychologistService.GetPsychologistsByRate(rateMin, rateMax);
