@@ -1,14 +1,17 @@
 ﻿namespace MentallHealthSupport.Application.Models.Dto;
 
-public record RegistratePsychologistRequest(
+public record PublicPsychologistInfoResponse
+(
     string FirstName,
     string LastName,
     string Email,
     string PhoneNumber,
-    string Password,
-    DateOnly Birthday,
-    string Sex,
+    DateOnly BirthDay,
+    uint Age,
     string AdditionalInfo,
+    DateTime RegistrationTime,
     string Specialization,
     DateOnly ExperienceStartDate,
-    decimal PricePerHour);
+    uint ExperienceYears,
+    decimal PricePerHour,
+    float? Rate);

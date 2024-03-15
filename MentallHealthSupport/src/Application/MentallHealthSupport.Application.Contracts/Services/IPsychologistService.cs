@@ -1,17 +1,17 @@
-﻿using MentallHealthSupport.Application.Models.Entities;
+﻿using MentallHealthSupport.Application.Models.Dto;
 
 namespace MentallHealthSupport.Application.Contracts.Services;
 public interface IPsychologistService
 {
-    public void CreatePsychologist(string firstName, string lastName, string email, string password, DateOnly birthday, string sex, string specialization, DateOnly experienceStartDate, string additionalInfo, decimal pricePerHour);
+    public Task CreatePsychologist(RegistratePsychologistRequest registratePsychologistRequest);
 
-    public Psychologist GetPsychologist(Guid psychologistId);
+    public Task<PublicPsychologistInfoResponse> GetPsychologist(Guid psychologistId);
 
-    public void UpdatePsychologist(Guid psychologistId, string firstName, string lastName, string password, string additionalInfo, string specialization, decimal pricePerHour);
+    public Task UpdatePsychologist(Guid psychologistId, UpdatePsychologistRequest updatePsychologistRequest);
 
-    public IEnumerable<Psychologist> GetAllPsychologists();
+    public ICollection<PublicPsychologistInfoResponse> GetAllPsychologists();
 
-    public IEnumerable<Psychologist> GetPsychologistsByPrice(decimal priceMin, decimal priceMax);
+    public ICollection<PublicPsychologistInfoResponse> GetPsychologistsByPrice(decimal priceMin, decimal priceMax);
 
-    public IEnumerable<Psychologist> GetPsychologistsByRate(decimal rateMin, decimal rateMax);
+    public ICollection<PublicPsychologistInfoResponse> GetPsychologistsByRate(float rateMin, float rateMax);
 }

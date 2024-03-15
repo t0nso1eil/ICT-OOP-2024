@@ -46,7 +46,6 @@ public class UserService : IUserService
             Sex = registrateUserRequest.Sex,
             AdditionalInfo = registrateUserRequest.AdditionalInfo,
             RegistrationDate = Now,
-            IsPsychologist = false,
         };
         await _userRepository.CreateUser(user);
     }

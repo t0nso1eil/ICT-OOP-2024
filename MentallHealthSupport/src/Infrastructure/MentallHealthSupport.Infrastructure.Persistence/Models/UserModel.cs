@@ -1,4 +1,6 @@
-﻿namespace MentallHealthSupport.Infrastructure.Persistence.Models;
+﻿#pragma warning disable CA2227
+
+namespace MentallHealthSupport.Infrastructure.Persistence.Models;
 
 public class UserModel
 {
@@ -28,9 +30,7 @@ public class UserModel
 
     public PsychologistModel? Psychologist { get; set; }
 
-    public ICollection<SessionModel> Sessions { get; } = new List<SessionModel>();
+    public ICollection<SessionModel> Sessions { get; set;  } = new List<SessionModel>();
 
-    public ICollection<MessageModel> Messages { get; } = new List<MessageModel>();
-
-    public ICollection<ChatModel> Chats { get; } = new List<ChatModel>();
+    public ICollection<ReviewModel> Reviews { get; set; } = new List<ReviewModel>();
 }

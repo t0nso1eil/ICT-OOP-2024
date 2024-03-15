@@ -2,15 +2,16 @@
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
-public class ChatMapper
+
+public class ReviewMapper
 {
-    public static Chat ToEntity(ChatModel chatModel)
+    public static Review ToEntity(ReviewModel model)
     {
-        throw new NotImplementedException();
+        return new Review();
     }
 
-    public static ChatModel ToModel(Chat chat)
+    public static ReviewModel ToModel(Review review)
     {
-        throw new NotImplementedException();
+        return new ReviewModel();
     }
 }

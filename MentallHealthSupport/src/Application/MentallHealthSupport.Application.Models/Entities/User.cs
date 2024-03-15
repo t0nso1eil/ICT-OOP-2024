@@ -31,8 +31,4 @@ public class User
     public Psychologist? Psychologist { get; set; }
 
     public ICollection<Session> Sessions { get; } = new List<Session>();
-
-    public ICollection<Message> Messages { get; } = new List<Message>();
-
-    public ICollection<Chat> Chats { get; } = new List<Chat>();
 }
