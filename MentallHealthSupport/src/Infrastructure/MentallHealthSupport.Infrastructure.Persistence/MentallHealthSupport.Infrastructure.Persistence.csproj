@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
         <PackageReference Include="RichEntity.Annotations" />
         <ProjectReference Include="..\..\Application\MentallHealthSupport.Application.Abstractions\MentallHealthSupport.Application.Abstractions.csproj"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" />
@@ -9,6 +10,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="Itmo.Dev.Platform.Postgres"/>
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
+        <ProjectReference Include="..\..\Application\MentallHealthSupport.Application\MentallHealthSupport.Application.csproj" />
     </ItemGroup>
 
 </Project>

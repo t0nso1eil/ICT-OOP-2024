@@ -16,7 +16,7 @@ public class ChatRepository(ApplicationDbContext dbContext) : IChatRepository
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Message>> GetChatMessages(Chat chat, CancellationToken cancellationToken)
+    public async ICollection<Message> GetChatMessages(Chat chat, CancellationToken cancellationToken)
     {
         var chatModel = await dbContext.Chats
             .Include(c => c.Messages)

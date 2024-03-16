@@ -2,38 +2,39 @@ using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 using MentallHealthSupport.Infrastructure.Persistence.Repositories;
 
-namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
-
-public class MessageMapper
+namespace MentallHealthSupport.Infrastructure.Persistence.Mapping
 {
-    public static Message ToEntity(MessageModel messageModel)
+    public class MessageMapper
     {
-        return new Message
+        public static Message ToEntity(MessageModel messageModel)
         {
-            Id = messageModel.Id,
-            Chat = messageModel.Chat,
-            Sender = messageModel.Sender,
-            MessageText = messageModel.MessageText,
-            SentTime = messageModel.SentTime
-        };
-    }
+            return new Message
+            {
+                Id = messageModel.Id,
+                Chat = messageModel.Chat,
+                Sender = messageModel.Sender,
+                MessageText = messageModel.MessageText,
+                SentTime = messageModel.SentTime
+            };
+        }
 
-    public static MessageModel ToModel(Message message)
-    {
-        return new MessageModel
+        public static MessageModel ToModel(Message message)
         {
-            Id = message.Id,
-            Chat = message.Chat,
-            Sender = message. Sender,
-            MessageText = message.MessageText,
-            SentTime = message.SentTime
-        };
+            var messageModel = new MessageModel
+            {
+                Id = message.Id,
+                Chat = message.Chat,
+                Sender = message.Sender,
+                MessageText = message.MessageText,
+                SentTime = message.SentTime
+            };
 
-        if (message.Chat != null)
+            if (message.Chat != null)
             {
                 messageModel.Chat = ChatMapper.ToModel(message.Chat);
             }
 
-        return messageModel;
+            return messageModel;
+        }
     }
 }
