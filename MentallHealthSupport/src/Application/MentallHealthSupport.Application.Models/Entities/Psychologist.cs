@@ -2,6 +2,8 @@
 
 public class Psychologist
 {
+    public Guid Id { get; set; }
+    
     public User? User { get; set; }
 
     public string? Specialization { get; set; }
