@@ -4,7 +4,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5017",
+      "applicationUrl": "ep-shiny-cake-a1qu4ik1.ap-southeast-1.aws.neon.tech",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local"
       }

@@ -2,13 +2,15 @@
 
 public class Review
 {
-    public User? Client { get; set; }
-
-    public Psychologist? Psychologist { get; set; }
-
+    public Guid Id { get; set; }
+    
+    public User User { get; set; } = null!;
+    
+    public Psychologist Psychologist { get; set; } = null!;
+    
     public uint Rate { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; } = null!;
 
     public DateTime PostTime { get; set; }
 }

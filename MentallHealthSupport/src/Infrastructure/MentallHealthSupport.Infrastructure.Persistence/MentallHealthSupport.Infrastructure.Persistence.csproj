@@ -11,4 +11,10 @@
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <Folder Include="Contexts\Configurations\" />
+    </ItemGroup>
+
 </Project>
