@@ -29,8 +29,4 @@ public class UserModel
     public PsychologistModel? Psychologist { get; set; }
 
     public ICollection<SessionModel> Sessions { get; } = new List<SessionModel>();
-
-    public ICollection<MessageModel> Messages { get; } = new List<MessageModel>();
-
-    public ICollection<ChatModel> Chats { get; } = new List<ChatModel>();
 }

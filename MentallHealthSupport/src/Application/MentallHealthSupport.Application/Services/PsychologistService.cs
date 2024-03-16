@@ -36,10 +36,8 @@ public class PsychologistService: IPsychologistService
             registratePsychologistRequest.AdditionalInfo);
 
         await _userService.CreateUser(userInfo);
-
-        var user = (await _userRepository.GetUserByEmail(registratePsychologistRequest.Email))!; // не нравится
-        user.IsPsychologist = true;
-
+        var user = (await _userRepository.GetUserByEmail(registratePsychologistRequest.Email))!; 
+        await _userRepository.UpdateStatus(user.Id, true);
         var psycho = new Psychologist
         {
             Id = Guid.NewGuid(),

@@ -19,19 +19,19 @@ public class PsychologistController: ControllerBase
         _psychologistService = psychologistService;
     }
     
-    [HttpGet("/{id}")]
+    [HttpGet]
     public Task<PublicPsychologistInfoResponse> GetPsychologist(Guid id)
     {
         return _psychologistService.GetPsychologist(id);
     }
 
-    [HttpPatch("/{id}")]
+    [HttpPatch]
     public Task UpdatePsychologist(Guid id, [FromBody] UpdatePsychologistRequest updatePsychologistRequest)
     {
         return _psychologistService.UpdatePsychologist(id, updatePsychologistRequest);
     }
     
-    [HttpGet]
+    [HttpGet("/users")]
     public ICollection<PublicPsychologistInfoResponse> GetAllPsychologists()
     {
         return _psychologistService.GetAllPsychologists();

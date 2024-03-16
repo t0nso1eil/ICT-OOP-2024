@@ -2,9 +2,12 @@
 #pragma warning disable IDE0008
 #pragma warning disable SA1028
 #pragma warning disable SA1507
+#pragma warning disable IDE0007
 
 using MentallHealthSupport.Application.Models.Entities;
+using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
 public class PsychologistMapper
@@ -30,20 +33,20 @@ public class PsychologistMapper
         }
 
         ICollection<Review> reviews = psychologistModel.Reviews.Select(ReviewMapper.ToEntity).ToList();
-        foreach (var spot in spots)
+        foreach (var review in reviews)
         {
-            psycho.Spots.Add(spot);
+            psycho.Reviews.Add(review);
         }
 
         return psycho;
     }
 
-    public static PsychologistModel ToModel(Psychologist psychologist)
+    public static async Task<PsychologistModel> ToModel(Psychologist psychologist, ApplicationDbContext context)
     {
         var psychoModel = new PsychologistModel()
         {
             Id = psychologist.Id,
-            User = UserMapper.ToModel(psychologist.User),
+            User = (await context.Users.FirstOrDefaultAsync(p => p.Id == psychologist.User.Id))!,
             Specialization = psychologist.Specialization,
             ExperienceStartDate = psychologist.ExperienceStartDate,
             ExperienceYears = psychologist.ExperienceYears,
@@ -51,17 +54,17 @@ public class PsychologistMapper
             Rate = psychologist.Rate,
         };
         
-
-        ICollection<SpotModel> spots = psychologist.Spots.Select(SpotMapper.ToModel).ToList();
+    
+        List<Task<SpotModel>> spots = psychologist.Spots.Select(async p => await SpotMapper.ToModel(p, context)).ToList();
         foreach (var spot in spots)
         {
-            psychoModel.Spots.Add(spot);
+            psychoModel.Spots.Add(await spot);
         }
 
         ICollection<ReviewModel> reviews = psychologist.Reviews.Select(ReviewMapper.ToModel).ToList();
-        foreach (var spot in spots)
+        foreach (var review in reviews)
         {
-            psychoModel.Spots.Add(spot);
+            psychoModel.Reviews.Add(review);
         }
 
         return psychoModel;

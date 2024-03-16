@@ -23,6 +23,9 @@ public static class ServiceCollectionExtensions
 
         collection.AddScoped<IUserRepository, UserRepository>();
         collection.AddScoped<IPsychologistRepository, PsychologistRepository>();
+        collection.AddScoped<IReviewRepository, ReviewRepository>();
+        collection.AddScoped<ISessionRepository, SessionRepository>();
+        collection.AddScoped<ISpotRepository, SpotRepository>();
         collection.AddScoped<IPersistenceContext, PersistenceContext>();
 
         //AddAuthentication(collection, configuration);

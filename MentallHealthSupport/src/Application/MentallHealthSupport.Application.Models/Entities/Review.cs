@@ -4,7 +4,7 @@ public class Review
 {
     public Guid Id { get; set; }
 
-    public User Client { get; set; } = null!;
+    public User User { get; set; } = null!;
 
     public Psychologist Psychologist { get; set; } = null!;
 

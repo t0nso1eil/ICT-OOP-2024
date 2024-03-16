@@ -26,13 +26,9 @@ public class User
 
     public DateTime RegistrationDate { get; set; }
 
-    public bool IsPsychologist { get; set; }
+    public bool IsPsychologist { get; set; } = false;
 
     public Psychologist? Psychologist { get; set; }
 
     public ICollection<Session> Sessions { get; } = new List<Session>();
-
-    public ICollection<Message> Messages { get; } = new List<Message>();
-
-    public ICollection<Chat> Chats { get; } = new List<Chat>();
 }

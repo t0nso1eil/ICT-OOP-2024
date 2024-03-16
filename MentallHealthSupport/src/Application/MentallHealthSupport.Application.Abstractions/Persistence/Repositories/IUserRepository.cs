@@ -10,4 +10,6 @@ public interface IUserRepository
     Task UpdateUser(User newUser);
 
     Task<User?> GetUserByEmail(string email);
+
+    Task UpdateStatus(Guid userId, bool isPsychologist);
 }

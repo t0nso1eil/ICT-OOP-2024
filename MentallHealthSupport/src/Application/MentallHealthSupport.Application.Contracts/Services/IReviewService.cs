@@ -1,13 +1,14 @@
-﻿using MentallHealthSupport.Application.Models.Entities;
+﻿using MentallHealthSupport.Application.Models.Dto;
 
 namespace MentallHealthSupport.Application.Contracts.Services;
+
 public interface IReviewService
 {
-    public void CreateReview(Guid userId, Guid psychologistId, uint rate, string description);
+    public Task CreateReview(CreateReviewRequest request);
 
-    public void UpdateReview(Guid reviewId, uint rate, string description);
+    public Task UpdateReview(Guid reviewId, UpdateReviewRequest request);
 
-    public void DeleteReview(Guid reviewId);
+    public Task DeleteReview(Guid reviewId);
 
-    public IEnumerable<Review> GetPsychologistReviews(Guid psychologistId);
+    public ICollection<PublicReviewInfoResponse> GetPsychologistReviews(Guid reviewId);
 }

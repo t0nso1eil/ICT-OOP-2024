@@ -12,7 +12,7 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
 {
     public async Task CreateUser(User user)
     {
-        var userModel = MapToModel(user);
+        var userModel = await MapToModel(user);
         await dbContext.AddAsync(userModel);
         await dbContext.SaveChangesAsync();
     }
@@ -30,10 +30,17 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
 
     public async Task UpdateUser(User newUser)
     {
-        var newUserModel = MapToModel(newUser);
+        var newUserModel = await MapToModel(newUser);
         var currUser = await dbContext.Users.FindAsync(newUserModel.Id);
         dbContext.Entry(currUser!).CurrentValues.SetValues(newUserModel);
         await dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateStatus(Guid userId, bool isPsychologist)
+    {
+        var user = await GetUserById(userId);
+        user.IsPsychologist = isPsychologist;
+        await UpdateUser(user);
     }
 
     public async Task<User?> GetUserByEmail(string email)
@@ -47,8 +54,8 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
         return UserMapper.ToEntity(model);
     }
 
-    private UserModel MapToModel(User entity)
+    private async Task<UserModel> MapToModel(User entity)
     {
-        return UserMapper.ToModel(entity);
+        return await UserMapper.ToModel(entity, dbContext);
     }
 }

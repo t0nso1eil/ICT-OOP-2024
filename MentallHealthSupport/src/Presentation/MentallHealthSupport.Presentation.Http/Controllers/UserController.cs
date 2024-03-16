@@ -5,13 +5,12 @@
 
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
 // [Authorize("IsAuthenticated")]
-[Route("[controller]/{user_id}")]
+[Route("[controller]")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;

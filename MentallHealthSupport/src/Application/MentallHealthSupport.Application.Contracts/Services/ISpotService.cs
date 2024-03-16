@@ -1,9 +1,13 @@
-﻿using MentallHealthSupport.Application.Models.Entities;
+﻿#pragma warning disable CA1716
+
+using MentallHealthSupport.Application.Models.Entities;
 
 namespace MentallHealthSupport.Application.Contracts.Services;
+
 public interface ISpotService
 {
-    // public void CreateNewSpot(Guid psychologistId, DateOnly date, DateTime start, DateTime end);
+    public void CreateNewSpot(Guid psychologistId, DateOnly date, DateTime start, DateTime end);
+
     public void UpdateSpotStatus(Guid spotId, string status);
 
     public IEnumerable<Spot> GetPsychologistFreeSpots(Guid psychologistId);
