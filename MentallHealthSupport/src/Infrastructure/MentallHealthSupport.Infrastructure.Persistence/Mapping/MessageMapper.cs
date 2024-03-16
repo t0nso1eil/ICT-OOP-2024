@@ -28,5 +28,12 @@ public class MessageMapper
             MessageText = message.MessageText,
             SentTime = message.SentTime
         };
+
+        if (message.Chat != null)
+            {
+                messageModel.Chat = ChatMapper.ToModel(message.Chat);
+            }
+
+        return messageModel;
     }
 }
