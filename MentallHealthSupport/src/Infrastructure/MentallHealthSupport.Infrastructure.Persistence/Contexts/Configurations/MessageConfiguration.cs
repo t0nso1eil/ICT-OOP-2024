@@ -9,10 +9,11 @@ namespace MentallHealthSupport.Infrastructure.Persistence.Contexts.Configuration
     {
         public void Configure(EntityTypeBuilder<MessageModel> builder)
         {
+            builder.ToTable("message");
             builder.HasKey(message => message.Id).HasName("messages_pkey");
-            builder.Property(message => message.Id).HasColumnName("message_id");
-            builder.Property(message => message.MessageText).HasColumnName("message_text");
-            builder.Property(message => message.SentTime).HasColumnName("sent_time");
+            builder.Property(message => message.Id).HasColumnName("message_id").HasColumnType("character varying");
+            builder.Property(message => message.MessageText).HasColumnName("message_text").HasColumnType("character varying");
+            builder.Property(message => message.SentTime).HasColumnName("sent_time").HasColumnType("time without timezone");
             builder.HasOne(chat => chat.Message).WithMany(message => message.Chat);
             builder.HasOne(chat => chat.Sender).WithOne(sender => sender.Chat);
         }
