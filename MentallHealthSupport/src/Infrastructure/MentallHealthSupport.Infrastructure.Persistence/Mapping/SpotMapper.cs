@@ -1,7 +1,6 @@
 #pragma warning disable IDE0008
 
 using MentallHealthSupport.Application.Models.Entities;
-using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -28,7 +27,7 @@ public class SpotMapper
         return spot;
     }
 
-    public static async Task<SpotModel> ToModel(Spot spot, ApplicationDbContext context)
+    public static SpotModel ToModel(Spot spot)
     {
         var spotModel = new SpotModel
         {
@@ -39,10 +38,10 @@ public class SpotMapper
             Status = spot.Status,
         };
 
-        var psychologist = await PsychologistMapper.ToModel(spot.Psychologist, context);
+        var psychologist = PsychologistMapper.ToModel(spot.Psychologist);
         spotModel.Psychologist = psychologist;
 
-        var session = await SessionMapper.ToModel(spot.Session, context);
+        var session = SessionMapper.ToModel(spot.Session);
         spotModel.Session = session;
 
         return spotModel;

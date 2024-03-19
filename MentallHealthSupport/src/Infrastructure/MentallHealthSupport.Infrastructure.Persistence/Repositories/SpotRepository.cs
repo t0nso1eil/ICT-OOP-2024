@@ -1,6 +1,3 @@
-#pragma warning disable IDE0051
-#pragma warning disable IDE0005
-
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
@@ -11,38 +8,55 @@ using Microsoft.EntityFrameworkCore;
 namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
 {
-    public async Task CreateSpot(Spot spot, CancellationToken cancellationToken)
+    public async Task CreateSpot(Spot spot)
     {
         var spotModel = MapToModel(spot);
-        await dbContext.AddAsync(spotModel, cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.AddAsync(spotModel);
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<List<Spot>> GetAvailiblePsychologistSpots(
-        Guid psychologistId,
-        CancellationToken cancellationToken)
-    {
-        var spots = await dbContext.Spots
-            .Where(spot => spot.Id == psychologistId && spot.Status == "доступно")
-            .ToListAsync(cancellationToken);
-
-        if (spots == null)
-        {
-            throw new Exception("нет свободных окошек для записи");
-        }
-
-        return MapToEntity(spots);
-    }
-
-    public async Task<List<Spot>> GetPsychologistSchedule(
-        Guid psychologistId,
-        CancellationToken cancellationToken)
+    public async Task<ICollection<Spot>> GetPsychologistSchedule(Guid psychologistId)
     {
         var spots = await dbContext.Spots
             .Where(spot => spot.Id == psychologistId)
-            .ToListAsync(cancellationToken);
+            .ToListAsync();
 
         return MapToEntity(spots);
+    }
+
+    public async Task UpdateSpotStatus(Guid spotId, string status)
+    {
+        var spot = await dbContext.Spots.FindAsync(spotId);
+
+        if (spot == null)
+        {
+            throw new ArgumentException("Spot not found.");
+        }
+
+        spot.Status = status;
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Spot> GetSpotById(Guid id)
+    {
+        var spotModel = await dbContext.Spots.FirstOrDefaultAsync(spot => spot.Id == id);
+        if (spotModel == null)
+        {
+            throw new Exception("такой сессии нет");
+        }
+
+        return MapToEntity(spotModel);
+    }
+
+    public async Task<ICollection<Spot>> GetPsychologistFreeSpotsById(Guid psychologistId)
+    {
+        var spots = await dbContext.Spots
+            .Where(spot => spot.Psychologist.Id == psychologistId && spot.Status == "доступно")
+            .ToListAsync();
+
+        var psychologistSpots = spots.Select(spotModel => MapToEntity(spotModel)).ToList();
+
+        return psychologistSpots;
     }
 
     private List<Spot> MapToEntity(List<SpotModel> models)
@@ -55,8 +69,8 @@ public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
         return SpotMapper.ToEntity(model);
     }
 
-    private Task<SpotModel> MapToModel(Spot entity)
+    private SpotModel MapToModel(Spot entity)
     {
-        return SpotMapper.ToModel(entity, dbContext);
+        return SpotMapper.ToModel(entity);
     }
 }

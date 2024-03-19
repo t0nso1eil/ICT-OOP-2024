@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Application\MentallHealthSupport.Application.Contracts\MentallHealthSupport.Application.Contracts.csproj" />
+      <ProjectReference Include="..\..\Application\MentallHealthSupport.Application\MentallHealthSupport.Application.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Application.Services.Auth;
@@ -26,12 +27,12 @@ public class UserService : IUserService
         _jwtProvider = new JwtProvider(options);
     }
 
-    public async Task CreateUser(RegistrateUserRequest registrateUserRequest)
+    public async Task<string> CreateUser(RegistrateUserRequest registrateUserRequest)
     {
         var existingUser = await _userRepository.GetUserByEmail(registrateUserRequest.Email);
         if (existingUser != null)
         {
-            throw new Exception("такой уже есть");
+            throw new ConflictException("User with this email already exists.");
         }
 
         CheckCorrectRegistrationInfo(registrateUserRequest);
@@ -50,8 +51,8 @@ public class UserService : IUserService
             AdditionalInfo = registrateUserRequest.AdditionalInfo,
             RegistrationDate = Now,
         };
-        Console.WriteLine(user.Id);
         await _userRepository.CreateUser(user);
+        return user.Id.ToString();
     }
 
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)
@@ -76,7 +77,7 @@ public class UserService : IUserService
         var user = await _userRepository.GetUserByEmail(loginRequest.Email);
         if (user is null)
         {
-            throw new Exception("такого нет");
+            throw new NotFoundException("This user doesn't exist.");
         }
 
         var result = _passwordHasher.Verify(loginRequest.Password, user.PasswordHash);
@@ -105,18 +106,18 @@ public class UserService : IUserService
     {
         if (!request.FirstName.All(char.IsLetter) || !request.LastName.All(char.IsLetter))
         {
-            throw new Exception("фио");
+            throw new IncorrectInputException("Incorrect fullname.");
         }
 
         if (request.Sex is not ("m" or "f"))
         {
-            throw new Exception("пол");
+            throw new IncorrectInputException("Incorrect gender.");
         }
 
         if (!(request.Email.Contains("@email.ru") || request.Email.Contains("@yandex.ru") ||
               request.Email.Contains("@gmail.com")))
         {
-            throw new Exception("почта");
+            throw new IncorrectInputException("Incorrect email.");
         }
     }
 }

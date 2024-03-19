@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IDE0008
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -12,7 +13,7 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
 {
     public async Task CreateUser(User user)
     {
-        var userModel = await MapToModel(user);
+        var userModel = MapToModel(user);
         await dbContext.AddAsync(userModel);
         await dbContext.SaveChangesAsync();
     }
@@ -22,7 +23,7 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
         var userModel = await dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
         if (userModel == null)
         {
-            throw new Exception("такого нет");
+            throw new NotFoundException("Such user doesn't exist.");
         }
 
         return MapToEntity(userModel);
@@ -30,7 +31,7 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
 
     public async Task UpdateUser(User newUser)
     {
-        var newUserModel = await MapToModel(newUser);
+        var newUserModel = MapToModel(newUser);
         var currUser = await dbContext.Users.FindAsync(newUserModel.Id);
         dbContext.Entry(currUser!).CurrentValues.SetValues(newUserModel);
         await dbContext.SaveChangesAsync();
@@ -54,8 +55,8 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
         return UserMapper.ToEntity(model);
     }
 
-    private async Task<UserModel> MapToModel(User entity)
+    private UserModel MapToModel(User entity)
     {
-        return await UserMapper.ToModel(entity, dbContext);
+        return UserMapper.ToModel(entity);
     }
 }

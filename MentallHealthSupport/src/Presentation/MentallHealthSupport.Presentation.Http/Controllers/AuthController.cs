@@ -2,6 +2,7 @@
 #pragma warning disable SA1028
 
 using MentallHealthSupport.Application.Contracts.Services;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,9 +21,25 @@ public class AuthController(IUserService userService, IPsychologistService psych
     }
 
     [HttpPost("/reg_user")]
-    public async Task RegistrateAsUser([FromBody] RegistrateUserRequest request)
+    public async Task<IActionResult> RegistrateAsUser([FromBody] RegistrateUserRequest request)
     {
-        await _userService.CreateUser(request);
+        try
+        {
+            var userId = await _userService.CreateUser(request);
+            return Ok(new { UserId = userId });
+        }
+        catch (ConflictException ex)
+        {
+            return Conflict(new { Error = ex.Message });
+        }
+        catch (IncorrectInputException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
     
     [HttpPost("/reg_psycho")]

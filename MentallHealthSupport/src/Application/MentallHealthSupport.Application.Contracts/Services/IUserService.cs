@@ -3,7 +3,7 @@
 namespace MentallHealthSupport.Application.Contracts.Services;
 public interface IUserService
 {
-    public Task CreateUser(RegistrateUserRequest registrateUserRequest);
+    public Task<string> CreateUser(RegistrateUserRequest registrateUserRequest);
 
     public Task<PublicUserInfoResponse> GetUser(Guid userId);
 

@@ -5,9 +5,7 @@
 #pragma warning disable IDE0007
 
 using MentallHealthSupport.Application.Models.Entities;
-using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
 public class PsychologistMapper
@@ -41,24 +39,25 @@ public class PsychologistMapper
         return psycho;
     }
 
-    public static async Task<PsychologistModel> ToModel(Psychologist psychologist, ApplicationDbContext context)
+    public static PsychologistModel ToModel(Psychologist psychologist)
     {
         var psychoModel = new PsychologistModel()
         {
             Id = psychologist.Id,
-            User = (await context.Users.FirstOrDefaultAsync(p => p.Id == psychologist.User.Id))!,
             Specialization = psychologist.Specialization,
             ExperienceStartDate = psychologist.ExperienceStartDate,
             ExperienceYears = psychologist.ExperienceYears,
             PricePerHour = psychologist.PricePerHour,
             Rate = psychologist.Rate,
         };
+
+        // User 
         
     
-        List<Task<SpotModel>> spots = psychologist.Spots.Select(async p => await SpotMapper.ToModel(p, context)).ToList();
+        ICollection<SpotModel> spots = psychologist.Spots.Select(p => SpotMapper.ToModel(p)).ToList();
         foreach (var spot in spots)
         {
-            psychoModel.Spots.Add(await spot);
+            psychoModel.Spots.Add(spot);
         }
 
         ICollection<ReviewModel> reviews = psychologist.Reviews.Select(ReviewMapper.ToModel).ToList();

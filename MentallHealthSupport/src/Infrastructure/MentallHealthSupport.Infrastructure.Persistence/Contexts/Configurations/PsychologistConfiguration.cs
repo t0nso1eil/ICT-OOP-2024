@@ -10,8 +10,6 @@ public class PsychologistConfiguration : IEntityTypeConfiguration<PsychologistMo
 {
     public void Configure(EntityTypeBuilder<PsychologistModel> builder)
     {
-        // прописать то, как все поля и constrains должны выглядеть в бд
-
         builder.Property(p => p.Id).HasColumnName("psychologist_id").HasColumnType("character varying").HasMaxLength(255);
         builder.Property(p => p.UserId).HasColumnName("user_id").HasColumnType("character varying").HasMaxLength(255);
         builder.Property(p => p.Specialization).HasColumnName("specialization").HasColumnType("character varying").HasMaxLength(100);
@@ -20,10 +18,5 @@ public class PsychologistConfiguration : IEntityTypeConfiguration<PsychologistMo
         builder.Property(p => p.ExperienceStartDate).HasColumnName("experience_start_date").HasColumnType("date");
         builder.Property(p => p.Rate).HasColumnName("rate").HasColumnType("numeric");
         builder.ToTable("psychologist");
-
-        // builder.HasKey(psychologist => psychologist.Id);
-        // builder.HasOne(psychologist => psychologist.User).WithOne(user => user.Psychologist);
-        // builder.HasMany(psychologist => psychologist.Reviews).WithOne(review => review.Psychologist);
-        // builder.HasMany(psychologist => psychologist.Spots).WithOne(spot => spot.Psychologist);
     }
 }

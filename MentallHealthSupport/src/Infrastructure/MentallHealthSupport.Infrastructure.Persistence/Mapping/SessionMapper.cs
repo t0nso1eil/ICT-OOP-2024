@@ -26,7 +26,7 @@ public class SessionMapper
         return session;
     }
 
-    public static async Task<SessionModel> ToModel(Session session, ApplicationDbContext context)
+    public static SessionModel ToModel(Session session)
     {
         var sessionModel = new SessionModel
         {
@@ -34,10 +34,10 @@ public class SessionMapper
             Status = session.Status,
             Price = session.Price,
         };
-        var user = await UserMapper.ToModel(session.User, context);
+        var user = UserMapper.ToModel(session.User);
         sessionModel.User = user;
 
-        var spot = await SpotMapper.ToModel(session.Spot, context);
+        var spot = SpotMapper.ToModel(session.Spot);
         sessionModel.Spot = spot;
 
         return sessionModel;

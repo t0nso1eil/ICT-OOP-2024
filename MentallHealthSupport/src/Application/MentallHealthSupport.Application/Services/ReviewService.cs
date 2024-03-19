@@ -60,7 +60,9 @@ public class ReviewService : IReviewService
 
     public ICollection<PublicReviewInfoResponse> GetPsychologistReviews(Guid reviewId)
     {
-        ICollection<PublicReviewInfoResponse> reviews = _reviewRepository.GetAllReviews(reviewId).Select(r => new PublicReviewInfoResponse(r.User.Id, r.Psychologist.Id, r.Rate, r.Description, r.PostTime)).ToList();
+        ICollection<PublicReviewInfoResponse> reviews = _reviewRepository.GetAllReviews(reviewId)
+            .Select(r => new PublicReviewInfoResponse(r.User.Id, r.Psychologist.Id, r.Rate, r.Description, r.PostTime))
+            .ToList();
         return reviews;
     }
 }

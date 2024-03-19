@@ -16,7 +16,7 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
 {
     public async Task CreatePsychologist(Psychologist psychologist)
     {
-        var psychologistModel = await MapToModel(psychologist);
+        var psychologistModel = MapToModel(psychologist);
         await dbContext.AddAsync(psychologistModel);
         await dbContext.SaveChangesAsync();
     }
@@ -34,7 +34,7 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
 
     public async Task UpdatePsychologist(Psychologist newPsychologist)
     {
-        var newPsychologistModel = await MapToModel(newPsychologist);
+        var newPsychologistModel = MapToModel(newPsychologist);
         var currPsychologist = await dbContext.Psychologists.FindAsync(newPsychologistModel.Id);
         dbContext.Entry(currPsychologist!).CurrentValues.SetValues(newPsychologistModel);
         await dbContext.SaveChangesAsync();
@@ -70,8 +70,8 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
         return PsychologistMapper.ToEntity(model);
     }
 
-    private async Task<PsychologistModel> MapToModel(Psychologist entity)
+    private PsychologistModel MapToModel(Psychologist entity)
     {
-        return await PsychologistMapper.ToModel(entity, dbContext);
+        return PsychologistMapper.ToModel(entity);
     }
 }

@@ -1,16 +1,15 @@
-﻿#pragma warning disable CA1716
-
+﻿using MentallHealthSupport.Application.Models.Dto;
 using MentallHealthSupport.Application.Models.Entities;
 
 namespace MentallHealthSupport.Application.Contracts.Services;
 
 public interface ISpotService
 {
-    public void CreateNewSpot(Guid psychologistId, DateOnly date, DateTime start, DateTime end);
+    Task CreateNewSpot(CreateSpotRequest createSpotRequest);
 
-    public void UpdateSpotStatus(Guid spotId, string status);
+    Task UpdateSpotStatus(Guid spotId, string status);
 
-    public IEnumerable<Spot> GetPsychologistFreeSpots(Guid psychologistId);
+    Task<ICollection<Spot>> GetPsychologistFreeSpots(Guid psychologistId);
 
-    public IEnumerable<Spot> GetPsychologistSchedule(Guid psychologistId);
+    Task<ICollection<Spot>> GetPsychologistSchedule(Guid psychologistId);
 }

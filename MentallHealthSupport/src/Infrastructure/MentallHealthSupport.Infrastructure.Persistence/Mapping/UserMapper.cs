@@ -2,7 +2,6 @@
 #pragma warning disable IDE0007
 
 using MentallHealthSupport.Application.Models.Entities;
-using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -45,7 +44,7 @@ public class UserMapper
         return user;
     }
 
-    public static async Task<UserModel> ToModel(User user, ApplicationDbContext context)
+    public static UserModel ToModel(User user)
     {
         var userModel = new UserModel
         {
@@ -65,7 +64,7 @@ public class UserMapper
 
         if (user.Psychologist is not null)
         {
-            var psychologist = await PsychologistMapper.ToModel(user.Psychologist, context);
+            var psychologist = PsychologistMapper.ToModel(user.Psychologist);
             userModel.Psychologist = psychologist;
         }
         else
@@ -73,10 +72,10 @@ public class UserMapper
             userModel.Psychologist = null;
         }
 
-        List<Task<SessionModel>> sessions = user.Sessions.Select(p => SessionMapper.ToModel(p, context)).ToList();
+        ICollection<SessionModel> sessions = user.Sessions.Select(p => SessionMapper.ToModel(p)).ToList();
         foreach (var session in sessions)
         {
-            userModel.Sessions.Add(await session);
+            userModel.Sessions.Add(session);
         }
 
         return userModel;
