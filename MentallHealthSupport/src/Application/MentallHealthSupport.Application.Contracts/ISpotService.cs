@@ -6,9 +6,9 @@ using MentallHealthSupport.Application.Models.Entities;
 
 public interface ISpotService
 {
-    Task CreateNewSpot(CreateSpotRequest createSpotRequest);
+    Task<string> CreateNewSpot(CreateSpotRequest createSpotRequest);
 
-    Task UpdateSpotStatus(Guid spotId, string status);
+    Task UpdateSpotStatus(UpdateSpotRequest updateSpotRequest);
 
     Task<ICollection<Spot>> GetPsychologistFreeSpots(Guid psychologistId);
 

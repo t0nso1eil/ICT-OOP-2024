@@ -1,6 +1,7 @@
 namespace MentallHealthSupport.Application.Models.Dto;
 
-public record UpdateSessionRequest
-{
-    
-}
+public record UpdateSessionRequest(
+    Guid Id,
+    string? Status,
+    decimal? Price
+);

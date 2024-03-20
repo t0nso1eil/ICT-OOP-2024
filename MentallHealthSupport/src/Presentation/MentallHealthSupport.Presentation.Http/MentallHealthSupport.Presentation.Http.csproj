@@ -8,6 +8,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Application\MentallHealthSupport.Application.Contracts\MentallHealthSupport.Application.Contracts.csproj" />
       <ProjectReference Include="..\..\Application\MentallHealthSupport.Application.Models\MentallHealthSupport.Application.Models.csproj" />
+      <ProjectReference Include="..\..\Application\MentallHealthSupport.Application\MentallHealthSupport.Application.csproj" />
     </ItemGroup>
 
 </Project>

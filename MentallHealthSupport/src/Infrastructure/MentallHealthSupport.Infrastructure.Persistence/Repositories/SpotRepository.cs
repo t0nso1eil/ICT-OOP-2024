@@ -1,3 +1,4 @@
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts.Configurations;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
@@ -18,20 +19,6 @@ public class SpotRepository(ApplicationDbContext dbContext): ISpotRepository
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<List<Spot>> GetAvailiblePsychologistSpots(Guid psychologistId)
-    {
-        var spots = await dbContext.Spots
-            .Where(spot => spot.Id == psychologistId && spot.Status == "доступно")
-            .ToListAsync();
-
-        if (spots == null)
-        {
-            throw new Exception("нет свободных окошек для записи");
-        }
-
-        return MapToEntity(spots);
-    }
-
     public async Task<ICollection<Spot>> GetPsychologistSchedule(Guid psychologistId)
     {
         var spots = await dbContext.Spots
@@ -41,17 +28,20 @@ public class SpotRepository(ApplicationDbContext dbContext): ISpotRepository
         return MapToEntity(spots);
     }
     
-    public async Task UpdateSpotStatus(Guid spotId, string status)
+    public async Task UpdateSpotStatus(Spot newSpot)
     {
-        var spot = await dbContext.Spots.FindAsync(spotId);
-
-        if (spot == null)
+        var spotModel = await dbContext.Sessions.FirstOrDefaultAsync(spot => spot.Id == newSpot.Id);
+        if (spotModel != null)
         {
-            throw new ArgumentException("Spot not found.");
+            var newSpotModel = MapToModel(newSpot);
+            var currSpot = await dbContext.Spots.FindAsync(newSpotModel.Id);
+            dbContext.Entry(currSpot!).CurrentValues.SetValues(newSpotModel);
+            await dbContext.SaveChangesAsync();
         }
-
-        spot.Status = status;
-        await dbContext.SaveChangesAsync();
+        else
+        {
+            throw new NotFoundException("Spot not found");
+        }
     }
     
     public async Task<Spot> GetSpotById(Guid id)
@@ -59,7 +49,7 @@ public class SpotRepository(ApplicationDbContext dbContext): ISpotRepository
         var spotModel = await dbContext.Spots.FirstOrDefaultAsync(spot => spot.Id == id);
         if (spotModel == null)
         {
-            throw new Exception("такой сессии нет");
+            throw new NotFoundException("Spot not found");
         }
 
         return MapToEntity(spotModel);
@@ -68,7 +58,7 @@ public class SpotRepository(ApplicationDbContext dbContext): ISpotRepository
     public async Task<ICollection<Spot>> GetPsychologistFreeSpotsById(Guid psychologistId)
     {
         var spots = await dbContext.Spots
-            .Where(spot => spot.Psychologist.Id == psychologistId && spot.Status == "доступно")
+            .Where(spot => spot.Psychologist.Id == psychologistId && spot.Status == "Availible")
             .ToListAsync();
 
         var psychologistSpots = spots.Select(spotModel => MapToEntity(spotModel)).ToList();

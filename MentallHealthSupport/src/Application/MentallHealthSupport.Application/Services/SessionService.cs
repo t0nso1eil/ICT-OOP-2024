@@ -1,21 +1,30 @@
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto;
 using MentallHealthSupport.Application.Models.Entities;
+using MentallHealthSupport.Application.Models.Entities.Enums;
 
 namespace MentallHealthSupport.Application.Services;
 
 public class SessionService : ISessionService
 {
     private readonly ISessionRepository _sessionRepository;
+    private readonly ISpotRepository _spotRepository;
 
-    public SessionService(ISessionRepository sessionRepository)
+    public SessionService(ISessionRepository sessionRepository, ISpotRepository spotRepository)
     {
         _sessionRepository = sessionRepository;
+        _spotRepository = spotRepository;
     }
 
-    public async Task CreateNewSession(CreateSessionRequest createSessionRequest)
+    public async Task<string> CreateNewSession(CreateSessionRequest createSessionRequest)
     {
+        var spot = await _spotRepository.GetSpotById(createSessionRequest.SpotId);
+        if (spot.Status == "Unavalible")
+        {
+            throw new ConflictException("Spot is unavalible");
+        }
         var session = new Session
         {
             Id = Guid.NewGuid(),
@@ -23,27 +32,37 @@ public class SessionService : ISessionService
             Price = createSessionRequest.Price,
         };
         await _sessionRepository.CreateNewSession(session);
+        return session.Id.ToString();
     }
 
-    public async Task UpdateSessionStatus(Session session, string newStatus)
+    public async Task UpdateSessionStatus(UpdateSessionRequest updateSessionRequest)
     {
-        var sessionToUpdate = await _sessionRepository.GetSessionById(session.Id);
-    
-        if (sessionToUpdate != null)
+        var sessionToUpdate = await _sessionRepository.GetSessionById(updateSessionRequest.Id);
+
+        if (updateSessionRequest.Status != null)
         {
-            sessionToUpdate.Status = newStatus ?? sessionToUpdate.Status;
-        
-            await _sessionRepository.UpdateSessionStatus(sessionToUpdate, sessionToUpdate.Status);
+            bool statusIsDefined = Enum.IsDefined(typeof(SessionStatuses), updateSessionRequest.Status);
+
+            if (statusIsDefined)
+            {
+                sessionToUpdate.Status = updateSessionRequest.Status;
+                await _sessionRepository.UpdateSessionStatus(sessionToUpdate);
+
+            }
+            else
+            {
+                throw new IncorrectInputException("Incorrect session status");
+            }
         }
         else
         {
-            throw new InvalidOperationException("Такой сессии нет");
+            throw new IncorrectInputException("Session status cannot be null");
         }
     }
 
-    public async Task<IEnumerable<Session>> GetUserSessions(Guid userId)
+    public async Task<ICollection<Session>> GetUserSessions(Guid userId)
     {
-        var sessions = await _sessionRepository.GetSessionsByUserId(userId); // Assuming you have a method to get all sessions asynchronously
+        var sessions = await _sessionRepository.GetSessionsByUserId(userId); 
 
         return sessions;
     }

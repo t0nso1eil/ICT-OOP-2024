@@ -1,24 +1,79 @@
-using MentallHealthSupport.Application.Contracts;
-using MentallHealthSupport.Application.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using MentallHealthSupport.Application.Contracts;
+using MentallHealthSupport.Application.Exceptions;
+using MentallHealthSupport.Application.Models.Dto;
 
-namespace MentallHealthSupport.Presentation.Http.Controllers;
-
-public class SessionController : ControllerBase
+namespace MentallHealthSupport.Presentation.Http.Controllers
 {
-    private readonly ISessionService _sessionService;
-
-    public SessionController(ISessionService sessionService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class SessionController : ControllerBase
     {
-        _sessionService = sessionService;
-    }
+        private readonly ISessionService _sessionService;
 
-    [HttpGet]
-    public Task<PublicSession>;
+        public SessionController(ISessionService sessionService)
+        {
+            _sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+        }
 
-    [HttpPatch]
-    public Task UpdateSession(Guid id, [FromBody] UpdateSessionRequest updateSessionRequest)
-    {
-        return _sessionService.UpdateSession(id, updateSessionRequest);
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateSession([FromBody] CreateSessionRequest createSessionRequest)
+        {
+            try
+            {
+                var sessionId = await _sessionService.CreateNewSession(createSessionRequest);
+                return Ok(sessionId);
+            }
+            catch (ConflictException ex)
+            {
+                return StatusCode(409, new { Error = ex.Message });
+            }
+            
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message});
+            }
+        }
+
+        [HttpPost]
+        [Route("update-status")]
+        public async Task<IActionResult> UpdateSessionStatus([FromBody] UpdateSessionRequest updateSessionRequest)
+        {
+            try
+            {
+                await _sessionService.UpdateSessionStatus(updateSessionRequest);
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message});
+            }
+        }
+
+        [HttpGet]
+        [Route("user-sessions/{userId}")]
+        public async Task<IActionResult> GetUserSessions(Guid userId)
+        {
+            try
+            {
+                var sessions = await _sessionService.GetUserSessions(userId);
+                return Ok(sessions);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
+        }
     }
 }
