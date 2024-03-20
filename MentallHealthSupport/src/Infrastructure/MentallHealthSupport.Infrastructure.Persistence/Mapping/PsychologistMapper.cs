@@ -41,7 +41,7 @@ public class PsychologistMapper
 
     public static PsychologistModel ToModel(Psychologist psychologist)
     {
-        var psychoModel = new PsychologistModel()
+        var psychoModel = new PsychologistModel
         {
             Id = psychologist.Id,
             Specialization = psychologist.Specialization,
@@ -49,10 +49,9 @@ public class PsychologistMapper
             ExperienceYears = psychologist.ExperienceYears,
             PricePerHour = psychologist.PricePerHour,
             Rate = psychologist.Rate,
+            User = new UserModel(),
+            UserId = psychologist.User.Id,
         };
-
-        // User 
-        
     
         ICollection<SpotModel> spots = psychologist.Spots.Select(p => SpotMapper.ToModel(p)).ToList();
         foreach (var spot in spots)

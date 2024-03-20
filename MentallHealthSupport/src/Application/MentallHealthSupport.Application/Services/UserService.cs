@@ -27,7 +27,7 @@ public class UserService : IUserService
         _jwtProvider = new JwtProvider(options);
     }
 
-    public async Task<string> CreateUser(RegistrateUserRequest registrateUserRequest)
+    public async Task<Guid> CreateUser(RegistrateUserRequest registrateUserRequest)
     {
         var existingUser = await _userRepository.GetUserByEmail(registrateUserRequest.Email);
         if (existingUser != null)
@@ -35,24 +35,9 @@ public class UserService : IUserService
             throw new ConflictException("User with this email already exists.");
         }
 
-        CheckCorrectRegistrationInfo(registrateUserRequest);
-
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = registrateUserRequest.FirstName,
-            LastName = registrateUserRequest.LastName,
-            Email = registrateUserRequest.Email,
-            PhoneNumber = registrateUserRequest.PhoneNumber,
-            PasswordHash = _passwordHasher.GenerateHash(registrateUserRequest.Password),
-            Birthday = registrateUserRequest.Birthday,
-            Age = (uint)CalculateAge(registrateUserRequest.Birthday),
-            Sex = registrateUserRequest.Sex,
-            AdditionalInfo = registrateUserRequest.AdditionalInfo,
-            RegistrationDate = Now,
-        };
+        var user = CreateUserEntity(registrateUserRequest);
         await _userRepository.CreateUser(user);
-        return user.Id.ToString();
+        return user.Id;
     }
 
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)
@@ -87,6 +72,27 @@ public class UserService : IUserService
         }
 
         return _jwtProvider.GenerateToken(user.Id);
+    }
+
+    public User CreateUserEntity(RegistrateUserRequest request)
+    {
+        CheckCorrectRegistrationInfo(request);
+
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email,
+            PhoneNumber = request.PhoneNumber,
+            PasswordHash = _passwordHasher.GenerateHash(request.Password),
+            Birthday = request.Birthday,
+            Age = (uint)CalculateAge(request.Birthday),
+            Sex = request.Sex,
+            AdditionalInfo = request.AdditionalInfo,
+            RegistrationDate = Now,
+        };
+        return user;
     }
 
     private int CalculateAge(DateOnly birthday)

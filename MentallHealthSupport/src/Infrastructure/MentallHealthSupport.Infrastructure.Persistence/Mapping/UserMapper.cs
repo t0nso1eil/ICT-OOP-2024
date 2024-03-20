@@ -24,23 +24,6 @@ public class UserMapper
             RegistrationDate = userModel.RegistrationDate,
             IsPsychologist = userModel.IsPsychologist,
         };
-
-        if (userModel.Psychologist is not null)
-        {
-            var psychologist = PsychologistMapper.ToEntity(userModel.Psychologist);
-            user.Psychologist = psychologist;
-        }
-        else
-        {
-            user.Psychologist = null;
-        }
-
-        ICollection<Session> sessions = userModel.Sessions.Select(SessionMapper.ToEntity).ToList();
-        foreach (var session in sessions)
-        {
-            user.Sessions.Add(session);
-        }
-
         return user;
     }
 
@@ -61,23 +44,6 @@ public class UserMapper
             RegistrationDate = user.RegistrationDate,
             IsPsychologist = user.IsPsychologist,
         };
-
-        if (user.Psychologist is not null)
-        {
-            var psychologist = PsychologistMapper.ToModel(user.Psychologist);
-            userModel.Psychologist = psychologist;
-        }
-        else
-        {
-            userModel.Psychologist = null;
-        }
-
-        ICollection<SessionModel> sessions = user.Sessions.Select(p => SessionMapper.ToModel(p)).ToList();
-        foreach (var session in sessions)
-        {
-            userModel.Sessions.Add(session);
-        }
-
         return userModel;
     }
 }
