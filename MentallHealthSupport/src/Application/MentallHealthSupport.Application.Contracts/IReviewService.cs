@@ -6,11 +6,11 @@ using MentallHealthSupport.Application.Models.Entities;
 
 public interface IReviewService
 {
-    public Task CreateReview(CreateReviewRequest request);
+    public Task<string> CreateReview(CreateReviewRequest request);
 
-    public Task UpdateReview(Guid reviewId, UpdateReviewRequest request);
+    public Task<string> UpdateReview(Guid reviewId, UpdateReviewRequest request);
 
-    public Task DeleteReview(Guid reviewId);
+    public Task<string> DeleteReview(Guid reviewId);
 
     public ICollection<PublicReviewInfoResponse> GetPsychologistReviews(Guid reviewId);
 }

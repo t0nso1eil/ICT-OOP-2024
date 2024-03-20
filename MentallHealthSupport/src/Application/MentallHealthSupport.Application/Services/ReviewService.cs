@@ -3,6 +3,8 @@ using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts;
 using MentallHealthSupport.Application.Models.Dto;
 using MentallHealthSupport.Application.Models.Entities;
+using MentallHealthSupport.Application.Exceptions;
+
 
 namespace MentallHealthSupport.Application.Services;
 
@@ -17,7 +19,7 @@ public class ReviewService : IReviewService
         _reviewRepository = reviewRepository;
     }
 
-    public async Task CreateReview(CreateReviewRequest createReviewRequest)
+    public async Task<string> CreateReview(CreateReviewRequest createReviewRequest)
     {
         var review = new Review
         {
@@ -30,32 +32,36 @@ public class ReviewService : IReviewService
         };
 
         await _reviewRepository.CreateReview(review);
+        return review.Id.ToString();
     }
 
 
-    public async Task UpdateReview(Guid reviewId, UpdateReviewRequest updateReviewRequest)
+    public async Task<string> UpdateReview(Guid reviewId, UpdateReviewRequest updateReviewRequest)
     {
         var review = await _reviewRepository.GetReviewById(reviewId);
         if (review == null)
         {
-            throw new Exception("Review not found");
+            throw new NotFoundException("Review not found");
         }
 
         review.Rate = updateReviewRequest.NewRate;
         review.Description = updateReviewRequest.NewDescrption;
 
         await _reviewRepository.UpdateReview(review);
+        return review.Id.ToString();
     }
+    
 
-    public async Task DeleteReview(Guid reviewId)
+    public async Task<string> DeleteReview(Guid reviewId)
     {
         var review = await _reviewRepository.GetReviewById(reviewId);
         if (review == null)
         {
-            throw new Exception("Review not found");
+            throw new NotFoundException("Review not found");
         }
 
         await _reviewRepository.DeleteReview(reviewId);
+        return review.Id.ToString();
     }
 
     public ICollection<PublicReviewInfoResponse> GetPsychologistReviews(Guid reviewId)
