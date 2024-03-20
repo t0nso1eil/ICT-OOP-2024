@@ -1,6 +1,13 @@
-namespace MentallHealthSupport.Application.Models.Dto;
+using MentallHealthSupport.Application.Models.Entities;
 
-public record UpdateReviewRequest(
-    uint NewRate,
-    string NewDescrption
-    );
+namespace MentallHealthSupport.Application.Models.Dto
+{
+    public record UpdateReviewRequest(uint NewRate, string NewDescription)
+    {
+        public void UpdateReview(Review review)
+        {
+            review.Rate = NewRate;
+            review.Description = NewDescription;
+        }
+    }
+}
