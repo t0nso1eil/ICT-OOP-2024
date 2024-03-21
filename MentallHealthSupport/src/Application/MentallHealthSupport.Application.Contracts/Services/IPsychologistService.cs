@@ -7,7 +7,7 @@ public interface IPsychologistService
 
     public Task<PublicPsychologistInfoResponse> GetPsychologist(Guid psychologistId);
 
-    public Task UpdatePsychologist(Guid psychologistId, UpdatePsychologistRequest updatePsychologistRequest);
+    public Task<PublicPsychologistInfoResponse> UpdatePsychologist(Guid psychologistId, UpdatePsychologistRequest updatePsychologistRequest);
 
     public ICollection<PublicPsychologistInfoResponse> GetAllPsychologists();
 

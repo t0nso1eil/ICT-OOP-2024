@@ -1,6 +1,7 @@
 #pragma warning disable IDE0008
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -23,7 +24,7 @@ public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepositor
         var reviewModel = await dbContext.Reviews.FirstOrDefaultAsync(review => review.Id == id);
         if (reviewModel == null)
         {
-            throw new Exception("No reviews found");
+            throw new NotFoundException("No reviews found");
         }
 
         return MapToEntity(reviewModel);
@@ -42,7 +43,7 @@ public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepositor
         var currReview = await dbContext.Reviews.FindAsync(id);
         if (currReview == null)
         {
-            throw new Exception("No reviews found");
+            throw new NotFoundException("No reviews found");
         }
 
         dbContext.Reviews.Remove(currReview);

@@ -15,16 +15,16 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
 
         public SpotController(ISpotService spotService)
         {
-            _spotService = spotService ?? throw new ArgumentNullException(nameof(spotService));
+            _spotService = spotService;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateSpot([FromBody] CreateSpotRequest createSpotRequest)
         {
             try
             {
                 var spotId = await _spotService.CreateNewSpot(createSpotRequest);
-                return Ok(spotId);
+                return Ok(new { SpotId = spotId });
             }
             catch (ConflictException ex)
             {
@@ -37,12 +37,12 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateSpotStatus(UpdateSpotRequest updateSpotRequest)
+        public async Task<IActionResult> UpdateSpotStatus(Guid id, string status)
         {
             try
             {
-                await _spotService.UpdateSpotStatus(updateSpotRequest);
-                return NoContent();
+                var spot = await _spotService.UpdateSpotStatus(id, status);
+                return Ok(spot);
             }
             catch (NotFoundException ex)
             {

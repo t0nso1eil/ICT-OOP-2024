@@ -15,16 +15,16 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
 
         public SessionController(ISessionService sessionService)
         {
-            _sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            _sessionService = sessionService;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateSession([FromBody] CreateSessionRequest createSessionRequest)
         {
             try
             {
                 var sessionId = await _sessionService.CreateNewSession(createSessionRequest);
-                return Ok(sessionId);
+                return Ok(new { SessionId = sessionId });
             }
             catch (ConflictException ex)
             {
@@ -36,14 +36,13 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("update-status")]
-        public async Task<IActionResult> UpdateSessionStatus([FromBody] UpdateSessionRequest updateSessionRequest)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateSessionStatus(Guid id, string status)
         {
             try
             {
-                await _sessionService.UpdateSessionStatus(updateSessionRequest);
-                return NoContent();
+                var session = await _sessionService.UpdateSessionStatus(id, status);
+                return Ok(session);
             }
             catch (NotFoundException ex)
             {
@@ -55,8 +54,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("user-sessions/{userId}")]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserSessions(Guid userId)
         {
             try

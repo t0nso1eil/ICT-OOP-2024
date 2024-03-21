@@ -1,14 +1,16 @@
 #pragma warning disable SA1024
 #pragma warning disable SA1028
 #pragma warning disable SA1508
+#pragma warning disable CS1998
 
 using MentallHealthSupport.Application.Contracts.Services;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Psychologist;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
-[Route("[controller]/psychologists")]
+[Route("[controller]")]
 
 public class PsychologistController: ControllerBase
 {
@@ -19,34 +21,98 @@ public class PsychologistController: ControllerBase
         _psychologistService = psychologistService;
     }
     
-    [HttpGet]
-    public Task<PublicPsychologistInfoResponse> GetPsychologist(Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetPsychologist(Guid id)
     {
-        return _psychologistService.GetPsychologist(id);
+        try
+        {
+            var psycho = await _psychologistService.GetPsychologist(id);
+            return Ok(new { Psychologist = psycho });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
 
-    [HttpPatch]
-    public Task UpdatePsychologist(Guid id, [FromBody] UpdatePsychologistRequest updatePsychologistRequest)
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdatePsychologist(Guid id, [FromBody] UpdatePsychologistRequest updatePsychologistRequest)
     {
-        return _psychologistService.UpdatePsychologist(id, updatePsychologistRequest);
+        try
+        {
+            var psycho = await _psychologistService.UpdatePsychologist(id, updatePsychologistRequest);
+            return Ok(psycho);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (IncorrectInputException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
     
-    [HttpGet("/users")]
-    public ICollection<PublicPsychologistInfoResponse> GetAllPsychologists()
+    [HttpGet]
+    public async Task<IActionResult> GetAllPsychologists()
     {
-        return _psychologistService.GetAllPsychologists();
+        try
+        {
+            var psychos = _psychologistService.GetAllPsychologists();
+            return Ok(psychos);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
     
     [HttpGet("/byPrice")]
-    public ICollection<PublicPsychologistInfoResponse> GetPsychologistsByPrice([FromQuery] decimal priceMin, [FromQuery] decimal priceMax)
+    public async Task<IActionResult> GetPsychologistsByPrice([FromQuery] decimal priceMin, [FromQuery] decimal priceMax)
     {
-        return _psychologistService.GetPsychologistsByPrice(priceMin, priceMax);
+        try
+        {
+            var psychos = _psychologistService.GetPsychologistsByPrice(priceMin, priceMax);
+            return Ok(psychos);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
     
     [HttpGet("/byRate")]
-    public ICollection<PublicPsychologistInfoResponse> GetPsychologistByRate([FromQuery] float rateMin, [FromQuery] float rateMax)
+    public async Task<IActionResult> GetPsychologistByRate([FromQuery] float rateMin, [FromQuery] float rateMax)
     {
-        return _psychologistService.GetPsychologistsByRate(rateMin, rateMax);
+        try
+        {
+            var psychos = _psychologistService.GetPsychologistsByRate(rateMin, rateMax);
+            return Ok(psychos);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
     
 }

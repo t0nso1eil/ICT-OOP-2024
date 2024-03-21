@@ -8,7 +8,7 @@ using MentallHealthSupport.Application.Models.Dto.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
-[Route("[controller]/users")]
+[Route("[controller]")]
 public class AuthController(IUserService userService, IPsychologistService psychologistService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
@@ -21,7 +21,7 @@ public class AuthController(IUserService userService, IPsychologistService psych
         HttpContext.Response.Cookies.Append("coo-coo", token);
     }
 
-    [HttpPost("/reg_user")]
+    [HttpPost("/regUser")]
     public async Task<IActionResult> RegistrateAsUser([FromBody] RegistrateUserRequest request)
     {
         try
@@ -43,9 +43,25 @@ public class AuthController(IUserService userService, IPsychologistService psych
         }
     }
     
-    [HttpPost("/reg_psycho")]
-    public async Task RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
+    [HttpPost("/regPsycho")]
+    public async Task<IActionResult> RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
     {
-        await _psychologistService.CreatePsychologist(request);
+        try
+        {
+            var psychoId = await _psychologistService.CreatePsychologist(request);
+            return Ok(new { PsychologistId = psychoId });
+        }
+        catch (ConflictException ex)
+        {
+            return Conflict(new { Error = ex.Message });
+        }
+        catch (IncorrectInputException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
 }

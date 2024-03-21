@@ -1,4 +1,7 @@
+#pragma warning disable CS1998
+
 using MentallHealthSupport.Application.Contracts.Services;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Review;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,26 +18,82 @@ public class ReviewController : ControllerBase
     }
 
     [HttpPost]
-    public Task CreateReview([FromBody] CreateReviewRequest request)
+    public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest request)
     {
-        return _service.CreateReview(request);
+        try
+        {
+            var id = await _service.CreateReview(request);
+            return Ok(new { ReviewId = id });
+        }
+        catch (ConflictException ex)
+        {
+            return Conflict(new { Error = ex.Message });
+        }
+        catch (IncorrectInputException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
 
-    [HttpPatch]
-    public Task UpdateReview(Guid id, [FromBody] UpdateReviewRequest request)
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdateReview(Guid id, [FromBody] UpdateReviewRequest request)
     {
-        return _service.UpdateReview(id, request);
+        try
+        {
+            var review = await _service.UpdateReview(id, request);
+            return Ok(review);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (IncorrectInputException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
 
-    [HttpDelete]
-    public Task DeleteReview(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteReview(Guid id)
     {
-        return _service.DeleteReview(id);
+        try
+        {
+            await _service.DeleteReview(id);
+            return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
 
-    [HttpGet]
-    public ICollection<PublicReviewInfoResponse> GetPsychoReviews(Guid psychoId)
+    [HttpGet("{psychoId}")]
+    public async Task<IActionResult> GetPsychoReviews(Guid psychoId)
     {
-        return _service.GetPsychologistReviews(psychoId);
+        try
+        {
+            var reviews = _service.GetPsychologistReviews(psychoId);
+            return Ok(reviews);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
     }
 }

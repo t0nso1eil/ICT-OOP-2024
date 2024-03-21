@@ -5,7 +5,6 @@
 
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Exceptions;
-using MentallHealthSupport.Application.Models.Dto;
 using MentallHealthSupport.Application.Models.Dto.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +18,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers;
 
         public UserController(IUserService userService)
         {
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _userService = userService;
         }
 
         [HttpGet("{id}")]
@@ -45,30 +44,16 @@ namespace MentallHealthSupport.Presentation.Http.Controllers;
         {
             try
             {
-                await _userService.UpdateUser(id, updateUserRequest);
-                return NoContent();
+                var user = await _userService.UpdateUser(id, updateUserRequest);
+                return Ok(user);
             }
             catch (NotFoundException ex)
             {
                 return NotFound(new { Error = ex.Message });
             }
-            catch (Exception ex)
+            catch (IncorrectInputException ex)
             {
-                return StatusCode(500, new { Error = ex.Message });
-            }
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
-        {
-            try
-            {
-                var token = await _userService.Login(loginRequest);
-                return Ok(new { Token = token });
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new { Error = ex.Message });
+                return BadRequest(new { Error = ex.Message });
             }
             catch (Exception ex)
             {

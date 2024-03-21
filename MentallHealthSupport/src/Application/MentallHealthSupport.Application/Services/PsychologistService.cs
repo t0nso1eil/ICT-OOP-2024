@@ -57,7 +57,7 @@ public class PsychologistService: IPsychologistService
         return CreatePsychologistInfoResponse(psycho);
     }
 
-    public async Task UpdatePsychologist(Guid psychologistId, UpdatePsychologistRequest updatePsychologistRequest)
+    public async Task<PublicPsychologistInfoResponse> UpdatePsychologist(Guid psychologistId, UpdatePsychologistRequest updatePsychologistRequest)
     {
         var psycho = await _psychologistRepository.GetPsychologistById(psychologistId);
         var user = await _userRepository.GetUserById(psycho.User.Id);
@@ -67,6 +67,7 @@ public class PsychologistService: IPsychologistService
         psycho.Specialization = updatePsychologistRequest.Specialization ?? psycho.Specialization;
         psycho.PricePerHour = updatePsychologistRequest.PricePerHour ?? psycho.PricePerHour;
         await _psychologistRepository.UpdatePsychologist(psycho);
+        return CreatePsychologistInfoResponse(psycho);
     }
 
     public ICollection<PublicPsychologistInfoResponse> GetAllPsychologists()
