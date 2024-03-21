@@ -1,3 +1,5 @@
+#pragma warning disable IDE0008
+
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Entities;

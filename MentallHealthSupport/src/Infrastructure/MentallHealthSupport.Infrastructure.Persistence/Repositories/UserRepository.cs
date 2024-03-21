@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0008
+#pragma warning disable SA1028
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Exceptions;
@@ -59,5 +60,4 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
     {
         return UserMapper.ToModel(entity);
     }
-    
 }

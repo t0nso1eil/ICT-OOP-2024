@@ -99,9 +99,15 @@ public class UserService : IUserService
 
     private PublicUserInfoResponse CreateUserInfoResponse(User user)
     {
-        return new PublicUserInfoResponse(user.FirstName, user.LastName,
-            user.Email, user.PhoneNumber, user.Birthday,
-            user.Age, user.AdditionalInfo, user.RegistrationDate);
+        return new PublicUserInfoResponse(
+            user.FirstName,
+            user.LastName,
+            user.Email,
+            user.PhoneNumber,
+            user.Birthday,
+            user.Age,
+            user.AdditionalInfo,
+            user.RegistrationDate);
     }
 
     private int CalculateAge(DateOnly birthday)

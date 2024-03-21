@@ -1,6 +1,7 @@
 #pragma warning disable CA1725
 #pragma warning disable IDE0161
 #pragma warning disable IDE0005
+#pragma warning disable IDE0008
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
@@ -32,10 +33,8 @@ namespace MentallHealthSupport.Application.Services
         public async Task<PublicReviewInfoResponse> UpdateReview(Guid reviewId, UpdateReviewRequest updateReviewRequest)
         {
             var review = await _reviewRepository.GetReviewById(reviewId);
-            
             review.Rate = updateReviewRequest.Rate ?? review.Rate;
             review.Description = updateReviewRequest.Description ?? review.Description;
-            
             await _reviewRepository.UpdateReview(review);
             return CreateReviewInfoResponse(review);
         }
@@ -70,7 +69,8 @@ namespace MentallHealthSupport.Application.Services
 
         private PublicReviewInfoResponse CreateReviewInfoResponse(Review review)
         {
-            return new PublicReviewInfoResponse(review.Psychologist.User.FirstName,
+            return new PublicReviewInfoResponse(
+                review.Psychologist.User.FirstName,
                 review.Psychologist.User.LastName,
                 review.User.FirstName,
                 review.User.LastName,

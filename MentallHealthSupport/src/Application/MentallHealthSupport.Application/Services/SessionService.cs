@@ -1,4 +1,6 @@
 #pragma warning disable IDE0005
+#pragma warning disable IDE0008
+#pragma warning disable SA1028
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
@@ -39,18 +41,18 @@ public class SessionService : ISessionService
     {
         var sessionToUpdate = await _sessionRepository.GetSessionById(id);
         bool statusIsDefined = Enum.IsDefined(typeof(SessionStatuses), status);
-        if (statusIsDefined) 
-        { 
-            sessionToUpdate.Status = status; 
+        if (statusIsDefined)
+        {
+            sessionToUpdate.Status = status;
             await _sessionRepository.UpdateSessionStatus(sessionToUpdate);
         }
         else
-        { 
+        {
             throw new IncorrectInputException("Incorrect session status");
         }
+        
         return CreateSessionInfoResponse(sessionToUpdate);
     }
-    
 
     public async Task<ICollection<PublicSessionInfoResponse>> GetUserSessions(Guid userId)
     {
@@ -71,14 +73,15 @@ public class SessionService : ISessionService
 
     private PublicSessionInfoResponse CreateSessionInfoResponse(Session session)
     {
-        return new PublicSessionInfoResponse(session.Spot.Psychologist.User.FirstName,
+        return new PublicSessionInfoResponse(
+            session.Spot.Psychologist.User.FirstName,
             session.Spot.Psychologist.User.LastName,
             session.User.FirstName,
             session.User.LastName,
             session.Spot.Date,
             session.Spot.HourStart,
             session.Spot.HourEnd,
-            session.Status, 
+            session.Status,
             session.Price);
     }
 }

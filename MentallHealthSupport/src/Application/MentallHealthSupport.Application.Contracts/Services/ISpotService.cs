@@ -1,5 +1,4 @@
 ﻿using MentallHealthSupport.Application.Models.Dto.Spot;
-using MentallHealthSupport.Application.Models.Entities;
 
 namespace MentallHealthSupport.Application.Contracts.Services;
 

@@ -1,5 +1,6 @@
 #pragma warning disable IDE0005
 #pragma warning disable IDE0161
+#pragma warning disable IDE0008
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
@@ -100,7 +101,8 @@ namespace MentallHealthSupport.Application.Services
 
         private PublicSpotInfoResponse CreateSpotInfoResponse(Spot spot)
         {
-            return new PublicSpotInfoResponse(spot.Psychologist.User.FirstName,
+            return new PublicSpotInfoResponse(
+                spot.Psychologist.User.FirstName,
                 spot.Psychologist.User.LastName,
                 spot.Date,
                 spot.HourStart,

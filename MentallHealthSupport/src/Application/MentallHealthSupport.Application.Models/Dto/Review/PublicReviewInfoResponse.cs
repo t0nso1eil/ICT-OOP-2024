@@ -5,6 +5,6 @@ public record PublicReviewInfoResponse(
     string PsychologistLastName,
     string UserFirstName,
     string UserLastName,
-    uint Rate, 
-    string Description, 
+    uint Rate,
+    string Description,
     DateTime PostTime);

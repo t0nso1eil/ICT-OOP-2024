@@ -6,5 +6,4 @@ public record PublicSpotInfoResponse(
     DateOnly Date,
     DateTime StartTime,
     DateTime EndTime,
-    string Status
-    );
+    string Status);
