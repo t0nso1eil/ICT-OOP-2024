@@ -16,7 +16,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
 
         public SessionController(ISessionService sessionService)
         {
-            _sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            _sessionService = sessionService;
         }
 
         [HttpPost("create")]
@@ -45,7 +45,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             try
             {
                 await _sessionService.UpdateSessionStatus(updateSessionRequest);
-                return NoContent();
+                return Ok(updateSessionRequest);
             }
             catch (NotFoundException ex)
             {

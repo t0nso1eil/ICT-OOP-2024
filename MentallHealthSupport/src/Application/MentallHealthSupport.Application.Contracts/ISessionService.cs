@@ -8,5 +8,5 @@ public interface ISessionService
 {
     Task<string> CreateNewSession(CreateSessionRequest createSessionRequest);
     Task UpdateSessionStatus(UpdateSessionRequest updateSessionRequest);
-    Task<ICollection<Session>> GetUserSessions(Guid userId); 
+    Task<ICollection<SessionInfo>> GetUserSessions(Guid userId); 
 }

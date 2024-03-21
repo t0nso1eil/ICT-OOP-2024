@@ -60,11 +60,22 @@ public class SessionService : ISessionService
         }
     }
 
-    public async Task<ICollection<Session>> GetUserSessions(Guid userId)
+    public async Task<ICollection<SessionInfo>> GetUserSessions(Guid userId)
     {
-        var sessions = await _sessionRepository.GetSessionsByUserId(userId); 
+        var sessions = await _sessionRepository.GetSessionsByUserId(userId);
+        var sessionInfos = new List<SessionInfo>();
 
-        return sessions;
+        foreach (var session in sessions)
+        {
+            sessionInfos.Add(new SessionInfo(
+                Id: session.Id,
+                Status: session.Status,
+                Price: session.Price
+            ));
+        }
+
+        return sessionInfos;
     }
+
 
 }

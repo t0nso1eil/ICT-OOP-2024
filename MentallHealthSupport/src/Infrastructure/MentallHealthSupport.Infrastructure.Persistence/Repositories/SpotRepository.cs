@@ -21,11 +21,11 @@ public class SpotRepository(ApplicationDbContext dbContext): ISpotRepository
 
     public async Task<ICollection<Spot>> GetPsychologistSchedule(Guid psychologistId)
     {
-        var spots = await dbContext.Spots
-            .Where(spot => spot.Id == psychologistId)
+        var psychologistSpots = await dbContext.Spots
+            .Where(spot => spot.Psychologist.Id == psychologistId)
             .ToListAsync();
         
-        return MapToEntity(spots);
+        return psychologistSpots.Select(spotModel => MapToEntity(spotModel)).ToList();
     }
     
     public async Task UpdateSpotStatus(Spot newSpot)

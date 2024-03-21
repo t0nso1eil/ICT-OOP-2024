@@ -15,7 +15,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
 
         public SpotController(ISpotService spotService)
         {
-            _spotService = spotService ?? throw new ArgumentNullException(nameof(spotService));
+            _spotService = spotService;
         }
 
         [HttpPost("create")]
@@ -43,7 +43,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             try
             {
                 await _spotService.UpdateSpotStatus(updateSpotRequest);
-                return NoContent();
+                return Ok(updateSpotRequest);
             }
             catch (NotFoundException ex)
             {
