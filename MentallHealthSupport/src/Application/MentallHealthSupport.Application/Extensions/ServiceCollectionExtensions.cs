@@ -10,6 +10,8 @@ public static class ServiceCollectionExtensions
         collection.AddScoped<IUserService, UserService>();
         collection.AddScoped<IPsychologistService, PsychologistService>();
         collection.AddScoped<IReviewService, ReviewService>();
+        collection.AddScoped<ISessionService, SessionService>();
+        collection.AddScoped<ISpotService, SpotService>();
         return collection;
     }
 }

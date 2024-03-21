@@ -5,10 +5,12 @@
 #pragma warning disable IDE0008
 #pragma warning disable SA1117
 #pragma warning disable SA1116
+#pragma warning disable  IDE0161
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
-using MentallHealthSupport.Application.Models.Dto;
+using MentallHealthSupport.Application.Models.Dto.Psychologist;
+using MentallHealthSupport.Application.Models.Dto.User;
 using MentallHealthSupport.Application.Models.Entities;
 using static System.DateTime;
 

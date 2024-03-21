@@ -15,10 +15,5 @@ public class ReviewConfiguration : IEntityTypeConfiguration<ReviewModel>
         builder.Property(review => review.UserId).HasColumnName("user_id").HasColumnType("character varying").HasMaxLength(255);
         builder.Property(review => review.PostTime).HasColumnName("post_time").HasColumnType("timestamp without time zone");
         builder.ToTable("review");
-
-        // builder.ToTable("review");
-        // builder.HasKey(review => review.Id).HasName("review_pkey");
-        // builder.HasOne(review => review.Psychologist).WithMany(psycho => psycho.Reviews).HasForeignKey(review => review.PsychologistId).HasConstraintName("review_psychologist_psychologist_id_fk");
-        // builder.HasOne(review => review.User).WithMany(user => user.Reviews).HasForeignKey(review => review.UserId).HasConstraintName("review_user_user_id_fk");
     }
 }

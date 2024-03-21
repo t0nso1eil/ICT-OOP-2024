@@ -3,11 +3,12 @@
 #pragma warning disable IDE0008
 #pragma warning restore SA1204
 #pragma warning disable IDE0007
+#pragma warning disable IDE0005
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Exceptions;
-using MentallHealthSupport.Application.Models.Dto;
+using MentallHealthSupport.Application.Models.Dto.User;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Application.Services.Auth;
 using Microsoft.Extensions.Options;

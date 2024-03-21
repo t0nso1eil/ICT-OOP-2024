@@ -1,4 +1,6 @@
-﻿namespace MentallHealthSupport.Application.Models.Entities;
+﻿#pragma warning disable CA1724
+
+namespace MentallHealthSupport.Application.Models.Entities;
 
 public class Spot
 {

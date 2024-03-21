@@ -1,13 +1,13 @@
-﻿using MentallHealthSupport.Application.Models.Dto;
+﻿using MentallHealthSupport.Application.Models.Dto.Session;
 using MentallHealthSupport.Application.Models.Entities;
 
 namespace MentallHealthSupport.Application.Contracts.Services;
 
 public interface ISessionService
 {
-    Task CreateNewSession(CreateSessionRequest createSessionRequest);
+    Task<string> CreateNewSession(CreateSessionRequest createSessionRequest);
 
-    Task UpdateSessionStatus(Guid id, string newStatus);
+    Task UpdateSessionStatus(UpdateSessionRequest updateSessionRequest);
 
     Task<ICollection<Session>> GetUserSessions(Guid userId);
 }

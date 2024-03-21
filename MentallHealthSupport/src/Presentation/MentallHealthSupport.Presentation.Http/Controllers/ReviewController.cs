@@ -1,5 +1,5 @@
 using MentallHealthSupport.Application.Contracts.Services;
-using MentallHealthSupport.Application.Models.Dto;
+using MentallHealthSupport.Application.Models.Dto.Review;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;

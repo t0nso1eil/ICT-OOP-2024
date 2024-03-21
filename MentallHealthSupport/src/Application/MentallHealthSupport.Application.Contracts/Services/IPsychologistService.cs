@@ -1,4 +1,4 @@
-﻿using MentallHealthSupport.Application.Models.Dto;
+﻿using MentallHealthSupport.Application.Models.Dto.Psychologist;
 
 namespace MentallHealthSupport.Application.Contracts.Services;
 public interface IPsychologistService

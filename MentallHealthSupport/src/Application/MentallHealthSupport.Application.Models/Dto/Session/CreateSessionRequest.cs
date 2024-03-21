@@ -1,4 +1,4 @@
-namespace MentallHealthSupport.Application.Models.Dto;
+namespace MentallHealthSupport.Application.Models.Dto.Session;
 
 public record CreateSessionRequest(
     string Status,

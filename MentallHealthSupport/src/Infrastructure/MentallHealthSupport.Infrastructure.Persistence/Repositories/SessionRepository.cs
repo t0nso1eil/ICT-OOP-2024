@@ -1,4 +1,5 @@
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -21,22 +22,15 @@ public class SessionRepository(ApplicationDbContext dbContext) : ISessionReposit
         var sessionModel = await dbContext.Sessions.FirstOrDefaultAsync(session => session.Id == newSession.Id);
         if (sessionModel != null)
         {
-            sessionModel.Status = newSession.Status;
+            var newSessionModel = MapToModel(newSession);
+            var currSession = await dbContext.Sessions.FindAsync(newSessionModel.Id);
+            dbContext.Entry(currSession!).CurrentValues.SetValues(newSessionModel);
             await dbContext.SaveChangesAsync();
         }
         else
         {
-            throw new ArgumentException("Такой сессии нет");
+            throw new NotFoundException("Session not found");
         }
-    }
-
-    public async Task<ICollection<Session>> GetUserSessions(Guid userId)
-    {
-        var userSessions = await dbContext.Sessions
-            .Where(session => session.User.Id == userId)
-            .ToListAsync();
-
-        return userSessions.Select(sessionModel => MapToEntity(sessionModel)).ToList();
     }
 
     public async Task<Session> GetSessionById(Guid id)
@@ -44,7 +38,7 @@ public class SessionRepository(ApplicationDbContext dbContext) : ISessionReposit
         var sessionModel = await dbContext.Sessions.FirstOrDefaultAsync(session => session.Id == id);
         if (sessionModel == null)
         {
-            throw new Exception("такой сессии нет");
+            throw new NotFoundException("Session not found");
         }
 
         return MapToEntity(sessionModel);
@@ -52,7 +46,7 @@ public class SessionRepository(ApplicationDbContext dbContext) : ISessionReposit
 
     public async Task<ICollection<Session>> GetSessionsByUserId(Guid userId)
     {
-        var userSessions = await dbContext.Sessions
+        ICollection<SessionModel> userSessions = await dbContext.Sessions
             .Where(session => session.User.Id == userId)
             .ToListAsync();
 

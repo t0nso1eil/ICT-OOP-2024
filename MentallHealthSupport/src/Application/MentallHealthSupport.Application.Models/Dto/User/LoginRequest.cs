@@ -1,4 +1,4 @@
-﻿namespace MentallHealthSupport.Application.Models.Dto;
+﻿namespace MentallHealthSupport.Application.Models.Dto.User;
 
 public record LoginRequest(
     string Email,

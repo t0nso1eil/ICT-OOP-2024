@@ -3,7 +3,7 @@
 #pragma warning disable SA1508
 
 using MentallHealthSupport.Application.Contracts.Services;
-using MentallHealthSupport.Application.Models.Dto;
+using MentallHealthSupport.Application.Models.Dto.Psychologist;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
