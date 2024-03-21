@@ -38,27 +38,20 @@ public class SessionService : ISessionService
         return session.Id.ToString();
     }
 
-    public async Task UpdateSessionStatus(UpdateSessionRequest updateSessionRequest)
+    public async Task UpdateSessionStatus(Guid id, string status)
     {
-        var sessionToUpdate = await _sessionRepository.GetSessionById(updateSessionRequest.Id);
+        var sessionToUpdate = await _sessionRepository.GetSessionById(id);
 
-        if (updateSessionRequest.Status != null)
+        bool statusIsDefined = Enum.IsDefined(typeof(SessionStatuses), status);
+
+        if (statusIsDefined)
         {
-            bool statusIsDefined = Enum.IsDefined(typeof(SessionStatuses), updateSessionRequest.Status);
-
-            if (statusIsDefined)
-            {
-                sessionToUpdate.Status = updateSessionRequest.Status;
-                await _sessionRepository.UpdateSessionStatus(sessionToUpdate);
-            }
-            else
-            {
-                throw new IncorrectInputException("Incorrect session status");
-            }
+            sessionToUpdate.Status = status;
+            await _sessionRepository.UpdateSessionStatus(sessionToUpdate);
         }
         else
         {
-            throw new IncorrectInputException("Session status cannot be null");
+            throw new IncorrectInputException("Incorrect session status");
         }
     }
 

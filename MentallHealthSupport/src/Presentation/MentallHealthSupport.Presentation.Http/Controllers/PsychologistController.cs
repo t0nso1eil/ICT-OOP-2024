@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
-[Route("[controller]/psychologists")]
+[Route("[controller]")]
 
 public class PsychologistController: ControllerBase
 {
@@ -19,19 +19,19 @@ public class PsychologistController: ControllerBase
         _psychologistService = psychologistService;
     }
     
-    [HttpGet]
+    [HttpGet("{id}")]
     public Task<PublicPsychologistInfoResponse> GetPsychologist(Guid id)
     {
         return _psychologistService.GetPsychologist(id);
     }
 
-    [HttpPatch]
+    [HttpPatch("{id}")]
     public Task UpdatePsychologist(Guid id, [FromBody] UpdatePsychologistRequest updatePsychologistRequest)
     {
         return _psychologistService.UpdatePsychologist(id, updatePsychologistRequest);
     }
     
-    [HttpGet("/users")]
+    [HttpGet]
     public ICollection<PublicPsychologistInfoResponse> GetAllPsychologists()
     {
         return _psychologistService.GetAllPsychologists();

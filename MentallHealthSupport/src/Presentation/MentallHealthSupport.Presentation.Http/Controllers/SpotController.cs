@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class SpotController : ControllerBase
     {
         private readonly ISpotService _spotService;
@@ -18,7 +18,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             _spotService = spotService ?? throw new ArgumentNullException(nameof(spotService));
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateSpot([FromBody] CreateSpotRequest createSpotRequest)
         {
             try
@@ -37,11 +37,11 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateSpotStatus(UpdateSpotRequest updateSpotRequest)
+        public async Task<IActionResult> UpdateSpotStatus(Guid id, string status)
         {
             try
             {
-                await _spotService.UpdateSpotStatus(updateSpotRequest);
+                await _spotService.UpdateSpotStatus(id, status);
                 return NoContent();
             }
             catch (NotFoundException ex)
@@ -54,7 +54,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpGet("/spots/{id}")]
+        [HttpGet("/free/{psychologistId}")]
         public async Task<IActionResult> GetPsychologistFreeSpots(Guid psychologistId)
         {
             try
@@ -68,7 +68,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpGet("/schedule/{id}")]
+        [HttpGet("/schedule/{psychologistId}")]
         public async Task<IActionResult> GetPsychologistSchedule(Guid psychologistId)
         {
             try

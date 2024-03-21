@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class SessionController : ControllerBase
     {
         private readonly ISessionService _sessionService;
@@ -18,7 +18,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             _sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateSession([FromBody] CreateSessionRequest createSessionRequest)
         {
             try
@@ -36,13 +36,12 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("update-status")]
-        public async Task<IActionResult> UpdateSessionStatus([FromBody] UpdateSessionRequest updateSessionRequest)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> UpdateSessionStatus(Guid id, string status)
         {
             try
             {
-                await _sessionService.UpdateSessionStatus(updateSessionRequest);
+                await _sessionService.UpdateSessionStatus(id, status);
                 return NoContent();
             }
             catch (NotFoundException ex)
@@ -55,8 +54,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("user-sessions/{userId}")]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserSessions(Guid userId)
         {
             try

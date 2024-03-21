@@ -7,7 +7,7 @@ public interface ISpotService
 {
     Task<string> CreateNewSpot(CreateSpotRequest createSpotRequest);
 
-    Task UpdateSpotStatus(UpdateSpotRequest updateSpotRequest);
+    Task UpdateSpotStatus(Guid id, string status);
 
     Task<ICollection<Spot>> GetPsychologistFreeSpots(Guid psychologistId);
 

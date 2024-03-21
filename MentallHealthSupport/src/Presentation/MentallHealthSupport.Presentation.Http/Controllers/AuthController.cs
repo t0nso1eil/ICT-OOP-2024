@@ -8,7 +8,7 @@ using MentallHealthSupport.Application.Models.Dto.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
-[Route("[controller]/users")]
+[Route("[controller]")]
 public class AuthController(IUserService userService, IPsychologistService psychologistService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
@@ -21,7 +21,7 @@ public class AuthController(IUserService userService, IPsychologistService psych
         HttpContext.Response.Cookies.Append("coo-coo", token);
     }
 
-    [HttpPost("/reg_user")]
+    [HttpPost("/regUser")]
     public async Task<IActionResult> RegistrateAsUser([FromBody] RegistrateUserRequest request)
     {
         try
@@ -43,7 +43,7 @@ public class AuthController(IUserService userService, IPsychologistService psych
         }
     }
     
-    [HttpPost("/reg_psycho")]
+    [HttpPost("/regPsycho")]
     public async Task RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
     {
         await _psychologistService.CreatePsychologist(request);

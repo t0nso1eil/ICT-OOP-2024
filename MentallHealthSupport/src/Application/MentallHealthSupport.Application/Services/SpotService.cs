@@ -45,27 +45,20 @@ namespace MentallHealthSupport.Application.Services
             return spot.Id.ToString();
         }
 
-        public async Task UpdateSpotStatus(UpdateSpotRequest updateSpotRequest)
+        public async Task UpdateSpotStatus(Guid id, string status)
         {
-            var spotToUpdate = await _spotRepository.GetSpotById(updateSpotRequest.Id);
+            var spotToUpdate = await _spotRepository.GetSpotById(id);
 
-            if (updateSpotRequest.Status != null)
+            bool spotIsDefined = Enum.IsDefined(typeof(SessionStatuses), status);
+
+            if (spotIsDefined)
             {
-                bool spotIsDefined = Enum.IsDefined(typeof(SessionStatuses), updateSpotRequest.Status);
-
-                if (spotIsDefined)
-                {
-                    spotToUpdate.Status = updateSpotRequest.Status;
-                    await _spotRepository.UpdateSpotStatus(spotToUpdate);
-                }
-                else
-                {
-                    throw new IncorrectInputException("Incorrect spot status");
-                }
+                spotToUpdate.Status = status;
+                await _spotRepository.UpdateSpotStatus(spotToUpdate);
             }
             else
             {
-                throw new IncorrectInputException("Session status cannot be null");
+                throw new IncorrectInputException("Incorrect spot status");
             }
         }
 

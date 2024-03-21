@@ -20,19 +20,19 @@ public class ReviewController : ControllerBase
         return _service.CreateReview(request);
     }
 
-    [HttpPatch]
+    [HttpPatch("{id}")]
     public Task UpdateReview(Guid id, [FromBody] UpdateReviewRequest request)
     {
         return _service.UpdateReview(id, request);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public Task DeleteReview(Guid id)
     {
         return _service.DeleteReview(id);
     }
 
-    [HttpGet]
+    [HttpGet("{psychoId}")]
     public ICollection<PublicReviewInfoResponse> GetPsychoReviews(Guid psychoId)
     {
         return _service.GetPsychologistReviews(psychoId);

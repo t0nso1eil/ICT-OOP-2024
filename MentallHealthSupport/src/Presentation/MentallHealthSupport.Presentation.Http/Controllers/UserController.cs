@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -47,24 +47,6 @@ namespace MentallHealthSupport.Presentation.Http.Controllers;
             {
                 await _userService.UpdateUser(id, updateUserRequest);
                 return NoContent();
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new { Error = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Error = ex.Message });
-            }
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
-        {
-            try
-            {
-                var token = await _userService.Login(loginRequest);
-                return Ok(new { Token = token });
             }
             catch (NotFoundException ex)
             {
