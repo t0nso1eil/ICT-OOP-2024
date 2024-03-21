@@ -54,9 +54,10 @@ public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
     {
         return UserMapper.ToEntity(model);
     }
-
+    
     private UserModel MapToModel(User entity)
     {
         return UserMapper.ToModel(entity);
     }
+    
 }

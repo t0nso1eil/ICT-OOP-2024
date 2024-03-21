@@ -1,4 +1,10 @@
 namespace MentallHealthSupport.Application.Models.Dto.Review;
 
 public record PublicReviewInfoResponse(
-    Guid UserId, Guid PsychoId, uint Rate, string Description, DateTime PostTime);
+    string PsychologistFirstName,
+    string PsychologistLastName,
+    string UserFirstName,
+    string UserLastName,
+    uint Rate, 
+    string Description, 
+    DateTime PostTime);

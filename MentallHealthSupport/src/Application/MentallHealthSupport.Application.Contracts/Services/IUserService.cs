@@ -8,7 +8,7 @@ public interface IUserService
 
     public Task<PublicUserInfoResponse> GetUser(Guid userId);
 
-    public Task UpdateUser(Guid id, UpdateUserRequest updateUserRequest);
+    public Task<PublicUserInfoResponse> UpdateUser(Guid id, UpdateUserRequest updateUserRequest);
 
     public Task<string> Login(LoginRequest loginRequest);
 

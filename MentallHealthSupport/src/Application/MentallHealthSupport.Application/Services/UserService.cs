@@ -44,10 +44,10 @@ public class UserService : IUserService
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)
     {
         var user = await _userRepository.GetUserById(userId);
-        return new PublicUserInfoResponse(user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.Birthday, user.Age, user.AdditionalInfo, user.RegistrationDate);
+        return CreateUserInfoResponse(user);
     }
 
-    public async Task UpdateUser(Guid id, UpdateUserRequest updateUserRequest)
+    public async Task<PublicUserInfoResponse> UpdateUser(Guid id, UpdateUserRequest updateUserRequest)
     {
         var user = await _userRepository.GetUserById(id);
         user.FirstName = updateUserRequest.FirstName ?? user.FirstName;
@@ -56,6 +56,7 @@ public class UserService : IUserService
         user.PasswordHash = updateUserRequest.Password ?? user.PasswordHash;
         user.AdditionalInfo = updateUserRequest.AdditionalInfo ?? user.AdditionalInfo;
         await _userRepository.UpdateUser(user);
+        return CreateUserInfoResponse(user);
     }
 
     public async Task<string> Login(LoginRequest loginRequest)
@@ -94,6 +95,13 @@ public class UserService : IUserService
             RegistrationDate = Now,
         };
         return user;
+    }
+
+    private PublicUserInfoResponse CreateUserInfoResponse(User user)
+    {
+        return new PublicUserInfoResponse(user.FirstName, user.LastName,
+            user.Email, user.PhoneNumber, user.Birthday,
+            user.Age, user.AdditionalInfo, user.RegistrationDate);
     }
 
     private int CalculateAge(DateOnly birthday)

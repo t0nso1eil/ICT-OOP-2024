@@ -13,39 +13,25 @@ namespace MentallHealthSupport.Application.Services
     public class SpotService : ISpotService
     {
         private readonly ISpotRepository _spotRepository;
+        private readonly IPsychologistRepository _psychologistRepository;
 
-        public SpotService(ISpotRepository spotRepository)
+        public SpotService(ISpotRepository spotRepository, IPsychologistRepository psychologistRepository)
         {
             _spotRepository = spotRepository;
+            _psychologistRepository = psychologistRepository;
         }
 
-        public async Task<string> CreateNewSpot(CreateSpotRequest createSpotRequest)
+        public async Task<Guid> CreateNewSpot(CreateSpotRequest createSpotRequest)
         {
-            if (createSpotRequest.Date < DateOnly.FromDateTime(DateTime.Now))
-            {
-                throw new IncorrectInputException("Incorrect data");
-            }
-
-            if (createSpotRequest.StartTime > createSpotRequest.EndTime)
-            {
-                throw new IncorrectInputException("Incorrect time");
-            }
-
-            var spot = new Spot
-            {
-                Id = Guid.NewGuid(),
-                Date = createSpotRequest.Date,
-                HourStart = createSpotRequest.StartTime,
-                HourEnd = createSpotRequest.EndTime,
-            };
-            var spots = await GetPsychologistSchedule(createSpotRequest.PsychologistId);
+            var spot = await CreateSpotEntity(createSpotRequest);
+            var spots = await _spotRepository.GetPsychologistFreeSpotsById(createSpotRequest.PsychologistId);
             CheckCorrectTime(spots, spot);
             await _spotRepository.CreateSpot(spot);
 
-            return spot.Id.ToString();
+            return spot.Id;
         }
 
-        public async Task UpdateSpotStatus(UpdateSpotRequest updateSpotRequest)
+        public async Task<PublicSpotInfoResponse> UpdateSpotStatus(UpdateSpotRequest updateSpotRequest)
         {
             var spotToUpdate = await _spotRepository.GetSpotById(updateSpotRequest.Id);
 
@@ -67,17 +53,20 @@ namespace MentallHealthSupport.Application.Services
             {
                 throw new IncorrectInputException("Session status cannot be null");
             }
+
+            return CreateSpotInfoResponse(spotToUpdate);
         }
 
-        public async Task<ICollection<Spot>> GetPsychologistFreeSpots(Guid psychologistId)
+        public async Task<ICollection<PublicSpotInfoResponse>> GetPsychologistFreeSpots(Guid psychologistId)
         {
-            var avalibleSpots = await _spotRepository.GetPsychologistFreeSpotsById(psychologistId);
-            return avalibleSpots;
+            var availibleSpots = await _spotRepository.GetPsychologistFreeSpotsById(psychologistId);
+            return availibleSpots.Select(CreateSpotInfoResponse).ToList();
         }
 
-        public async Task<ICollection<Spot>> GetPsychologistSchedule(Guid psychologistId)
+        public async Task<ICollection<PublicSpotInfoResponse>> GetPsychologistSchedule(Guid psychologistId)
         {
-            return await _spotRepository.GetPsychologistSchedule(psychologistId);
+            var schedule =  await _spotRepository.GetPsychologistSchedule(psychologistId);
+            return schedule.Select(CreateSpotInfoResponse).ToList();
         }
 
         private void CheckCorrectTime(ICollection<Spot> spots, Spot spot)
@@ -94,6 +83,33 @@ namespace MentallHealthSupport.Application.Services
                     }
                 }
             }
+        }
+
+        private async Task<Spot> CreateSpotEntity(CreateSpotRequest request)
+        {
+            if (request.Date < DateOnly.FromDateTime(DateTime.Now))
+            {
+                throw new IncorrectInputException("Incorrect data");
+            }
+
+            if (request.StartTime > request.EndTime)
+            {
+                throw new IncorrectInputException("Incorrect time");
+            }
+            return new Spot
+            {
+                Id = Guid.NewGuid(),
+                Psychologist = await _psychologistRepository.GetPsychologistById(request.PsychologistId),
+                Date = request.Date,
+                HourStart = request.StartTime,
+                HourEnd = request.EndTime,
+            };
+        }
+
+        private PublicSpotInfoResponse CreateSpotInfoResponse(Spot spot)
+        {
+            return new PublicSpotInfoResponse(spot.Psychologist.User.FirstName, spot.Psychologist.User.LastName, 
+                spot.Date, spot.HourStart, spot.HourEnd, spot.Status);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace MentallHealthSupport.Application.Contracts.Services;
 public interface IPsychologistService
 {
-    public Task CreatePsychologist(RegistratePsychologistRequest registratePsychologistRequest);
+    public Task<Guid> CreatePsychologist(RegistratePsychologistRequest registratePsychologistRequest);
 
     public Task<PublicPsychologistInfoResponse> GetPsychologist(Guid psychologistId);
 

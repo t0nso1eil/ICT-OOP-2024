@@ -16,7 +16,7 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
 {
     public async Task CreatePsychologist(Psychologist psychologist)
     {
-        var psychologistModel = await MapToModel(psychologist);
+        var psychologistModel = MapToModel(psychologist);
         await dbContext.AddAsync(psychologistModel);
         await dbContext.SaveChangesAsync();
     }
@@ -70,10 +70,8 @@ public class PsychologistRepository(ApplicationDbContext dbContext) : IPsycholog
         return PsychologistMapper.ToEntity(model);
     }
 
-    private async Task<PsychologistModel> MapToModel(Psychologist entity)
+    private PsychologistModel MapToModel(Psychologist entity)
     {
-        var model = PsychologistMapper.ToModel(entity);
-        model.User = (await dbContext.Users.FirstOrDefaultAsync(user => user.Id == entity.User.Id))!;
-        return model;
+        return PsychologistMapper.ToModel(entity);
     }
 }
