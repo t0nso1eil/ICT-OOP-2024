@@ -1,4 +1,6 @@
-﻿namespace MentallHealthSupport.Application.Models.Dto.Psychologist;
+﻿using MentallHealthSupport.Application.Models.Dto.User;
+
+namespace MentallHealthSupport.Application.Models.Dto.Psychologist;
 
 public record RegistratePsychologistRequest(
     string FirstName,
@@ -11,4 +13,18 @@ public record RegistratePsychologistRequest(
     string AdditionalInfo,
     string Specialization,
     DateOnly ExperienceStartDate,
-    decimal PricePerHour);
+    decimal PricePerHour)
+{
+    public RegistrateUserRequest ToRegistrateUserRequest()
+    {
+        return new RegistrateUserRequest(
+            FirstName,
+            LastName,
+            Email,
+            PhoneNumber,
+            Password,
+            Birthday,
+            Sex,
+            AdditionalInfo);
+    }
+}

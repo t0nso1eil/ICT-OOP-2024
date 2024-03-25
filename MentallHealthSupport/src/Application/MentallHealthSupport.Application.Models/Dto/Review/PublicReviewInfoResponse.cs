@@ -7,4 +7,17 @@ public record PublicReviewInfoResponse(
     string UserLastName,
     uint Rate,
     string Description,
-    DateTime PostTime);
+    DateTime PostTime)
+{
+    public static PublicReviewInfoResponse FromReview(Entities.Review review)
+    {
+        return new PublicReviewInfoResponse(
+            review.Psychologist.User.FirstName,
+            review.Psychologist.User.LastName,
+            review.User.FirstName,
+            review.User.LastName,
+            review.Rate,
+            review.Description,
+            review.PostTime);
+    }
+}

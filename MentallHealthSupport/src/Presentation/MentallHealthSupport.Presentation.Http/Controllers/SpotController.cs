@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class SpotController : ControllerBase
     {
         private readonly ISpotService _spotService;

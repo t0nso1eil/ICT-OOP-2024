@@ -12,7 +12,6 @@ using MentallHealthSupport.Application.Models.Dto.User;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Application.Services.Auth;
 using Microsoft.Extensions.Options;
-using static System.DateTime;
 
 namespace MentallHealthSupport.Application.Services;
 public class UserService : IUserService
@@ -36,7 +35,8 @@ public class UserService : IUserService
             throw new ConflictException("User with this email already exists.");
         }
 
-        var user = CreateUserEntity(registrateUserRequest);
+        CheckCorrectRegistrationInfo(registrateUserRequest);
+        var user = registrateUserRequest.CreateUser();
         await _userRepository.CreateUser(user);
         return user.Id;
     }
@@ -44,7 +44,7 @@ public class UserService : IUserService
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)
     {
         var user = await _userRepository.GetUserById(userId);
-        return CreateUserInfoResponse(user);
+        return PublicUserInfoResponse.FromUser(user);
     }
 
     public async Task<PublicUserInfoResponse> UpdateUser(Guid id, UpdateUserRequest updateUserRequest)
@@ -56,7 +56,7 @@ public class UserService : IUserService
         user.PasswordHash = updateUserRequest.Password ?? user.PasswordHash;
         user.AdditionalInfo = updateUserRequest.AdditionalInfo ?? user.AdditionalInfo;
         await _userRepository.UpdateUser(user);
-        return CreateUserInfoResponse(user);
+        return PublicUserInfoResponse.FromUser(user);
     }
 
     public async Task<string> Login(LoginRequest loginRequest)
@@ -70,57 +70,10 @@ public class UserService : IUserService
         var result = _passwordHasher.Verify(loginRequest.Password, user.PasswordHash);
         if (result == false)
         {
-            throw new Exception("неправильный пароль");
+            throw new IncorrectInputException("Incorrect password");
         }
 
         return _jwtProvider.GenerateToken(user.Id);
-    }
-
-    public User CreateUserEntity(RegistrateUserRequest request)
-    {
-        CheckCorrectRegistrationInfo(request);
-
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
-            PasswordHash = _passwordHasher.GenerateHash(request.Password),
-            Birthday = request.Birthday,
-            Age = (uint)CalculateAge(request.Birthday),
-            Sex = request.Sex,
-            AdditionalInfo = request.AdditionalInfo,
-            RegistrationDate = Now,
-        };
-        return user;
-    }
-
-    private PublicUserInfoResponse CreateUserInfoResponse(User user)
-    {
-        return new PublicUserInfoResponse(
-            user.FirstName,
-            user.LastName,
-            user.Email,
-            user.PhoneNumber,
-            user.Birthday,
-            user.Age,
-            user.AdditionalInfo,
-            user.RegistrationDate);
-    }
-
-    private int CalculateAge(DateOnly birthday)
-    {
-        DateTime dateTime = DateTime.Now;
-        DateOnly currentDate = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-        int age = currentDate.Year - birthday.Year;
-        if (currentDate.DayOfYear < birthday.DayOfYear)
-        {
-            age--;
-        }
-
-        return age;
     }
 
     private void CheckCorrectRegistrationInfo(RegistrateUserRequest request)

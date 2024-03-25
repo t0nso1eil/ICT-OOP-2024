@@ -79,7 +79,7 @@ public class PsychologistController: ControllerBase
         }
     }
     
-    [HttpGet("/byPrice")]
+    [HttpGet("/by-price")]
     public async Task<IActionResult> GetPsychologistsByPrice([FromQuery] decimal priceMin, [FromQuery] decimal priceMax)
     {
         try
@@ -97,7 +97,7 @@ public class PsychologistController: ControllerBase
         }
     }
     
-    [HttpGet("/byRate")]
+    [HttpGet("/by-rate")]
     public async Task<IActionResult> GetPsychologistByRate([FromQuery] float rateMin, [FromQuery] float rateMax)
     {
         try

@@ -1,3 +1,5 @@
+using MentallHealthSupport.Application.Models.Dto.User;
+
 namespace MentallHealthSupport.Application.Models.Dto.Psychologist;
 
 public record UpdatePsychologistRequest(
@@ -7,4 +9,10 @@ public record UpdatePsychologistRequest(
     string? Password,
     string? AdditionalInfo,
     string? Specialization,
-    decimal? PricePerHour);
+    decimal? PricePerHour)
+{
+    public UpdateUserRequest ToUpdateUserRequest()
+    {
+        return new UpdateUserRequest(FirstName, LastName, PhoneNumber, Password, AdditionalInfo);
+    }
+}

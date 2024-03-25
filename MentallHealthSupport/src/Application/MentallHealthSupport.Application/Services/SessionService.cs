@@ -32,7 +32,8 @@ public class SessionService : ISessionService
             throw new ConflictException("Spot is unavalible");
         }
 
-        var session = await CreateSessionEntity(createSessionRequest);
+        var user = await _userRepository.GetUserById(createSessionRequest.UserId);
+        var session = createSessionRequest.ToSession(user, spot);
         await _sessionRepository.CreateNewSession(session);
         return session.Id;
     }
@@ -50,38 +51,13 @@ public class SessionService : ISessionService
         {
             throw new IncorrectInputException("Incorrect session status");
         }
-        
-        return CreateSessionInfoResponse(sessionToUpdate);
+
+        return PublicSessionInfoResponse.FromSession(sessionToUpdate);
     }
 
     public async Task<ICollection<PublicSessionInfoResponse>> GetUserSessions(Guid userId)
     {
         var sessions = await _sessionRepository.GetSessionsByUserId(userId);
-        return sessions.Select(CreateSessionInfoResponse).ToList();
-    }
-
-    private async Task<Session> CreateSessionEntity(CreateSessionRequest request)
-    {
-        return new Session
-        {
-            Id = Guid.NewGuid(),
-            User = await _userRepository.GetUserById(request.UserId),
-            Status = request.Status,
-            Price = request.Price,
-        };
-    }
-
-    private PublicSessionInfoResponse CreateSessionInfoResponse(Session session)
-    {
-        return new PublicSessionInfoResponse(
-            session.Spot.Psychologist.User.FirstName,
-            session.Spot.Psychologist.User.LastName,
-            session.User.FirstName,
-            session.User.LastName,
-            session.Spot.Date,
-            session.Spot.HourStart,
-            session.Spot.HourEnd,
-            session.Status,
-            session.Price);
+        return sessions.Select(session => PublicSessionInfoResponse.FromSession(session)).ToList();
     }
 }

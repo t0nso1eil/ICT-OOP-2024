@@ -1,4 +1,5 @@
 #pragma warning disable IDE0161
+#pragma warning disable SA1129
 
 namespace MentallHealthSupport.Application.Models.Dto.Review
 {
@@ -6,5 +7,19 @@ namespace MentallHealthSupport.Application.Models.Dto.Review
         Guid UserId,
         Guid PsychologistId,
         uint Rate,
-        string Description);
+        string Description)
+    {
+        public Entities.Review ToReview(Entities.User user, Entities.Psychologist psychologist)
+        {
+            return new Entities.Review
+            {
+                Id = new Guid(),
+                User = user,
+                Psychologist = psychologist,
+                Rate = Rate,
+                Description = Description,
+                PostTime = DateTime.Now,
+            };
+        }
+    }
 }

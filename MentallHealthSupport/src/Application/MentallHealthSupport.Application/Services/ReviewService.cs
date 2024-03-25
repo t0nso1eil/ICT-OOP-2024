@@ -6,7 +6,6 @@
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto.Review;
-using MentallHealthSupport.Application.Models.Entities;
 
 namespace MentallHealthSupport.Application.Services
 {
@@ -25,7 +24,9 @@ namespace MentallHealthSupport.Application.Services
 
         public async Task<Guid> CreateReview(CreateReviewRequest createReviewRequest)
         {
-            var review = await CreateReviewEntity(createReviewRequest);
+            var user = await _userRepository.GetUserById(createReviewRequest.UserId);
+            var psychologist = await _psychologistRepository.GetPsychologistById(createReviewRequest.PsychologistId);
+            var review = createReviewRequest.ToReview(user, psychologist);
             await _reviewRepository.CreateReview(review);
             return review.Id;
         }
@@ -36,12 +37,11 @@ namespace MentallHealthSupport.Application.Services
             review.Rate = updateReviewRequest.Rate ?? review.Rate;
             review.Description = updateReviewRequest.Description ?? review.Description;
             await _reviewRepository.UpdateReview(review);
-            return CreateReviewInfoResponse(review);
+            return PublicReviewInfoResponse.FromReview(review);
         }
 
         public async Task DeleteReview(Guid reviewId)
         {
-            var review = await _reviewRepository.GetReviewById(reviewId);
             await _reviewRepository.DeleteReview(reviewId);
         }
 
@@ -49,34 +49,9 @@ namespace MentallHealthSupport.Application.Services
         {
             ICollection<PublicReviewInfoResponse> reviews = _reviewRepository
                 .GetAllReviews(psychoId)
-                .Select(CreateReviewInfoResponse)
+                .Select(review => PublicReviewInfoResponse.FromReview(review))
                 .ToList();
             return reviews;
-        }
-
-        private async Task<Review> CreateReviewEntity(CreateReviewRequest request)
-        {
-            return new Review
-            {
-                Id = Guid.NewGuid(),
-                Psychologist = await _psychologistRepository.GetPsychologistById(request.PsychologistId),
-                User = await _userRepository.GetUserById(request.UserId),
-                Description = request.Description,
-                Rate = request.Rate,
-                PostTime = DateTime.Now,
-            };
-        }
-
-        private PublicReviewInfoResponse CreateReviewInfoResponse(Review review)
-        {
-            return new PublicReviewInfoResponse(
-                review.Psychologist.User.FirstName,
-                review.Psychologist.User.LastName,
-                review.User.FirstName,
-                review.User.LastName,
-                review.Rate,
-                review.Description,
-                review.PostTime);
         }
     }
 }

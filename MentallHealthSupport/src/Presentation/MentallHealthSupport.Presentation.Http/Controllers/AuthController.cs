@@ -21,7 +21,7 @@ public class AuthController(IUserService userService, IPsychologistService psych
         HttpContext.Response.Cookies.Append("coo-coo", token);
     }
 
-    [HttpPost("/regUser")]
+    [HttpPost("/reg-user")]
     public async Task<IActionResult> RegistrateAsUser([FromBody] RegistrateUserRequest request)
     {
         try
@@ -43,7 +43,7 @@ public class AuthController(IUserService userService, IPsychologistService psych
         }
     }
     
-    [HttpPost("/regPsycho")]
+    [HttpPost("/reg-psycho")]
     public async Task<IActionResult> RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
     {
         try

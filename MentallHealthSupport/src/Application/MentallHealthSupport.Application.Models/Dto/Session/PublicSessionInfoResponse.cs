@@ -9,4 +9,19 @@ public record PublicSessionInfoResponse(
     DateTime StartTime,
     DateTime EndTime,
     string Status,
-    decimal Price);
+    decimal Price)
+{
+    public static PublicSessionInfoResponse FromSession(Entities.Session session)
+    {
+        return new PublicSessionInfoResponse(
+            session.Spot.Psychologist.User.FirstName,
+            session.Spot.Psychologist.User.LastName,
+            session.User.FirstName,
+            session.User.LastName,
+            session.Spot.Date,
+            session.Spot.HourStart,
+            session.Spot.HourEnd,
+            session.Status,
+            session.Price);
+    }
+}
