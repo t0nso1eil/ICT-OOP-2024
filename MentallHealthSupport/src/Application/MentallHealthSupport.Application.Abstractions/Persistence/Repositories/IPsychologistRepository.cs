@@ -7,7 +7,7 @@ namespace MentallHealthSupport.Application.Abstractions.Persistence.Repositories
 
 public interface IPsychologistRepository
 {
-    Task CreatePsychologist(Psychologist psychologist);
+    Task<Guid> CreatePsychologist(Psychologist psychologist);
 
     Task<Psychologist> GetPsychologistById(Guid id);
 

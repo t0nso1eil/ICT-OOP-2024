@@ -11,11 +11,12 @@ using Microsoft.EntityFrameworkCore;
 namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
 {
-    public async Task CreateSpot(Spot spot)
+    public async Task<Guid> CreateSpot(Spot spot)
     {
         var spotModel = MapToModel(spot);
         await dbContext.AddAsync(spotModel);
         await dbContext.SaveChangesAsync();
+        return spotModel.Id;
     }
 
     public async Task<ICollection<Spot>> GetPsychologistSchedule(Guid psychologistId)

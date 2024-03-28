@@ -45,8 +45,7 @@ public class PsychologistService: IPsychologistService
             PricePerHour = registratePsychologistRequest.PricePerHour,
         };
         
-        await _psychologistRepository.CreatePsychologist(psycho);
-        return psycho.Id;
+        return await _psychologistRepository.CreatePsychologist(psycho);
     }
     
 
@@ -73,19 +72,19 @@ public class PsychologistService: IPsychologistService
     public async Task<ICollection<PublicPsychologistInfoResponse>> GetAllPsychologists()
     {
         var psychos = await _psychologistRepository.GetAllPsychologists();
-        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
+        return psychos.Select(PublicPsychologistInfoResponse.FromPsychologist).ToList();
     }
 
     public async Task<ICollection<PublicPsychologistInfoResponse>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
     {
         var psychos = await _psychologistRepository.GetPsychologistsByPrice(priceMin, priceMax);
-        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
+        return psychos.Select(PublicPsychologistInfoResponse.FromPsychologist).ToList();
     }
 
     public async Task<ICollection<PublicPsychologistInfoResponse>> GetPsychologistsByRate(float rateMin, float rateMax)
     {
         var psychos = await _psychologistRepository.GetPsychologistsByRate(rateMin, rateMax);
-        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
+        return psychos.Select(PublicPsychologistInfoResponse.FromPsychologist).ToList();
 
     }
 }

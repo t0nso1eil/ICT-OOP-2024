@@ -4,7 +4,7 @@ namespace MentallHealthSupport.Application.Abstractions.Persistence.Repositories
 
 public interface ISpotRepository
 {
-    Task CreateSpot(Spot spot);
+    Task<Guid> CreateSpot(Spot spot);
 
     Task<ICollection<Spot>> GetPsychologistSchedule(Guid psychologistId);
 

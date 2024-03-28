@@ -12,11 +12,12 @@ using Microsoft.EntityFrameworkCore;
 namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 public class UserRepository(ApplicationDbContext dbContext) : IUserRepository
 {
-    public async Task CreateUser(User user)
+    public async Task<Guid> CreateUser(User user)
     {
         var userModel = MapToModel(user);
         await dbContext.AddAsync(userModel);
         await dbContext.SaveChangesAsync();
+        return userModel.Id;
     }
 
     public async Task<User> GetUserById(Guid id)

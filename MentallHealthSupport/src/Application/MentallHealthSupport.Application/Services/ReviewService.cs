@@ -27,8 +27,7 @@ namespace MentallHealthSupport.Application.Services
             var user = await _userRepository.GetUserById(createReviewRequest.UserId);
             var psychologist = await _psychologistRepository.GetPsychologistById(createReviewRequest.PsychologistId);
             var review = createReviewRequest.ToReview(user, psychologist);
-            await _reviewRepository.CreateReview(review);
-            return review.Id;
+            return await _reviewRepository.CreateReview(review);
         }
 
         public async Task<PublicReviewInfoResponse> UpdateReview(Guid reviewId, UpdateReviewRequest updateReviewRequest)

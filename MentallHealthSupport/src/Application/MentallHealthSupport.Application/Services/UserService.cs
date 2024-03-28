@@ -37,10 +37,12 @@ public class UserService : IUserService
         }
 
         CheckCorrectRegistrationInfo(registrateUserRequest);
+        registrateUserRequest = registrateUserRequest with
+        {
+            Password = _passwordHasher.GenerateHash(registrateUserRequest.Password),
+        };
         var user = registrateUserRequest.CreateUser();
-        await _userRepository.CreateUser(user);
-        var userFromDB = await _userRepository.GetUserByEmail(user.Email);
-        return userFromDB!.Id;
+        return await _userRepository.CreateUser(user);
     }
 
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)
@@ -90,7 +92,7 @@ public class UserService : IUserService
             throw new IncorrectInputException("Incorrect gender.");
         }
 
-        if (!(request.Email.Contains("@email.ru") || request.Email.Contains("@yandex.ru") ||
+        if (!(request.Email.Contains("@mail.ru") || request.Email.Contains("@yandex.ru") ||
               request.Email.Contains("@gmail.com")))
         {
             throw new IncorrectInputException("Incorrect email.");

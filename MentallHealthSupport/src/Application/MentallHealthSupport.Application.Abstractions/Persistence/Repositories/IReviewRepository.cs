@@ -4,7 +4,7 @@ namespace MentallHealthSupport.Application.Abstractions.Persistence.Repositories
 
 public interface IReviewRepository
 {
-    Task CreateReview(Review review);
+    Task<Guid> CreateReview(Review review);
 
     Task<Review> GetReviewById(Guid id);
 

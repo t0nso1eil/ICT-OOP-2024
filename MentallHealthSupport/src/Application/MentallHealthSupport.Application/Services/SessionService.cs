@@ -34,8 +34,7 @@ public class SessionService : ISessionService
 
         var user = await _userRepository.GetUserById(createSessionRequest.UserId);
         var session = createSessionRequest.ToSession(user, spot);
-        await _sessionRepository.CreateNewSession(session);
-        return session.Id;
+        return await _sessionRepository.CreateNewSession(session);
     }
 
     public async Task<PublicSessionInfoResponse> UpdateSessionStatus(Guid id, string status)
@@ -58,6 +57,6 @@ public class SessionService : ISessionService
     public async Task<ICollection<PublicSessionInfoResponse>> GetUserSessions(Guid userId)
     {
         var sessions = await _sessionRepository.GetSessionsByUserId(userId);
-        return sessions.Select(session => PublicSessionInfoResponse.FromSession(session)).ToList();
+        return sessions.Select(PublicSessionInfoResponse.FromSession).ToList();
     }
 }

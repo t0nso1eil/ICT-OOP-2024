@@ -4,7 +4,7 @@ namespace MentallHealthSupport.Application.Abstractions.Persistence.Repositories
 
 public interface ISessionRepository
 {
-    Task CreateNewSession(Session session);
+    Task<Guid> CreateNewSession(Session session);
 
     Task UpdateSessionStatus(Session newSession);
 

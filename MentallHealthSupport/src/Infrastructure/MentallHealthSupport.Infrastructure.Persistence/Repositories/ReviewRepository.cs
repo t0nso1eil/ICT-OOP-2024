@@ -12,11 +12,12 @@ namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 
 public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepository
 {
-    public async Task CreateReview(Review review)
+    public async Task<Guid> CreateReview(Review review)
     {
         var reviewModel = MapToModel(review);
         await dbContext.AddAsync(reviewModel);
         await dbContext.SaveChangesAsync();
+        return reviewModel.Id;
     }
 
     public async Task<Review> GetReviewById(Guid id)

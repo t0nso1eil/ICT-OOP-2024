@@ -26,11 +26,12 @@ public class PsychologistRepository : IPsychologistRepository
         _mapper = new PsychologistMapper(_dbContext);
     }
     
-    public async Task CreatePsychologist(Psychologist psychologist)
+    public async Task<Guid> CreatePsychologist(Psychologist psychologist)
     {
         var psychologistModel = MapToModel(psychologist);
         await _dbContext.AddAsync(psychologistModel);
         await _dbContext.SaveChangesAsync();
+        return psychologistModel.Id;
     }
 
     public async Task<Psychologist> GetPsychologistById(Guid id)
@@ -41,14 +42,7 @@ public class PsychologistRepository : IPsychologistRepository
             throw new NotFoundException("No such psychologist.");
         }
 
-        var userModel = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == psychologistModel.UserId);
-
-        if (userModel == null)
-        {
-            throw new NotFoundException("No such user.");
-        }
-
-        return await MapToEntity(psychologistModel);
+        return await _mapper.ToEntity(psychologistModel);
     }
 
 
@@ -63,35 +57,45 @@ public class PsychologistRepository : IPsychologistRepository
     
     public async Task<ICollection<Psychologist>> GetAllPsychologists()
     {
-        var psychologists = await _dbContext.Psychologists.ToListAsync();
-        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
-        var psychologistsList = await Task.WhenAll(tasks);
-        return psychologistsList.ToList();
+        var psychologists = _dbContext.Psychologists.ToList();
+        var res = new List<Psychologist>();
+        foreach (var p in psychologists)
+        {
+            var temp = await _mapper.ToEntity(p);
+            res.Add(temp);
+        }
+
+        return res;
     }
 
     public async Task<ICollection<Psychologist>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
     {
-        var psychologists = await _dbContext.Psychologists
+        var psychologists = _dbContext.Psychologists
             .Where(p => p.PricePerHour > priceMin && p.PricePerHour < priceMax)
-            .ToListAsync();
-        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
-        var psychologistsList = await Task.WhenAll(tasks);
-        return psychologistsList.ToList();
+            .AsEnumerable();
+        var res = new List<Psychologist>();
+        foreach (var p in psychologists)
+        {
+            var temp = await _mapper.ToEntity(p);
+            res.Add(temp);
+        }
+
+        return res;
     }
 
     public async Task<ICollection<Psychologist>> GetPsychologistsByRate(float rateMin, float rateMax)
     {
-        var psychologists = await _dbContext.Psychologists
+        var psychologists = _dbContext.Psychologists
             .Where(p => p.Rate > rateMin && p.Rate < rateMax)
-            .ToListAsync();
-        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
-        var psychologistsList = await Task.WhenAll(tasks);
-        return psychologistsList.ToList();
-    }
+            .AsEnumerable();
+        var res = new List<Psychologist>();
+        foreach (var p in psychologists)
+        {
+            var temp = await _mapper.ToEntity(p);
+            res.Add(temp);
+        }
 
-    private async Task<Psychologist> MapToEntity(PsychologistModel model)
-    {
-        return await _mapper.ToEntity(model);
+        return res;
     }
 
     private PsychologistModel MapToModel(Psychologist entity)

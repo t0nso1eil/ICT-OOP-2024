@@ -12,11 +12,12 @@ namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 
 public class SessionRepository(ApplicationDbContext dbContext) : ISessionRepository
 {
-    public async Task CreateNewSession(Session session)
+    public async Task<Guid> CreateNewSession(Session session)
     {
         var sessionModel = MapToModel(session);
         await dbContext.AddAsync(sessionModel);
         await dbContext.SaveChangesAsync();
+        return sessionModel.Id;
     }
 
     public async Task UpdateSessionStatus(Session newSession)

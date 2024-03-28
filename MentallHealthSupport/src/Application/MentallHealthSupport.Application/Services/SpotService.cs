@@ -38,8 +38,7 @@ namespace MentallHealthSupport.Application.Services
             var spot = createSpotRequest.ToSpot(psychologist);
             var spots = await _spotRepository.GetPsychologistSchedule(createSpotRequest.PsychologistId);
             CheckCorrectTime(spots, spot);
-            await _spotRepository.CreateSpot(spot);
-            return spot.Id;
+            return await _spotRepository.CreateSpot(spot);
         }
 
         public async Task<PublicSpotInfoResponse> UpdateSpotStatus(Guid id, string status)
