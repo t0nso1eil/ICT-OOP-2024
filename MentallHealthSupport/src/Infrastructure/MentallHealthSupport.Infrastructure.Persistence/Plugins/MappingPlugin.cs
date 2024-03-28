@@ -1,3 +1,6 @@
+#pragma warning disable SA1200
+#pragma warning disable IDE0065
+
 namespace MentallHealthSupport.Infrastructure.Persistence.Plugins;
 
 using Itmo.Dev.Platform.Postgres.Plugins;

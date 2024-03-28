@@ -12,11 +12,13 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddUserSecrets<Program>();
 
+builder.Services.AddMvcCore();
+
 builder.Services.AddOptions<JsonSerializerSettings>();
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JsonSerializerSettings>>().Value);
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructurePersistence();
+builder.Services.AddInfrastructurePersistence(builder.Configuration);
 builder.Services
     .AddControllers()
     .AddNewtonsoftJson()
@@ -33,6 +35,8 @@ app.UseRouting();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// app.UseAuthentication();
+// app.UseAuthorization();
 app.MapControllers();
 
 await app.RunAsync();
