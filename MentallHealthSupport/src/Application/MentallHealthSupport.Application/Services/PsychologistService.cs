@@ -70,22 +70,22 @@ public class PsychologistService: IPsychologistService
         return PublicPsychologistInfoResponse.FromPsychologist(psycho);
     }
 
-    public ICollection<Task<PublicPsychologistInfoResponse>> GetAllPsychologists()
+    public async Task<ICollection<PublicPsychologistInfoResponse>> GetAllPsychologists()
     {
-        var psychos = _psychologistRepository.GetAllPsychologists();
-        return psychos.Select(async p => PublicPsychologistInfoResponse.FromPsychologist(await p)).ToList();
+        var psychos = await _psychologistRepository.GetAllPsychologists();
+        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
     }
 
-    public ICollection<Task<PublicPsychologistInfoResponse>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
+    public async Task<ICollection<PublicPsychologistInfoResponse>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
     {
-        var psychos = _psychologistRepository.GetPsychologistsByPrice(priceMin, priceMax);
-        return psychos.Select(async p => PublicPsychologistInfoResponse.FromPsychologist(await p)).ToList();
+        var psychos = await _psychologistRepository.GetPsychologistsByPrice(priceMin, priceMax);
+        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
     }
 
-    public ICollection<Task<PublicPsychologistInfoResponse>> GetPsychologistsByRate(float rateMin, float rateMax)
+    public async Task<ICollection<PublicPsychologistInfoResponse>> GetPsychologistsByRate(float rateMin, float rateMax)
     {
-        var psychos = _psychologistRepository.GetPsychologistsByRate(rateMin, rateMax);
-        return psychos.Select(async p => PublicPsychologistInfoResponse.FromPsychologist(await p)).ToList();
+        var psychos = await _psychologistRepository.GetPsychologistsByRate(rateMin, rateMax);
+        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
 
     }
 }

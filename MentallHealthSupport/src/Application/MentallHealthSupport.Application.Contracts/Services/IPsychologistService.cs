@@ -9,9 +9,9 @@ public interface IPsychologistService
 
     public Task<PublicPsychologistInfoResponse> UpdatePsychologist(Guid psychologistId, UpdatePsychologistRequest updatePsychologistRequest);
 
-    public ICollection<Task<PublicPsychologistInfoResponse>> GetAllPsychologists();
+    public Task<ICollection<PublicPsychologistInfoResponse>> GetAllPsychologists();
 
-    public ICollection<Task<PublicPsychologistInfoResponse>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax);
+    public Task<ICollection<PublicPsychologistInfoResponse>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax);
 
-    public ICollection<Task<PublicPsychologistInfoResponse>> GetPsychologistsByRate(float rateMin, float rateMax);
+    public Task<ICollection<PublicPsychologistInfoResponse>> GetPsychologistsByRate(float rateMin, float rateMax);
 }

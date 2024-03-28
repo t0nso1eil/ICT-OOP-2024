@@ -4,15 +4,29 @@
 #pragma warning disable SA1507
 #pragma warning disable IDE0007
 
-using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
-public class PsychologistMapper()
+public class PsychologistMapper(ApplicationDbContext dbContext)
 {
+    public async Task<Psychologist> ToEntity(PsychologistModel psychologistModel)
+    {
+        var psycho = new Psychologist
+        {
+            Id = psychologistModel.Id,
+            Specialization = psychologistModel.Specialization,
+            ExperienceStartDate = psychologistModel.ExperienceStartDate,
+            ExperienceYears = psychologistModel.ExperienceYears,
+            PricePerHour = psychologistModel.PricePerHour,
+            Rate = psychologistModel.Rate, 
+            User = UserMapper.ToEntity(await GetUser(psychologistModel.UserId)),
+        };
+        return psycho;
+    }
+    
     public PsychologistModel ToModel(Psychologist psychologist)
     {
         var psychoModel = new PsychologistModel
@@ -27,24 +41,15 @@ public class PsychologistMapper()
         };
         return psychoModel;
     }
-    
-    public Psychologist ToEntity(PsychologistModel psychologistModel, UserModel userModel)
+
+    private async Task<UserModel> GetUser(Guid userId)
     {
-        if (userModel == null)
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null)
         {
-            throw new NotFoundException("No such user");
+            throw new Exception();
         }
 
-        var psycho = new Psychologist
-        {
-            Id = psychologistModel.Id,
-            Specialization = psychologistModel.Specialization,
-            ExperienceStartDate = psychologistModel.ExperienceStartDate,
-            ExperienceYears = psychologistModel.ExperienceYears,
-            PricePerHour = psychologistModel.PricePerHour,
-            Rate = psychologistModel.Rate,
-            User = UserMapper.ToEntity(userModel),
-        };
-        return psycho;
+        return user;
     }
 }

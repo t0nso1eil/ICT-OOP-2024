@@ -15,8 +15,8 @@ public class SessionMapper
             Status = sessionModel.Status,
             Price = sessionModel.Price,
 
-            // User = UserMapper.ToEntity(user),
-            // Spot = SpotMapper.ToEntity(spot),
+            // User = UserMapper.ToEntity(userModel),
+            // Spot = SpotMapper.ToEntity(spotModel),
         };
         return session;
     }

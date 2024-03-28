@@ -17,7 +17,7 @@ public class SpotMapper
             HourEnd = spotModel.HourEnd,
             Status = spotModel.Status,
 
-            // Psychologist = PsychologistMapper.ToEntity(),
+            // Psychologist = PsychologistMapper.ToEntity(psychologistModel),
         };
         return spot;
     }

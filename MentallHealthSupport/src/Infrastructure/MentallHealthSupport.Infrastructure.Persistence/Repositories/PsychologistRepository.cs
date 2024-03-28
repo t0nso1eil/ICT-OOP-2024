@@ -7,6 +7,7 @@
 #pragma warning disable IDE0007
 
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Mapping;
@@ -14,78 +15,87 @@ using MentallHealthSupport.Infrastructure.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
-public class PsychologistRepository(ApplicationDbContext dbContext, PsychologistMapper mapper) : IPsychologistRepository
+public class PsychologistRepository : IPsychologistRepository
 {
+    private readonly ApplicationDbContext _dbContext;
+    private readonly PsychologistMapper _mapper;
+
+    public PsychologistRepository(ApplicationDbContext dbContext)
+    {
+        _dbContext = dbContext;
+        _mapper = new PsychologistMapper(_dbContext);
+    }
+    
     public async Task CreatePsychologist(Psychologist psychologist)
     {
         var psychologistModel = MapToModel(psychologist);
-        await dbContext.AddAsync(psychologistModel);
-        await dbContext.SaveChangesAsync();
+        await _dbContext.AddAsync(psychologistModel);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<Psychologist> GetPsychologistById(Guid id)
     {
-        var psychologistModel = await dbContext.Psychologists.FirstOrDefaultAsync(psycho => psycho.Id == id);
+        var psychologistModel = await _dbContext.Psychologists.FirstOrDefaultAsync(psycho => psycho.Id == id);
         if (psychologistModel == null)
         {
-            throw new Exception("такого нет");
+            throw new NotFoundException("No such psychologist.");
         }
 
-        var userModel = await dbContext.Users.FirstOrDefaultAsync(user => user.Id == psychologistModel.UserId);
+        var userModel = await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == psychologistModel.UserId);
 
         if (userModel == null)
         {
-            throw new Exception("Данные пользователя не найдены");
+            throw new NotFoundException("No such user.");
         }
 
-        return MapToEntity(psychologistModel, userModel);
+        return await MapToEntity(psychologistModel);
     }
 
 
     public async Task UpdatePsychologist(Psychologist newPsychologist)
     {
         var newPsychologistModel = MapToModel(newPsychologist);
-        var currPsychologist = await dbContext.Psychologists.FindAsync(newPsychologistModel.Id);
-        dbContext.Entry(currPsychologist!).CurrentValues.SetValues(newPsychologistModel);
-        await dbContext.SaveChangesAsync();
+        var currPsychologist = await _dbContext.Psychologists.FindAsync(newPsychologistModel.Id);
+        _dbContext.Entry(currPsychologist!).CurrentValues.SetValues(newPsychologistModel);
+        await _dbContext.SaveChangesAsync();
     }
     
     
-    public ICollection<Task<Psychologist>> GetAllPsychologists()
+    public async Task<ICollection<Psychologist>> GetAllPsychologists()
     {
-        var psychologistTasks = dbContext.Psychologists
-            .Select(p => GetPsychologistById(p.Id))
-            .ToList();
-        return psychologistTasks;
+        var psychologists = await _dbContext.Psychologists.ToListAsync();
+        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
+        var psychologistsList = await Task.WhenAll(tasks);
+        return psychologistsList.ToList();
     }
 
-    public ICollection<Task<Psychologist>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
+    public async Task<ICollection<Psychologist>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
     {
-        ICollection<Task<Psychologist>> psychologists = dbContext.Psychologists
+        var psychologists = await _dbContext.Psychologists
             .Where(p => p.PricePerHour > priceMin && p.PricePerHour < priceMax)
-            .AsEnumerable()
-            .Select(p =>  GetPsychologistById(p.Id))
-            .ToList();
-        return psychologists;
+            .ToListAsync();
+        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
+        var psychologistsList = await Task.WhenAll(tasks);
+        return psychologistsList.ToList();
     }
 
-    public ICollection<Task<Psychologist>> GetPsychologistsByRate(float rateMin, float rateMax)
+    public async Task<ICollection<Psychologist>> GetPsychologistsByRate(float rateMin, float rateMax)
     {
-        ICollection<Task<Psychologist>> psychologists = dbContext.Psychologists
+        var psychologists = await _dbContext.Psychologists
             .Where(p => p.Rate > rateMin && p.Rate < rateMax)
-            .AsEnumerable()
-            .Select(p => GetPsychologistById(p.Id))
-            .ToList();
-        return psychologists;
+            .ToListAsync();
+        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
+        var psychologistsList = await Task.WhenAll(tasks);
+        return psychologistsList.ToList();
     }
 
-    private Psychologist MapToEntity(PsychologistModel model, UserModel user)
+    private async Task<Psychologist> MapToEntity(PsychologistModel model)
     {
-        return mapper.ToEntity(model, user);
+        return await _mapper.ToEntity(model);
     }
 
     private PsychologistModel MapToModel(Psychologist entity)
     {
-        return mapper.ToModel(entity);
+        return _mapper.ToModel(entity);
     }
 }
