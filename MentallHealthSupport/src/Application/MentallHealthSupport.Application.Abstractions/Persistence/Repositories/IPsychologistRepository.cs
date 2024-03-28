@@ -13,10 +13,10 @@ public interface IPsychologistRepository
 
     Task UpdatePsychologist(Psychologist newPsychologist);
 
-    ICollection<Psychologist> GetAllPsychologists();
+    ICollection<Task<Psychologist>> GetAllPsychologists();
     
-    ICollection<Psychologist> GetPsychologistsByPrice(decimal priceMin, decimal priceMax);
+    ICollection<Task<Psychologist>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax);
 
-    ICollection<Psychologist> GetPsychologistsByRate(float rateMin, float rateMax);
+    ICollection<Task<Psychologist>> GetPsychologistsByRate(float rateMin, float rateMax);
 
 }

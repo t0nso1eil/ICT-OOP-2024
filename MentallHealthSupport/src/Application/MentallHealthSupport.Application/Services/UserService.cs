@@ -14,6 +14,7 @@ using MentallHealthSupport.Application.Services.Auth;
 using Microsoft.Extensions.Options;
 
 namespace MentallHealthSupport.Application.Services;
+
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
@@ -38,7 +39,8 @@ public class UserService : IUserService
         CheckCorrectRegistrationInfo(registrateUserRequest);
         var user = registrateUserRequest.CreateUser();
         await _userRepository.CreateUser(user);
-        return user.Id;
+        var userFromDB = await _userRepository.GetUserByEmail(user.Email);
+        return userFromDB!.Id;
     }
 
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)

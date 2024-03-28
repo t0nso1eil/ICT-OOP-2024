@@ -57,7 +57,7 @@ public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
     public async Task<ICollection<Spot>> GetPsychologistFreeSpotsById(Guid psychologistId)
     {
         var spots = await dbContext.Spots
-            .Where(spot => spot.Psychologist.Id == psychologistId && spot.Status == "Availible")
+            .Where(spot => spot.PsychologistId == psychologistId && spot.Status == "Availible")
             .ToListAsync();
 
         var psychologistSpots = spots.Select(spotModel => MapToEntity(spotModel)).ToList();

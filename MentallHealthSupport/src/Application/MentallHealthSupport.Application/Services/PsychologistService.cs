@@ -66,25 +66,26 @@ public class PsychologistService: IPsychologistService
         psycho.Specialization = updatePsychologistRequest.Specialization ?? psycho.Specialization;
         psycho.PricePerHour = updatePsychologistRequest.PricePerHour ?? psycho.PricePerHour;
         await _psychologistRepository.UpdatePsychologist(psycho);
+        psycho = await _psychologistRepository.GetPsychologistById(psychologistId);
         return PublicPsychologistInfoResponse.FromPsychologist(psycho);
     }
 
-    public ICollection<PublicPsychologistInfoResponse> GetAllPsychologists()
+    public ICollection<Task<PublicPsychologistInfoResponse>> GetAllPsychologists()
     {
         var psychos = _psychologistRepository.GetAllPsychologists();
-        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
+        return psychos.Select(async p => PublicPsychologistInfoResponse.FromPsychologist(await p)).ToList();
     }
 
-    public ICollection<PublicPsychologistInfoResponse> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
+    public ICollection<Task<PublicPsychologistInfoResponse>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
     {
         var psychos = _psychologistRepository.GetPsychologistsByPrice(priceMin, priceMax);
-        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
+        return psychos.Select(async p => PublicPsychologistInfoResponse.FromPsychologist(await p)).ToList();
     }
 
-    public ICollection<PublicPsychologistInfoResponse> GetPsychologistsByRate(float rateMin, float rateMax)
+    public ICollection<Task<PublicPsychologistInfoResponse>> GetPsychologistsByRate(float rateMin, float rateMax)
     {
         var psychos = _psychologistRepository.GetPsychologistsByRate(rateMin, rateMax);
-        return psychos.Select(p => PublicPsychologistInfoResponse.FromPsychologist(p)).ToList();
+        return psychos.Select(async p => PublicPsychologistInfoResponse.FromPsychologist(await p)).ToList();
 
     }
 }

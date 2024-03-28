@@ -25,8 +25,4 @@ public class UserModel
     public DateTime RegistrationDate { get; set; }
 
     public bool IsPsychologist { get; set; }
-
-    public PsychologistModel? Psychologist { get; set; }
-
-    public ICollection<SessionModel> Sessions { get; } = new List<SessionModel>();
 }

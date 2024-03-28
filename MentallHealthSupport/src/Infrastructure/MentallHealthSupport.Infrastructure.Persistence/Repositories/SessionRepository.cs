@@ -49,9 +49,8 @@ public class SessionRepository(ApplicationDbContext dbContext) : ISessionReposit
     public async Task<ICollection<Session>> GetSessionsByUserId(Guid userId)
     {
         ICollection<SessionModel> userSessions = await dbContext.Sessions
-            .Where(session => session.User.Id == userId)
+            .Where(session => session.UserId == userId)
             .ToListAsync();
-
         return userSessions.Select(sessionModel => MapToEntity(sessionModel)).ToList();
     }
 

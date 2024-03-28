@@ -4,7 +4,7 @@ public class SpotModel
 {
     public Guid Id { get; set; }
 
-    public PsychologistModel Psychologist { get; set; } = null!;
+    public Guid PsychologistId { get; set; }
 
     public DateOnly Date { get; set; }
 
@@ -13,6 +13,4 @@ public class SpotModel
     public DateTime HourEnd { get; set; }
 
     public string Status { get; set; } = null!;
-
-    public SessionModel Session { get; set; } = null!;
 }

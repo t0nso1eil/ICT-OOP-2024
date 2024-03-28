@@ -5,6 +5,7 @@ using MentallHealthSupport.Application.Abstractions.Persistence;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
+using MentallHealthSupport.Infrastructure.Persistence.Mapping;
 using MentallHealthSupport.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ public static class ServiceCollectionExtensions
         collection.AddScoped<ISessionRepository, SessionRepository>();
         collection.AddScoped<ISpotRepository, SpotRepository>();
         collection.AddScoped<IPersistenceContext, PersistenceContext>();
+        collection.AddScoped<PsychologistMapper>();
 
         //AddAuthentication(collection, configuration);
         return collection;

@@ -14,14 +14,10 @@ public class SessionMapper
             Id = sessionModel.Id,
             Status = sessionModel.Status,
             Price = sessionModel.Price,
+
+            // User = UserMapper.ToEntity(user),
+            // Spot = SpotMapper.ToEntity(spot),
         };
-
-        var user = UserMapper.ToEntity(sessionModel.User);
-        session.User = user;
-
-        var spot = SpotMapper.ToEntity(sessionModel.Spot);
-        session.Spot = spot;
-
         return session;
     }
 
@@ -32,13 +28,8 @@ public class SessionMapper
             Id = session.Id,
             Status = session.Status,
             Price = session.Price,
+            SpotId = session.Spot.Id,
         };
-        var user = UserMapper.ToModel(session.User);
-        sessionModel.User = user;
-
-        var spot = SpotMapper.ToModel(session.Spot);
-        sessionModel.Spot = spot;
-
         return sessionModel;
     }
 }

@@ -18,10 +18,6 @@ public class PsychologistConfiguration : IEntityTypeConfiguration<PsychologistMo
         builder.Property(p => p.PricePerHour).HasColumnName("price_per_hour").HasColumnType("numeric");
         builder.Property(p => p.ExperienceStartDate).HasColumnName("experience_start_date").HasColumnType("date");
         builder.Property(p => p.Rate).HasColumnName("rate").HasColumnType("numeric");
-        builder.HasOne(p => p.User)
-            .WithOne(u => u.Psychologist)
-            .HasForeignKey<PsychologistModel>(p => p.UserId)
-            .HasConstraintName("psychologist_user_user_id_fk");
         builder.ToTable("psychologist");
     }
 }

@@ -16,14 +16,9 @@ public class SpotMapper
             HourStart = spotModel.HourStart,
             HourEnd = spotModel.HourEnd,
             Status = spotModel.Status,
+
+            // Psychologist = PsychologistMapper.ToEntity(),
         };
-
-        var psychologist = PsychologistMapper.ToEntity(spotModel.Psychologist);
-        spot.Psychologist = psychologist;
-
-        var session = SessionMapper.ToEntity(spotModel.Session);
-        spot.Session = session;
-
         return spot;
     }
 
@@ -36,14 +31,8 @@ public class SpotMapper
             HourStart = spot.HourStart,
             HourEnd = spot.HourEnd,
             Status = spot.Status,
+            PsychologistId = spot.Psychologist.Id,
         };
-
-        var psychologist = PsychologistMapper.ToModel(spot.Psychologist);
-        spotModel.Psychologist = psychologist;
-
-        var session = SessionMapper.ToModel(spot.Session);
-        spotModel.Session = session;
-
         return spotModel;
     }
 }
