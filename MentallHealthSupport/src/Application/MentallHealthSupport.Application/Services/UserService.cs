@@ -38,9 +38,7 @@ public class UserService : IUserService
 
         CheckCorrectRegistrationInfo(registrateUserRequest);
         var user = registrateUserRequest.CreateUser();
-        await _userRepository.CreateUser(user);
-        var userFromDB = await _userRepository.GetUserByEmail(user.Email);
-        return userFromDB!.Id;
+        return await _userRepository.CreateUser(user);
     }
 
     public async Task<PublicUserInfoResponse> GetUser(Guid userId)

@@ -3,7 +3,7 @@
 namespace MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 public interface IUserRepository
 {
-    Task CreateUser(User user);
+    Task<Guid> CreateUser(User user);
 
     Task<User> GetUserById(Guid id);
 
