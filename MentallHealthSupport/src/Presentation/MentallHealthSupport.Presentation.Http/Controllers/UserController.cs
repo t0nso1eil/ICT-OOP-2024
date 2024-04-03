@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UserController(IMediator mediator) : ControllerBase
     {
         [HttpGet("{id}")]

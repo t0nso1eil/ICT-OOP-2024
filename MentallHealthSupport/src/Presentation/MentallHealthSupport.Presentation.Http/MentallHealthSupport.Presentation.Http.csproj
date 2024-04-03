@@ -11,7 +11,6 @@
 
     <ItemGroup>
       <Folder Include="Controllers\CQRSControllers\" />
-      <Folder Include="Middlewares\" />
     </ItemGroup>
 
 </Project>
