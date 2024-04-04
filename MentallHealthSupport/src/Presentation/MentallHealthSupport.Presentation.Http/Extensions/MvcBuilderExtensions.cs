@@ -6,7 +6,7 @@ public static class MvcBuilderExtensions
 {
     public static IMvcBuilder AddPresentationHttp(this IMvcBuilder builder)
     {
-        builder.Services.AddSingleton<ExceptionHandlerMiddleware>();
+        builder.Services.AddSingleton<RequestMiddleware>();
         return builder.AddApplicationPart(typeof(IAssemblyMarker).Assembly);
     }
 }

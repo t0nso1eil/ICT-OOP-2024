@@ -9,8 +9,4 @@
       <ProjectReference Include="..\..\Application\MentallHealthSupport.Application\MentallHealthSupport.Application.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers\CQRSControllers\" />
-    </ItemGroup>
-
 </Project>

@@ -44,8 +44,9 @@ Log.Logger = new LoggerConfiguration()
         restrictedToMinimumLevel: LogEventLevel.Error)
     .CreateLogger();
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<RequestMiddleware>();
 
+// app.UseMiddleware<ExceptionMiddleware>();
 app.UseRouting();
 app.UseSwagger();
 app.UseSwaggerUI();

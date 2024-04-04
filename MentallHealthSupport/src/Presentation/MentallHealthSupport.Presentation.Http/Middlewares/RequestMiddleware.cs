@@ -1,25 +1,41 @@
 ﻿using MentallHealthSupport.Application.Exceptions;
+using System.Diagnostics;
 
 namespace MentallHealthSupport.Presentation.Http.Middlewares;
 
-public class ExceptionHandlerMiddleware : IMiddleware
+public class RequestMiddleware : IMiddleware
 {
-    private readonly ILogger<ExceptionHandlerMiddleware> _logger;
+    private readonly ILogger<RequestMiddleware> _logger;
 
-    public ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logger)
+    public RequestMiddleware(ILogger<RequestMiddleware> logger)
     {
         _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
+        var sw = Stopwatch.StartNew();
         try
         {
+            var loggedRequest = new
+            {
+                ip = context.Connection.RemoteIpAddress?.MapToIPv4() + ":" + context.Connection.RemotePort,
+                method = context.Request.Method,
+                endpoint = context.Request.Path,
+            };
+
+            _logger.LogInformation($"Request: {loggedRequest.ip} {loggedRequest.method} {loggedRequest.endpoint}");
+            context.Response.ContentType = "application/json";
             await next(context);
+
+            sw.Stop();
+            var response = await FormatResponse(context.Response);
+            var elapsedTime = sw.Elapsed.TotalMilliseconds;
+            _logger.LogInformation($"Response for {loggedRequest.ip} {loggedRequest.method} {loggedRequest.endpoint} responded {context.Response.StatusCode} in {elapsedTime:0.0000} ms. Response: {response}");
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            await HandleExceptionAsync(context, e);
+            await HandleExceptionAsync(context, ex);
         }
     }
 
@@ -49,5 +65,13 @@ public class ExceptionHandlerMiddleware : IMiddleware
         _logger.LogError(exception.Message);
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await httpContext.Response.WriteAsync("Internal Server Error!");
+    }
+
+    private async Task<string> FormatResponse(HttpResponse response)
+    {
+        response.Body.Seek(0, SeekOrigin.Begin);
+        var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
+        response.Body.Seek(0, SeekOrigin.Begin);
+        return responseBody;
     }
 }
