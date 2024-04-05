@@ -1,9 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
-using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Review;
-using MentallHealthSupport.Application.Models.Entities;
+
 
 namespace MentallHealthSupport.Application.Events.Handlers.Review
 {

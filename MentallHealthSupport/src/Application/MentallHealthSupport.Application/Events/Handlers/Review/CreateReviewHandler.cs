@@ -8,6 +8,7 @@ using MentallHealthSupport.Application.Models.Dto.Review;
 using MentallHealthSupport.Application.Models.Entities;
 
 
+
 namespace MentallHealthSupport.Application.Events.Handlers.Review
 {
     public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Guid>
