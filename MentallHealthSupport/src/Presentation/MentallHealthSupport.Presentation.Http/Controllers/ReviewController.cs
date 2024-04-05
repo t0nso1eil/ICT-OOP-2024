@@ -1,99 +1,111 @@
 #pragma warning disable CS1998
 
-using MentallHealthSupport.Application.Contracts.Services;
+using MediatR;
+using MentallHealthSupport.Application.Events.Commands.Review;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Review;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MentallHealthSupport.Presentation.Http.Controllers;
 
-[Route("[controller]")]
-public class ReviewController : ControllerBase
+namespace MentallHealthSupport.Presentation.Http.Controllers
 {
-    private readonly IReviewService _service;
-
-    public ReviewController(IReviewService service)
+    [Route("[controller]")]
+    [ApiController]
+    public class ReviewController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly IMediator _mediator;
 
-    [HttpPost]
-    public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest request)
-    {
-        try
+        public ReviewController(IMediator mediator)
         {
-            var id = await _service.CreateReview(request);
-            return Ok(new { ReviewId = id });
+            _mediator = mediator;
         }
-        catch (ConflictException ex)
-        {
-            return Conflict(new { Error = ex.Message });
-        }
-        catch (IncorrectInputException ex)
-        {
-            return BadRequest(new { Error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { Error = ex.Message });
-        }
-    }
 
-    [HttpPatch("{id}")]
-    public async Task<IActionResult> UpdateReview(Guid id, [FromBody] UpdateReviewRequest request)
-    {
-        try
-        {
-            var review = await _service.UpdateReview(id, request);
-            return Ok(review);
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new { Error = ex.Message });
-        }
-        catch (IncorrectInputException ex)
-        {
-            return BadRequest(new { Error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { Error = ex.Message });
-        }
-    }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteReview(Guid id)
-    {
-        try
+        [HttpPost]
+        public async Task<IActionResult> CreateReview([FromBody] CreateReviewRequest request)
         {
-            await _service.DeleteReview(id);
-            return Ok();
+            try
+            {
+                var command = new CreateReviewCommand(request);
+                var id = await _mediator.Send(command);
+                return Ok(new { ReviewId = id });
+            }
+            catch (ConflictException ex)
+            {
+                return Conflict(new { Error = ex.Message });
+            }
+            catch (IncorrectInputException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
         }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new { Error = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { Error = ex.Message });
-        }
-    }
 
-    [HttpGet("{psychoId}")]
-    public async Task<IActionResult> GetPsychoReviews(Guid psychoId)
-    {
-        try
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateReview(Guid id, [FromBody] UpdateReviewRequest request)
         {
-            var reviews = _service.GetPsychologistReviews(psychoId);
-            return Ok(reviews);
+            try
+            {
+                var command = new UpdateReviewCommand(id, request.Rate, request.Description);
+        
+                var review = await _mediator.Send(command);
+        
+                return Ok(review);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            catch (IncorrectInputException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
         }
-        catch (NotFoundException ex)
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReview(Guid id)
         {
-            return NotFound(new { Error = ex.Message });
+            try
+            {
+                var command = new DeleteReviewCommand(id);
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
         }
-        catch (Exception ex)
+
+        [HttpGet("{psychoId}")]
+        public async Task<IActionResult> GetReview(Guid psychoId)
         {
-            return StatusCode(500, new { Error = ex.Message });
+            try
+            {
+                var query = new GetReviewCommand(psychoId);
+                var reviews = await _mediator.Send(query);
+                return Ok(reviews);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
         }
     }
 }
