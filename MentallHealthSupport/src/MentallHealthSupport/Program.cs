@@ -46,7 +46,6 @@ Log.Logger = new LoggerConfiguration()
 
 app.UseMiddleware<RequestMiddleware>();
 
-// app.UseMiddleware<ExceptionMiddleware>();
 app.UseRouting();
 app.UseSwagger();
 app.UseSwaggerUI();

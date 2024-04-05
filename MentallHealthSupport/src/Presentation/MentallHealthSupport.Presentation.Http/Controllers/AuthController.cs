@@ -11,12 +11,24 @@ namespace MentallHealthSupport.Presentation.Http.Controllers;
 [Route("[controller]")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    // [HttpPost]
-    // public async Task Login([FromBody] LoginRequest loginRequest)
-    // {
-    //     var token = await _userService.Login(loginRequest);
-    //     HttpContext.Response.Cookies.Append("coo-coo", token);
-    // }
+    [HttpPost]
+    public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+    {
+        try
+        {
+            var token = await mediator.Send(new LoginCommand(loginRequest));
+            return Ok(new { token });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
+    }
+
     [HttpPost("/reg-user")]
     public async Task<IActionResult> RegistrateAsUser([FromBody] RegistrateUserRequest request)
     {

@@ -17,21 +17,19 @@ public class RequestMiddleware : IMiddleware
         var sw = Stopwatch.StartNew();
         try
         {
-            var loggedRequest = new
-            {
-                ip = context.Connection.RemoteIpAddress?.MapToIPv4() + ":" + context.Connection.RemotePort,
-                method = context.Request.Method,
-                endpoint = context.Request.Path,
-            };
+            var ip = context.Connection.RemoteIpAddress?.MapToIPv4() + ":" + context.Connection.RemotePort;
+            var host = context.Request.Host.ToString();
+            var protocol = context.Request.Protocol;
+            var method = context.Request.Method;
+            var endpoint = context.Request.Path;
 
-            _logger.LogInformation($"Request: {loggedRequest.ip} {loggedRequest.method} {loggedRequest.endpoint}");
-            context.Response.ContentType = "application/json";
+            _logger.LogInformation($"Request to {ip} {host} {protocol} by {method} to {endpoint}");
             await next(context);
 
-            sw.Stop();
-            var response = await FormatResponse(context.Response);
-            var elapsedTime = sw.Elapsed.TotalMilliseconds;
-            _logger.LogInformation($"Response for {loggedRequest.ip} {loggedRequest.method} {loggedRequest.endpoint} responded {context.Response.StatusCode} in {elapsedTime:0.0000} ms. Response: {response}");
+            // sw.Stop();
+            // var response = await FormatResponse(context.Response);
+            // var elapsedTime = sw.Elapsed.TotalMilliseconds;
+            // _logger.LogInformation($"Response for {ip} by {method} to {endpoint} responded {context.Response.StatusCode} in {elapsedTime:0.0000} ms. Response: {response}");
         }
         catch (Exception ex)
         {
@@ -67,11 +65,11 @@ public class RequestMiddleware : IMiddleware
         await httpContext.Response.WriteAsync("Internal Server Error!");
     }
 
-    private async Task<string> FormatResponse(HttpResponse response)
-    {
-        response.Body.Seek(0, SeekOrigin.Begin);
-        var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
-        response.Body.Seek(0, SeekOrigin.Begin);
-        return responseBody;
-    }
+    // private async Task<string> FormatResponse(HttpResponse response)
+    // {
+    //     response.Body.Seek(0, SeekOrigin.Begin);
+    //     var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
+    //     response.Body.Seek(0, SeekOrigin.Begin);
+    //     return responseBody;
+    // }
 }

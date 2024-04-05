@@ -9,4 +9,8 @@
       <ProjectReference Include="..\..\Application\MentallHealthSupport.Application\MentallHealthSupport.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Serilog" />
+    </ItemGroup>
+
 </Project>
