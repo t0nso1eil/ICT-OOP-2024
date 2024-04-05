@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
         collection.AddScoped<IReviewService, ReviewService>();
         collection.AddScoped<ISessionService, SessionService>();
         collection.AddScoped<ISpotService, SpotService>();
+        collection.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
         return collection;
     }
 }

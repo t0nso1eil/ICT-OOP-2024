@@ -12,10 +12,4 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Events\Commands\User\" />
-      <Folder Include="Events\Handlers\User\" />
-      <Folder Include="Events\Queries\User\" />
-    </ItemGroup>
-
 </Project>

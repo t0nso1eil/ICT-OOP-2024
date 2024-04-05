@@ -3,7 +3,9 @@
 #pragma warning disable SA1507
 
 
-using MentallHealthSupport.Application.Contracts.Services;
+using MediatR;
+using MentallHealthSupport.Application.Events.Commands.User;
+using MentallHealthSupport.Application.Events.Queries.User;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.User;
 using Microsoft.AspNetCore.Mvc;
@@ -11,23 +13,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
     [ApiController]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    [Route("[controller]")]
+    public class UserController(IMediator mediator) : ControllerBase
     {
-        private readonly IUserService _userService;
-
-        public UserController(IUserService userService)
-        {
-            _userService = userService;
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(Guid id)
         {
             try
             {
-                var user = await _userService.GetUser(id);
-                return Ok(user);
+                var query = new GetUserQuery(id);
+                var userInfo = await mediator.Send(query);
+                return Ok(userInfo);
             }
             catch (NotFoundException ex)
             {
@@ -44,8 +40,9 @@ namespace MentallHealthSupport.Presentation.Http.Controllers;
         {
             try
             {
-                var user = await _userService.UpdateUser(id, updateUserRequest);
-                return Ok(user);
+                var command = new UpdateUserCommand(id, updateUserRequest);
+                var updatedUserInfo = await mediator.Send(command);
+                return Ok(updatedUserInfo);
             }
             catch (NotFoundException ex)
             {
