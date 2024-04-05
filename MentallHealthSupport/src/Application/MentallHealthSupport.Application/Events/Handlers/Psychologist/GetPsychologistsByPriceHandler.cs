@@ -1,3 +1,5 @@
+#pragma warning disable IDE0008
+
 using MediatR;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Events.Queries.Psychologist;

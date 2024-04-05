@@ -1,7 +1,10 @@
+#pragma warning disable IDE0008
+
 using MediatR;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Events.Commands.User;
+
 namespace MentallHealthSupport.Application.Events.Handlers.Psychologist;
 
 public class CreatePsychologistHandler : IRequestHandler<CreatePsychologistCommand, Guid>

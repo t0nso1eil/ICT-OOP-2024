@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CA1307
+#pragma warning disable IDE0008
 
 using MediatR;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;

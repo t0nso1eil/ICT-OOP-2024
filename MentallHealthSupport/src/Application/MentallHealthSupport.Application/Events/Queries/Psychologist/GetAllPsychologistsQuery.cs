@@ -5,5 +5,4 @@ namespace MentallHealthSupport.Application.Events.Queries.Psychologist;
 
 public class GetAllPsychologistsQuery : IRequest<ICollection<PublicPsychologistInfoResponse>>
 {
-
 }
