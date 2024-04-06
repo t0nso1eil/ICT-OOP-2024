@@ -1,5 +1,3 @@
-#pragma warning disable CA1506
-
 using Itmo.Dev.Platform.Common.Extensions;
 using Itmo.Dev.Platform.Logging.Extensions;
 using MentallHealthSupport.Application.Extensions;

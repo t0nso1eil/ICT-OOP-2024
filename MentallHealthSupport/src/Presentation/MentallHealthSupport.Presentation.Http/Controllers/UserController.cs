@@ -1,9 +1,4 @@
-﻿#pragma warning disable CA1721
-#pragma warning disable IDE0005
-#pragma warning disable SA1507
-
-
-using MediatR;
+﻿using MediatR;
 using MentallHealthSupport.Application.Events.Commands.User;
 using MentallHealthSupport.Application.Events.Queries.User;
 using MentallHealthSupport.Application.Exceptions;

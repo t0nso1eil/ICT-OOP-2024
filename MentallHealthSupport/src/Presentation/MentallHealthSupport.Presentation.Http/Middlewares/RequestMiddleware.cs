@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE0063
-
-using MentallHealthSupport.Application.Exceptions;
+﻿using MentallHealthSupport.Application.Exceptions;
 using System.Diagnostics;
 
 namespace MentallHealthSupport.Presentation.Http.Middlewares;

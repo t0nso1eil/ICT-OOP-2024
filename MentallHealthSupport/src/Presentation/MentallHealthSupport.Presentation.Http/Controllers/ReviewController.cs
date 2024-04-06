@@ -1,5 +1,3 @@
-#pragma warning disable CS1998
-
 using MediatR;
 using MentallHealthSupport.Application.Events.Commands.Review;
 using MentallHealthSupport.Application.Events.Queries.Review;

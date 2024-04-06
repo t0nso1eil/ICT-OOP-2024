@@ -1,12 +1,7 @@
-#pragma warning disable IDE0005
-#pragma warning disable IDE0008
-#pragma warning disable SA1028
-
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Session;
-using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Application.Models.Entities.Enums;
 
 namespace MentallHealthSupport.Application.Services;

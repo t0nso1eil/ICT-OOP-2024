@@ -1,10 +1,6 @@
-#pragma warning disable CA1307
-
 using MediatR;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Events.Commands.Review;
-using MentallHealthSupport.Application.Exceptions;
-using MentallHealthSupport.Application.Models.Dto.Review;
 
 namespace MentallHealthSupport.Application.Events.Handlers.Review;
 
@@ -25,11 +21,8 @@ public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Guid>
     {
         var user = await _userRepository.GetUserById(request.CreateReviewRequest.UserId);
         var psychologist = await _psychologistRepository.GetPsychologistById(request.CreateReviewRequest.PsychologistId);
-
         var review = request.CreateReviewRequest.ToReview(user, psychologist);
-
         await _reviewRepository.CreateReview(review);
-
         return review.Id;
     }
 }

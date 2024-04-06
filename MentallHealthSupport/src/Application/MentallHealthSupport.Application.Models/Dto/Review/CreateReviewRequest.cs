@@ -1,6 +1,3 @@
-#pragma warning disable IDE0161
-#pragma warning disable SA1129
-
 namespace MentallHealthSupport.Application.Models.Dto.Review
 {
     public record CreateReviewRequest(

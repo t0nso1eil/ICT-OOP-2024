@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE0008
-
-using MentallHealthSupport.Application.Models.Entities;
+﻿using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;

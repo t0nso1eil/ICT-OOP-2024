@@ -1,9 +1,8 @@
-﻿#pragma warning disable IDE0008
-#pragma warning disable SA1028
-
-using MediatR;
+﻿using MediatR;
+using MentallHealthSupport.Application.Events.Commands.Psychologist;
 using MentallHealthSupport.Application.Events.Commands.User;
 using MentallHealthSupport.Application.Exceptions;
+using MentallHealthSupport.Application.Models.Dto.Psychologist;
 using MentallHealthSupport.Application.Models.Dto.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,25 +55,25 @@ public class AuthController(IMediator mediator) : ControllerBase
         }
     }
     
-    // [HttpPost("/reg-psycho")]
-    // public async Task<IActionResult> RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
-    // {
-    //     try
-    //     {
-    //         var psychoId = await _psychologistService.CreatePsychologist(request);
-    //         return Ok(new { PsychologistId = psychoId });
-    //     }
-    //     catch (ConflictException ex)
-    //     {
-    //         return Conflict(new { Error = ex.Message });
-    //     }
-    //     catch (IncorrectInputException ex)
-    //     {
-    //         return BadRequest(new { Error = ex.Message });
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         return StatusCode(500, new { Error = ex.Message });
-    //     }
-    // }
+    [HttpPost("/reg-psycho")]
+    public async Task<IActionResult> RegistrateAsPsycho([FromBody] RegistratePsychologistRequest request)
+    {
+        try
+        {
+            var psychoId = await mediator.Send(new CreatePsychologistCommand(request));
+            return Ok(new { PsychologistId = psychoId });
+        }
+        catch (ConflictException ex)
+        {
+            return Conflict(new { Error = ex.Message });
+        }
+        catch (IncorrectInputException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
+    }
 }

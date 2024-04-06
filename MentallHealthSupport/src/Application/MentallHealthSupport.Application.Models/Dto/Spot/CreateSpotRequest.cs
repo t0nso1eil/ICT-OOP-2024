@@ -1,5 +1,3 @@
-#pragma warning disable SA1129
-
 namespace MentallHealthSupport.Application.Models.Dto.Spot;
 
 public record CreateSpotRequest(

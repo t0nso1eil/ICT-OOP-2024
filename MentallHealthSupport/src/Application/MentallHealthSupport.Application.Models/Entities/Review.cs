@@ -1,6 +1,4 @@
-﻿#pragma warning disable CA1724
-
-namespace MentallHealthSupport.Application.Models.Entities;
+﻿namespace MentallHealthSupport.Application.Models.Entities;
 
 public class Review
 {

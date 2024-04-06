@@ -1,8 +1,3 @@
-#pragma warning disable CA1725
-#pragma warning disable IDE0161
-#pragma warning disable IDE0005
-#pragma warning disable IDE0008
-
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto.Review;

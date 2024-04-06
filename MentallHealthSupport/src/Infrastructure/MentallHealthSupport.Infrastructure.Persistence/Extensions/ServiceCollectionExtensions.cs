@@ -1,6 +1,3 @@
-#pragma warning disable IDE0008
-#pragma warning disable SA1005
-
 using MentallHealthSupport.Application.Abstractions.Persistence;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Models.Entities;

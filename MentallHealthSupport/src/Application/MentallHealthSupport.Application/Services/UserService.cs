@@ -1,11 +1,4 @@
-﻿#pragma warning disable IDE0051
-#pragma warning disable CA1307
-#pragma warning disable IDE0008
-#pragma warning restore SA1204
-#pragma warning disable IDE0007
-#pragma warning disable IDE0005
-
-using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+﻿using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.User;
@@ -87,7 +80,7 @@ public class UserService : IUserService
         {
             throw new IncorrectInputException("Incorrect gender.");
         }
-
+        
         if (!(request.Email.Contains("@email.ru") || request.Email.Contains("@yandex.ru") ||
               request.Email.Contains("@gmail.com")))
         {

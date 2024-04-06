@@ -1,8 +1,4 @@
-﻿#pragma warning disable SA1129
-#pragma warning disable IDE0161
-#pragma warning disable IDE0007
-
-namespace MentallHealthSupport.Application.Models.Dto.User
+﻿namespace MentallHealthSupport.Application.Models.Dto.User
 {
     public record RegistrateUserRequest(
         string FirstName,

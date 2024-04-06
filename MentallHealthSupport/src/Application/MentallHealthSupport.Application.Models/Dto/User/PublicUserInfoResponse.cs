@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE0161
-
-namespace MentallHealthSupport.Application.Models.Dto.User
+﻿namespace MentallHealthSupport.Application.Models.Dto.User
 {
     public record PublicUserInfoResponse(
         string FirstName,

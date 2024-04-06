@@ -1,5 +1,3 @@
-#pragma warning disable IDE0161
-
 using MediatR;
 using MentallHealthSupport.Application.Events.Commands.Spot;
 using MentallHealthSupport.Application.Events.Queries.Spot;

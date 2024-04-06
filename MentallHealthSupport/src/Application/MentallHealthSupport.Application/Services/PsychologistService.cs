@@ -1,12 +1,3 @@
-#pragma warning disable SA1507
-#pragma warning disable SA1508
-#pragma warning disable SA1024
-#pragma warning disable SA1028
-#pragma warning disable IDE0008
-#pragma warning disable SA1117
-#pragma warning disable SA1116
-#pragma warning disable  IDE0161
-
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
 using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Models.Dto.Psychologist;

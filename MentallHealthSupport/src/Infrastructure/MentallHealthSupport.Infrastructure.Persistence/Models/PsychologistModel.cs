@@ -1,8 +1,4 @@
-﻿#pragma warning disable SA1028
-#pragma warning disable CA2227
-#pragma warning disable SA1516
-
-namespace MentallHealthSupport.Infrastructure.Persistence.Models;
+﻿namespace MentallHealthSupport.Infrastructure.Persistence.Models;
 
 public class PsychologistModel
 {

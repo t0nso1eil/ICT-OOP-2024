@@ -1,7 +1,4 @@
-﻿#pragma warning disable SA1512
-#pragma warning disable SA1028
-
-using MentallHealthSupport.Infrastructure.Persistence.Models;
+﻿using MentallHealthSupport.Infrastructure.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

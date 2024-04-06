@@ -1,10 +1,4 @@
-﻿#pragma warning disable IDE0005
-#pragma warning disable IDE0008
-#pragma warning disable SA1028
-#pragma warning disable SA1507
-#pragma warning disable IDE0007
-
-using MentallHealthSupport.Application.Models.Entities;
+﻿using MentallHealthSupport.Application.Models.Entities;
 using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
