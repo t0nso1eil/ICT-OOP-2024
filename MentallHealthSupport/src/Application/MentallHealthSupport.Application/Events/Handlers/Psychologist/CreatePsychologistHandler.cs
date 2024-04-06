@@ -2,7 +2,6 @@
 
 using MediatR;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
-using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Events.Commands.User;
 
 namespace MentallHealthSupport.Application.Events.Handlers.Psychologist;
@@ -13,7 +12,7 @@ public class CreatePsychologistHandler : IRequestHandler<CreatePsychologistComma
     private readonly IUserRepository _userRepository;
     private readonly IPsychologistRepository _psychologistRepository;
 
-    public CreatePsychologistHandler( IUserRepository userRepository, IPsychologistRepository psychologistRepository, IMediator mediator)
+    public CreatePsychologistHandler(IUserRepository userRepository, IPsychologistRepository psychologistRepository, IMediator mediator)
     {
         _userRepository = userRepository;
         _psychologistRepository = psychologistRepository;

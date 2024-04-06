@@ -2,32 +2,29 @@
 #pragma warning disable SA1028
 #pragma warning disable SA1508
 #pragma warning disable CS1998
+#pragma warning disable IDE0008
 
-using MentallHealthSupport.Application.Contracts.Services;
+using MediatR;
+using MentallHealthSupport.Application.Events.Commands.Psychologist;
+using MentallHealthSupport.Application.Events.Queries.Psychologist;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Psychologist;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
+[ApiController]
 [Route("[controller]")]
-
-public class PsychologistController: ControllerBase
+public class PsychologistController(IMediator mediator) : ControllerBase
 {
-    private readonly IPsychologistService _psychologistService;
-
-    public PsychologistController(IPsychologistService psychologistService)
-    {
-        _psychologistService = psychologistService;
-    }
-    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPsychologist(Guid id)
     {
         try
         {
-            var psycho = await _psychologistService.GetPsychologist(id);
-            return Ok(new { Psychologist = psycho });
+            var query = new GetPsychologistQuery(id);
+            var psychoInfo = await mediator.Send(query);
+            return Ok(psychoInfo);
         }
         catch (NotFoundException ex)
         {
@@ -44,8 +41,9 @@ public class PsychologistController: ControllerBase
     {
         try
         {
-            var psycho = await _psychologistService.UpdatePsychologist(id, updatePsychologistRequest);
-            return Ok(psycho);
+            var command = new UpdatePsychologistCommand(id, updatePsychologistRequest);
+            var updatedPsychoInfo = await mediator.Send(command);
+            return Ok(updatedPsychoInfo);
         }
         catch (NotFoundException ex)
         {
@@ -66,7 +64,8 @@ public class PsychologistController: ControllerBase
     {
         try
         {
-            var psychos = _psychologistService.GetAllPsychologists();
+            var psychosQuery = new GetAllPsychologistsQuery();
+            var psychos = mediator.Send(psychosQuery);
             return Ok(psychos);
         }
         catch (NotFoundException ex)
@@ -84,7 +83,8 @@ public class PsychologistController: ControllerBase
     {
         try
         {
-            var psychos = _psychologistService.GetPsychologistsByPrice(priceMin, priceMax);
+            var psychosQuery = new GetPsychologistsByPriceQuery(priceMin, priceMax);
+            var psychos = mediator.Send(psychosQuery);
             return Ok(psychos);
         }
         catch (NotFoundException ex)
@@ -102,7 +102,8 @@ public class PsychologistController: ControllerBase
     {
         try
         {
-            var psychos = _psychologistService.GetPsychologistsByRate(rateMin, rateMax);
+            var psychosQuery = new GetPsychologistsByRateQuery(rateMin, rateMax);
+            var psychos = mediator.Send(psychosQuery);
             return Ok(psychos);
         }
         catch (NotFoundException ex)

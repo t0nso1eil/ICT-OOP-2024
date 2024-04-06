@@ -2,7 +2,6 @@
 
 using MediatR;
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
-using MentallHealthSupport.Application.Contracts.Services;
 using MentallHealthSupport.Application.Events.Commands.Psychologist;
 using MentallHealthSupport.Application.Events.Commands.User;
 using MentallHealthSupport.Application.Models.Dto.Psychologist;
