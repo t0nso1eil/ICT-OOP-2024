@@ -10,6 +10,7 @@ namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 
 public class SessionRepository(ApplicationDbContext dbContext) : ISessionRepository
 {
+    private readonly SessionMapper _mapper = new SessionMapper(dbContext);
     public async Task CreateNewSession(Session session)
     {
         var sessionModel = MapToModel(session);
@@ -41,7 +42,7 @@ public class SessionRepository(ApplicationDbContext dbContext) : ISessionReposit
             throw new NotFoundException("Session not found");
         }
 
-        return MapToEntity(sessionModel);
+        return await MapToEntity(sessionModel);
     }
 
     public async Task<ICollection<Session>> GetSessionsByUserId(Guid userId)
@@ -49,16 +50,23 @@ public class SessionRepository(ApplicationDbContext dbContext) : ISessionReposit
         ICollection<SessionModel> userSessions = await dbContext.Sessions
             .Where(session => session.UserId == userId)
             .ToListAsync();
-        return userSessions.Select(sessionModel => MapToEntity(sessionModel)).ToList();
+        ICollection<Session> res = new List<Session>();
+        foreach (var s in userSessions)
+        {
+            var e = await MapToEntity(s);
+            res.Add(e);
+        }
+
+        return res;
     }
 
-    private Session MapToEntity(SessionModel sessionModel)
+    private async Task<Session> MapToEntity(SessionModel sessionModel)
     {
-        return SessionMapper.ToEntity(sessionModel);
+        return await _mapper.ToEntity(sessionModel);
     }
 
     private SessionModel MapToModel(Session entity)
     {
-        return SessionMapper.ToModel(entity);
+        return _mapper.ToModel(entity);
     }
 }

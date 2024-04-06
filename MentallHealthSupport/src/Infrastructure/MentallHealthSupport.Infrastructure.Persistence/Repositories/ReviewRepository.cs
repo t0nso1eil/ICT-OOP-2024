@@ -12,11 +12,12 @@ public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepositor
 {
     private readonly ReviewMapper _mapper = new ReviewMapper(dbContext);
 
-    public async Task CreateReview(Review review)
+    public async Task<Guid> CreateReview(Review review)
     {
         var reviewModel = MapToModel(review);
         await dbContext.AddAsync(reviewModel);
         await dbContext.SaveChangesAsync();
+        return reviewModel.Id;
     }
 
     public async Task<Review> GetReviewById(Guid id)
@@ -52,11 +53,17 @@ public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepositor
 
     public async Task<ICollection<Review>> GetAllReviews(Guid psychoId)
     {
-        var reviews = dbContext.Reviews.Where(review => review.PsychologistId == psychoId).AsEnumerable()
-            .Select(async r => await MapToEntity(r))
-            .ToList();
-        var res = await Task.WhenAll(reviews);
-        return res.ToList();
+        var reviews = dbContext.Reviews
+            .Where(review => review.PsychologistId == psychoId)
+            .AsEnumerable().ToList();
+        ICollection<Review> res = new List<Review>();
+        foreach (var r in reviews)
+        {
+            var e = await MapToEntity(r);
+            res.Add(e);
+        }
+
+        return res;
     }
 
     private async Task<Review> MapToEntity(ReviewModel model)

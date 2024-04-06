@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
 {
+    private readonly SpotMapper _mapper = new SpotMapper(dbContext);
     public async Task CreateSpot(Spot spot)
     {
         var spotModel = MapToModel(spot);
@@ -22,7 +23,14 @@ public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
             .Where(spot => spot.Id == psychologistId)
             .ToListAsync();
 
-        return MapToEntity(spots);
+        ICollection<Spot> res = new List<Spot>();
+        foreach (var s in spots)
+        {
+            var e = await MapToEntity(s);
+            res.Add(e);
+        }
+
+        return res;
     }
 
     public async Task UpdateSpotStatus(Spot newSpot)
@@ -49,7 +57,7 @@ public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
             throw new NotFoundException("Spot not found");
         }
 
-        return MapToEntity(spotModel);
+        return await MapToEntity(spotModel);
     }
 
     public async Task<ICollection<Spot>> GetPsychologistFreeSpotsById(Guid psychologistId)
@@ -58,23 +66,23 @@ public class SpotRepository(ApplicationDbContext dbContext) : ISpotRepository
             .Where(spot => spot.PsychologistId == psychologistId && spot.Status == "Availible")
             .ToListAsync();
 
-        var psychologistSpots = spots.Select(spotModel => MapToEntity(spotModel)).ToList();
+        ICollection<Spot> res = new List<Spot>();
+        foreach (var s in spots)
+        {
+            var e = await MapToEntity(s);
+            res.Add(e);
+        }
 
-        return psychologistSpots;
+        return res;
     }
 
-    private List<Spot> MapToEntity(List<SpotModel> models)
+    private async Task<Spot> MapToEntity(SpotModel model)
     {
-        return models.Select(SpotMapper.ToEntity).ToList();
-    }
-
-    private Spot MapToEntity(SpotModel model)
-    {
-        return SpotMapper.ToEntity(model);
+        return await _mapper.ToEntity(model);
     }
 
     private SpotModel MapToModel(Spot entity)
     {
-        return SpotMapper.ToModel(entity);
+        return _mapper.ToModel(entity);
     }
 }

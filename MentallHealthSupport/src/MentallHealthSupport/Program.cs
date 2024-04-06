@@ -1,6 +1,7 @@
 using Itmo.Dev.Platform.Common.Extensions;
 using Itmo.Dev.Platform.Logging.Extensions;
 using MentallHealthSupport.Application.Extensions;
+using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Extensions;
 using MentallHealthSupport.Presentation.Http.Extensions;
 using MentallHealthSupport.Presentation.Http.Middlewares;

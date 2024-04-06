@@ -55,30 +55,41 @@ public class PsychologistRepository : IPsychologistRepository
     
     public async Task<ICollection<Psychologist>> GetAllPsychologists()
     {
-        var psychologists = await _dbContext.Psychologists.ToListAsync();
-        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
-        var psychologistsList = await Task.WhenAll(tasks);
-        return psychologistsList.ToList();
+        var psychos = await _dbContext.Psychologists.ToListAsync();
+        ICollection<Psychologist> res = new List<Psychologist>();
+        foreach (var p in psychos)
+        {
+            var e = await MapToEntity(p);
+            res.Add(e);
+        }
+
+        return res;
     }
 
     public async Task<ICollection<Psychologist>> GetPsychologistsByPrice(decimal priceMin, decimal priceMax)
     {
-        var psychologists = await _dbContext.Psychologists
-            .Where(p => p.PricePerHour > priceMin && p.PricePerHour < priceMax)
-            .ToListAsync();
-        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
-        var psychologistsList = await Task.WhenAll(tasks);
-        return psychologistsList.ToList();
+        var psychos = await _dbContext.Psychologists.Where(p => p.PricePerHour > priceMin && p.PricePerHour < priceMax).ToListAsync();
+        ICollection<Psychologist> res = new List<Psychologist>();
+        foreach (var p in psychos)
+        {
+            var e = await MapToEntity(p);
+            res.Add(e);
+        }
+
+        return res;
     }
 
     public async Task<ICollection<Psychologist>> GetPsychologistsByRate(float rateMin, float rateMax)
     {
-        var psychologists = await _dbContext.Psychologists
-            .Where(p => p.Rate > rateMin && p.Rate < rateMax)
-            .ToListAsync();
-        var tasks = psychologists.Select(async p => await GetPsychologistById(p.Id));
-        var psychologistsList = await Task.WhenAll(tasks);
-        return psychologistsList.ToList();
+        var psychos = await _dbContext.Psychologists.Where(p => p.Rate > rateMin && p.Rate < rateMax).ToListAsync();
+        ICollection<Psychologist> res = new List<Psychologist>();
+        foreach (var p in psychos)
+        {
+            var e = await MapToEntity(p);
+            res.Add(e);
+        }
+
+        return res;
     }
 
     private async Task<Psychologist> MapToEntity(PsychologistModel model)

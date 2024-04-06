@@ -1,26 +1,28 @@
 using MentallHealthSupport.Application.Models.Entities;
+using MentallHealthSupport.Infrastructure.Persistence.Contexts;
 using MentallHealthSupport.Infrastructure.Persistence.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentallHealthSupport.Infrastructure.Persistence.Mapping;
 
-public class SpotMapper
+public class SpotMapper(ApplicationDbContext dbContext)
 {
-    public static Spot ToEntity(SpotModel spotModel)
+    public async Task<Spot> ToEntity(SpotModel spotModel)
     {
+        var psychoMapper = new PsychologistMapper(dbContext);
         var spot = new Spot
         {
             Id = spotModel.Id,
             Date = spotModel.Date,
             HourStart = spotModel.HourStart,
             HourEnd = spotModel.HourEnd,
-            Status = spotModel.Status,
-
-            // Psychologist = PsychologistMapper.ToEntity(psychologistModel),
+            Status = spotModel.Status, 
+            Psychologist = await psychoMapper.ToEntity(await GetPsycho(spotModel.PsychologistId)),
         };
         return spot;
     }
 
-    public static SpotModel ToModel(Spot spot)
+    public SpotModel ToModel(Spot spot)
     {
         var spotModel = new SpotModel
         {
@@ -32,5 +34,16 @@ public class SpotMapper
             PsychologistId = spot.Psychologist.Id,
         };
         return spotModel;
+    }
+
+    private async Task<PsychologistModel> GetPsycho(Guid psychoId)
+    {
+        var user = await dbContext.Psychologists.FirstOrDefaultAsync(u => u.Id == psychoId);
+        if (user == null)
+        {
+            throw new Exception();
+        }
+
+        return user;
     }
 }

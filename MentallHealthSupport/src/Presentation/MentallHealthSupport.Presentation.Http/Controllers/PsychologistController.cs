@@ -4,8 +4,6 @@ using MentallHealthSupport.Application.Events.Queries.Psychologist;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Psychologist;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace MentallHealthSupport.Presentation.Http.Controllers
 {
