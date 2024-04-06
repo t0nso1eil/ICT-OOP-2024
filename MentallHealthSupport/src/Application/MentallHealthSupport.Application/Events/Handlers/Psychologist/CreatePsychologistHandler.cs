@@ -9,24 +9,25 @@ namespace MentallHealthSupport.Application.Events.Handlers.Psychologist;
 
 public class CreatePsychologistHandler : IRequestHandler<CreatePsychologistCommand, Guid>
 {
-    private readonly IUserService _userService;
+    private readonly IMediator _mediator;
     private readonly IUserRepository _userRepository;
     private readonly IPsychologistRepository _psychologistRepository;
 
-    public CreatePsychologistHandler(IUserService userService, IUserRepository userRepository, IPsychologistRepository psychologistRepository)
+    public CreatePsychologistHandler( IUserRepository userRepository, IPsychologistRepository psychologistRepository, IMediator mediator)
     {
-        _userService = userService;
         _userRepository = userRepository;
         _psychologistRepository = psychologistRepository;
+        _mediator = mediator;
     }
 
     public async Task<Guid> Handle(CreatePsychologistCommand request, CancellationToken cancellationToken)
     {
         var userInfo = request.RegistratePsychologistRequest.ToRegistrateUserRequest();
 
-        Guid id = await _userService.CreateUser(userInfo);
-        await _userRepository.UpdateStatus(id, true);
-        var user = await _userRepository.GetUserById(id);
+        var createUserCommand = new CreateUserCommand(userInfo);
+        var userId = await _mediator.Send(createUserCommand, cancellationToken);
+
+        var user = await _userRepository.GetUserById(userId);
         var psycho = new Models.Entities.Psychologist
         {
             Id = Guid.NewGuid(),
