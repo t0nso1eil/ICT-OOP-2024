@@ -13,10 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers;
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/{id}")]
     public class UserController(IMediator mediator) : ControllerBase
     {
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> GetUser(Guid id)
         {
             try
@@ -35,7 +35,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers;
             }
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserRequest updateUserRequest)
         {
             try
