@@ -12,5 +12,5 @@ public interface IReviewRepository
 
     Task DeleteReview(Guid id);
 
-    ICollection<Review> GetAllReviews(Guid psychoId);
+    Task<ICollection<Review>> GetAllReviews(Guid psychoId);
 }

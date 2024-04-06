@@ -45,13 +45,11 @@ namespace MentallHealthSupport.Application.Services
             await _reviewRepository.DeleteReview(reviewId);
         }
 
-        public ICollection<PublicReviewInfoResponse> GetPsychologistReviews(Guid psychoId)
+        public async Task<ICollection<PublicReviewInfoResponse>> GetPsychologistReviews(Guid psychoId)
         {
-            ICollection<PublicReviewInfoResponse> reviews = _reviewRepository
-                .GetAllReviews(psychoId)
-                .Select(review => PublicReviewInfoResponse.FromReview(review))
-                .ToList();
-            return reviews;
+            var reviews = await _reviewRepository.GetAllReviews(psychoId);
+            ICollection<PublicReviewInfoResponse> res = reviews.Select(r => PublicReviewInfoResponse.FromReview(r)).ToList();
+            return res;
         }
     }
 }

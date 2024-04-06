@@ -12,6 +12,8 @@ namespace MentallHealthSupport.Infrastructure.Persistence.Repositories;
 
 public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepository
 {
+    private readonly ReviewMapper _mapper = new ReviewMapper(dbContext);
+
     public async Task CreateReview(Review review)
     {
         var reviewModel = MapToModel(review);
@@ -27,7 +29,7 @@ public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepositor
             throw new NotFoundException("No reviews found");
         }
 
-        return MapToEntity(reviewModel);
+        return await MapToEntity(reviewModel);
     }
 
     public async Task UpdateReview(Review newReview)
@@ -50,15 +52,18 @@ public class ReviewRepository(ApplicationDbContext dbContext) : IReviewRepositor
         await dbContext.SaveChangesAsync();
     }
 
-    public ICollection<Review> GetAllReviews(Guid psychoId)
+    public async Task<ICollection<Review>> GetAllReviews(Guid psychoId)
     {
-        ICollection<Review> reviews = dbContext.Reviews.Select(MapToEntity).Where(review => review.Psychologist.Id == psychoId).ToList();
-        return reviews;
+        var reviews = dbContext.Reviews.Where(review => review.PsychologistId == psychoId).AsEnumerable()
+            .Select(async r => await MapToEntity(r))
+            .ToList();
+        var res = await Task.WhenAll(reviews);
+        return res.ToList();
     }
 
-    private Review MapToEntity(ReviewModel model)
+    private async Task<Review> MapToEntity(ReviewModel model)
     {
-        return ReviewMapper.ToEntity(model);
+        return await _mapper.ToEntity(model);
     }
 
     private ReviewModel MapToModel(Review entity)

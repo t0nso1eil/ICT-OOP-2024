@@ -1,6 +1,8 @@
 #pragma warning disable CS1998
 
-using MentallHealthSupport.Application.Contracts.Services;
+using MediatR;
+using MentallHealthSupport.Application.Events.Commands.Review;
+using MentallHealthSupport.Application.Events.Queries.Review;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Review;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +12,11 @@ namespace MentallHealthSupport.Presentation.Http.Controllers;
 [Route("[controller]")]
 public class ReviewController : ControllerBase
 {
-    private readonly IReviewService _service;
+    private readonly IMediator _mediator;
 
-    public ReviewController(IReviewService service)
+    public ReviewController(IMediator mediator)
     {
-        _service = service;
+        _mediator = mediator;
     }
 
     [HttpPost]
@@ -22,7 +24,8 @@ public class ReviewController : ControllerBase
     {
         try
         {
-            var id = await _service.CreateReview(request);
+            var command = new CreateReviewCommand(request);
+            var id = await _mediator.Send(command);
             return Ok(new { ReviewId = id });
         }
         catch (ConflictException ex)
@@ -44,7 +47,8 @@ public class ReviewController : ControllerBase
     {
         try
         {
-            var review = await _service.UpdateReview(id, request);
+            var command = new UpdateReviewCommand(id, request);
+            var review = await _mediator.Send(command);
             return Ok(review);
         }
         catch (NotFoundException ex)
@@ -66,7 +70,8 @@ public class ReviewController : ControllerBase
     {
         try
         {
-            await _service.DeleteReview(id);
+            var command = new DeleteReviewCommand(id);
+            await _mediator.Send(command);
             return Ok();
         }
         catch (NotFoundException ex)
@@ -84,7 +89,8 @@ public class ReviewController : ControllerBase
     {
         try
         {
-            var reviews = _service.GetPsychologistReviews(psychoId);
+            var query = new GetPsychologistReviewsQuery(psychoId);
+            var reviews = await _mediator.Send(query);
             return Ok(reviews);
         }
         catch (NotFoundException ex)

@@ -10,5 +10,5 @@ public interface IReviewService
 
     public Task DeleteReview(Guid reviewId);
 
-    public ICollection<PublicReviewInfoResponse> GetPsychologistReviews(Guid psychoId);
+    public Task<ICollection<PublicReviewInfoResponse>> GetPsychologistReviews(Guid psychoId);
 }
