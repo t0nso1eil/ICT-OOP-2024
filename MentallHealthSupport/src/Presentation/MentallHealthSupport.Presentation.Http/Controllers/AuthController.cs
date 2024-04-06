@@ -23,6 +23,10 @@ public class AuthController(IMediator mediator) : ControllerBase
         {
             return NotFound(ex.Message);
         }
+        catch (IncorrectInputException ex)
+        {
+            return BadRequest(ex.Message);
+        }
         catch (Exception ex)
         {
             return StatusCode(500, new { Error = ex.Message });

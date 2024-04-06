@@ -27,8 +27,8 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Guid>
 
         CheckCorrectRegistrationInfo(request.RegistrateUserRequest);
 
-        var user = request.RegistrateUserRequest.CreateUser();
-        return await _userRepository.CreateUser(user);
+        var userId = request.RegistrateUserRequest.CreateUser();
+        return await _userRepository.CreateUser(userId);
     }
 
     private void CheckCorrectRegistrationInfo(RegistrateUserRequest request)

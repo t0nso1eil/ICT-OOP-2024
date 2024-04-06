@@ -1,35 +1,42 @@
-﻿using MentallHealthSupport.Application.Exceptions;
+﻿#pragma warning disable IDE0063
+
+using MentallHealthSupport.Application.Exceptions;
 using System.Diagnostics;
 
 namespace MentallHealthSupport.Presentation.Http.Middlewares;
 
-public class RequestMiddleware : IMiddleware
+public class RequestMiddleware(ILogger<RequestMiddleware> logger) : IMiddleware
 {
-    private readonly ILogger<RequestMiddleware> _logger;
-
-    public RequestMiddleware(ILogger<RequestMiddleware> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        var sw = Stopwatch.StartNew();
         try
         {
-            var ip = context.Connection.RemoteIpAddress?.MapToIPv4() + ":" + context.Connection.RemotePort;
-            var host = context.Request.Host.ToString();
-            var protocol = context.Request.Protocol;
+            var sw = Stopwatch.StartNew();
+            var ip = context.Connection.RemoteIpAddress?.ToString();
+            var host = context.Request.Host.Host;
+            var port = context.Request.Host.Port;
             var method = context.Request.Method;
-            var endpoint = context.Request.Path;
+            var endpoint = $"{context.Request.Path}{context.Request.QueryString}";
 
-            _logger.LogInformation($"Request to {ip} {host} {protocol} by {method} to {endpoint}");
-            await next(context);
+            logger.LogInformation($"Request from {ip} to {host}:{port} {method} {endpoint}");
 
-            // sw.Stop();
-            // var response = await FormatResponse(context.Response);
-            // var elapsedTime = sw.Elapsed.TotalMilliseconds;
-            // _logger.LogInformation($"Response for {ip} by {method} to {endpoint} responded {context.Response.StatusCode} in {elapsedTime:0.0000} ms. Response: {response}");
+            var originalBodyStream = context.Response.Body;
+
+            using (var responseBody = new MemoryStream())
+            {
+                context.Response.Body = responseBody;
+
+                await next(context);
+
+                sw.Stop();
+                var response = await FormatResponse(context.Response);
+                var elapsedTime = sw.Elapsed.TotalMilliseconds;
+
+                logger.LogInformation($"Response for {ip} to {host}:{port} {method} {endpoint} responded {context.Response.StatusCode} in {elapsedTime:0.0000} ms. Response: {response}");
+
+                responseBody.Seek(0, SeekOrigin.Begin);
+                await responseBody.CopyToAsync(originalBodyStream);
+            }
         }
         catch (Exception ex)
         {
@@ -60,16 +67,16 @@ public class RequestMiddleware : IMiddleware
 
     private async Task HandleInternalException(HttpContext httpContext, Exception exception)
     {
-        _logger.LogError(exception.Message);
+        logger.LogError(exception.Message);
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        await httpContext.Response.WriteAsync("Internal Server Error!");
+        await httpContext.Response.WriteAsync("Internal Server Error.");
     }
 
-    // private async Task<string> FormatResponse(HttpResponse response)
-    // {
-    //     response.Body.Seek(0, SeekOrigin.Begin);
-    //     var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
-    //     response.Body.Seek(0, SeekOrigin.Begin);
-    //     return responseBody;
-    // }
+    private async Task<string> FormatResponse(HttpResponse response)
+    {
+        response.Body.Seek(0, SeekOrigin.Begin);
+        var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
+        response.Body.Seek(0, SeekOrigin.Begin);
+        return responseBody;
+    }
 }
