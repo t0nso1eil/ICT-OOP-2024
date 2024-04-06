@@ -1,40 +1,43 @@
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+using MentallHealthSupport.Application.Events.Commands.Review;
+using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Review;
 
 
-namespace MentallHealthSupport.Application.Events.Handlers.Review
+namespace MentallHealthSupport.Application.Events.Handlers.Review;
+
+public class UpdateReviewHandler
 {
-    public class UpdateReviewHandler
+    private readonly IReviewRepository _reviewRepository;
+
+    public UpdateReviewHandler(IReviewRepository reviewRepository)
     {
-        private readonly IReviewRepository _reviewRepository;
+        _reviewRepository = reviewRepository;
+    }
 
-        public UpdateReviewHandler(IReviewRepository reviewRepository)
+    public async Task<PublicReviewInfoResponse> Handle(
+        UpdateReviewCommand request,
+        CancellationToken cancellationToken)
+    {
+        var review = await _reviewRepository.GetReviewById(request.UserId);
+
+        if (review == null)
         {
-            _reviewRepository = reviewRepository;
+            throw new NotFoundException($"Review with ID not found.");
         }
 
-        public async Task<Models.Entities.Review> Handle(Guid reviewId, UpdateReviewRequest updateReviewRequest)
+        if (request.Rate != null)
         {
-            var review = await _reviewRepository.GetReviewById(reviewId);
-
-            if (review == null)
-            {
-                throw new ReviewNotFoundException($"Review with ID {reviewId} not found.");
-            }
-
-            if (updateReviewRequest.Rate != null)
-            {
-                review.Rate = updateReviewRequest.Rate.Value;
-            }
-
-            if (updateReviewRequest.Description != null)
-            {
-                review.Description = updateReviewRequest.Description;
-            }
-
-            await _reviewRepository.UpdateReview(review);
-
-            return review;
+            review.Rate = request.Rate.Value;
         }
+
+        if (request.Description != null)
+        {
+            review.Description = request.Description;
+        }
+
+        await _reviewRepository.UpdateReview(review);
+
+        return PublicReviewInfoResponse.FromReview(review);
     }
 }

@@ -1,4 +1,6 @@
 using MentallHealthSupport.Application.Abstractions.Persistence.Repositories;
+using MentallHealthSupport.Application.Exceptions;
+using MentallHealthSupport.Application.Models.Dto.Review;
 
 
 namespace MentallHealthSupport.Application.Events.Handlers.Review
@@ -12,23 +14,16 @@ namespace MentallHealthSupport.Application.Events.Handlers.Review
             _reviewRepository = reviewRepository;
         }
 
-        public async Task<Models.Entities.Review> Handle(Guid reviewId)
+        public async Task<PublicReviewInfoResponse> Handle(Guid reviewId)
         {
             var review = await _reviewRepository.GetReviewById(reviewId);
 
             if (review == null)
             {
-                throw new ReviewNotFoundException($"Review with ID {reviewId} not found.");
+                throw new NotFoundException($"Review with ID {reviewId} not found.");
             }
 
-            return review;
-        }
-    }
-    
-    public class ReviewNotFoundException : Exception
-    {
-        public ReviewNotFoundException(string message) : base(message)
-        {
+            return PublicReviewInfoResponse.FromReview(review);
         }
     }
 }

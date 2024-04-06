@@ -9,7 +9,7 @@ namespace MentallHealthSupport.Application.Models.Dto.Review
         uint Rate,
         string Description)
     {
-        public Entities.Review ToReview(Entities.User user, Entities.Psychologist psychologist)
+        public Entities.Review CreateReview(Entities.User user, Entities.Psychologist psychologist)
         {
             return new Entities.Review
             {

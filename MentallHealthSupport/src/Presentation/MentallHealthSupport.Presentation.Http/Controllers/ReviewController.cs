@@ -2,6 +2,7 @@
 
 using MediatR;
 using MentallHealthSupport.Application.Events.Commands.Review;
+using MentallHealthSupport.Application.Events.Queries.Review;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Review;
 using Microsoft.AspNetCore.Mvc;
@@ -95,7 +96,7 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         {
             try
             {
-                var query = new GetReviewCommand(psychoId);
+                var query = new GetReviewQuery(psychoId);
                 var reviews = await _mediator.Send(query);
                 return Ok(reviews);
             }
