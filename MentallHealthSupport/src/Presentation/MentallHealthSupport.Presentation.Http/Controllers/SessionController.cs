@@ -1,6 +1,8 @@
 #pragma warning disable IDE0161
 
-using MentallHealthSupport.Application.Contracts.Services;
+using MediatR;
+using MentallHealthSupport.Application.Events.Commands.Session;
+using MentallHealthSupport.Application.Events.Queries.Session;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Session;
 using Microsoft.AspNetCore.Mvc;
@@ -8,14 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentallHealthSupport.Presentation.Http.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class SessionController : ControllerBase
     {
-        private readonly ISessionService _sessionService;
+        private readonly IMediator _mediator;
 
-        public SessionController(ISessionService sessionService)
+        public SessionController(IMediator mediator)
         {
-            _sessionService = sessionService;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -23,7 +25,8 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         {
             try
             {
-                var sessionId = await _sessionService.CreateNewSession(createSessionRequest);
+                var command = new CreateSessionCommand(createSessionRequest);
+                var sessionId = await _mediator.Send(command);
                 return Ok(new { SessionId = sessionId });
             }
             catch (ConflictException ex)
@@ -41,7 +44,8 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         {
             try
             {
-                var session = await _sessionService.UpdateSessionStatus(id, status);
+                var command = new UpdateSessionCommand(id, status);
+                var session = await _mediator.Send(command);
                 return Ok(session);
             }
             catch (NotFoundException ex)
@@ -59,7 +63,8 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         {
             try
             {
-                var sessions = await _sessionService.GetUserSessions(userId);
+                var query = new GetUserSessionsQuery(userId);
+                var sessions = await _mediator.Send(query);
                 return Ok(sessions);
             }
             catch (NotFoundException ex)

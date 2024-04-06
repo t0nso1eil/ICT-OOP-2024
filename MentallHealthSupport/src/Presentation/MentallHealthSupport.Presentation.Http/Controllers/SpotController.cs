@@ -1,6 +1,8 @@
 #pragma warning disable IDE0161
 
-using MentallHealthSupport.Application.Contracts.Services;
+using MediatR;
+using MentallHealthSupport.Application.Events.Commands.Spot;
+using MentallHealthSupport.Application.Events.Queries.Spot;
 using MentallHealthSupport.Application.Exceptions;
 using MentallHealthSupport.Application.Models.Dto.Spot;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +13,11 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
     [Route("[controller]")]
     public class SpotController : ControllerBase
     {
-        private readonly ISpotService _spotService;
+        private readonly IMediator _mediator;
 
-        public SpotController(ISpotService spotService)
+        public SpotController(IMediator mediator)
         {
-            _spotService = spotService;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -23,7 +25,8 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         {
             try
             {
-                var spotId = await _spotService.CreateNewSpot(createSpotRequest);
+                var command = new CreateSpotCommand(createSpotRequest);
+                var spotId = await _mediator.Send(command);
                 return Ok(new { SpotId = spotId });
             }
             catch (ConflictException ex)
@@ -41,7 +44,8 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
         {
             try
             {
-                var spot = await _spotService.UpdateSpotStatus(id, status);
+                var command = new UpdateSpotStatusCommand(id, status);
+                var spot = await _mediator.Send(command);
                 return Ok(spot);
             }
             catch (NotFoundException ex)
@@ -54,12 +58,13 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpGet("/spots/{id}")]
+        [HttpGet("/spots/{psychologistId}")]
         public async Task<IActionResult> GetPsychologistFreeSpots(Guid psychologistId)
         {
             try
             {
-                var freeSpots = await _spotService.GetPsychologistFreeSpots(psychologistId);
+                var query = new GetPsychologistFreeSpotsQuery(psychologistId);
+                var freeSpots = await _mediator.Send(query);
                 return Ok(freeSpots);
             }
             catch (Exception ex)
@@ -68,12 +73,13 @@ namespace MentallHealthSupport.Presentation.Http.Controllers
             }
         }
 
-        [HttpGet("/schedule/{id}")]
+        [HttpGet("/schedule/{psychologistId}")]
         public async Task<IActionResult> GetPsychologistSchedule(Guid psychologistId)
         {
             try
             {
-                var schedule = await _spotService.GetPsychologistSchedule(psychologistId);
+                var query = new GetPsychologistScheduleQuery(psychologistId);
+                var schedule = await _mediator.Send(query);
                 return Ok(schedule);
             }
             catch (Exception ex)
