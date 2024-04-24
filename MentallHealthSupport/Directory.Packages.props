@@ -4,11 +4,14 @@
     <EnablePackageVersionOverride>false</EnablePackageVersionOverride>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageVersion Include="EntityFramework" Version="6.4.4" />
     <PackageVersion Include="Itmo.Dev.Editorconfig" Version="1.0.1" />
     <PackageVersion Include="Itmo.Dev.Platform.Logging" Version="1.0.82" />
     <PackageVersion Include="Itmo.Dev.Platform.Postgres" Version="1.1.82" />
     <PackageVersion Include="Itmo.Dev.Platform.Common" Version="1.1.82" />
+    <PackageVersion Include="MediatR" Version="12.2.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.15" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10" />
@@ -17,6 +20,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageVersion Include="RichEntity.Annotations" Version="1.1.0" />
+    <PackageVersion Include="Serilog" Version="3.0.1" />
     <PackageVersion Include="SourceKit.Generators.Builder" Version="1.1.24" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
     <PackageVersion Include="System.Linq.Async" Version="6.0.1" />
